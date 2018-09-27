@@ -15,7 +15,7 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
 
     public String getBestAverageBSSID() {
         averageMap = new HashMap<>();
-        List<AccessPoint> allAccessPoints = getArrayLists().stream().flatMap(List::stream).collect(Collectors.toList());
+        List<AccessPoint> allAccessPoints = arrayLists.stream().flatMap(List::stream).collect(Collectors.toList());
 
         // Generate Average Signal Levels per BSSID and store into Map
         for (AccessPoint accessPoint : allAccessPoints) {

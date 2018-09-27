@@ -24,8 +24,4 @@ public abstract class BaseSlidingWindow<T> {
 
         arrayLists.add(elements);
     }
-
-    public List<List<T>> getArrayLists() {
-        return arrayLists;
-    }
 }
