@@ -1,16 +1,13 @@
 package at.fhhgb.mc.component.sim.view;
 
-import at.fhhgb.mc.component.bui.model.DragableWayPoint;
 import at.fhhgb.mc.component.sim.domain.Matrix;
 import at.fhhgb.mc.component.sim.model.Person;
 import at.fhhgb.mc.component.sim.model.Room;
 import at.fhhgb.mc.component.sim.model.initialisations.WaypointPosition;
-import at.fhhgb.mc.component.sim.model.recorder.features.Waypoint;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 
@@ -228,24 +225,6 @@ public class DrawingContext {
 		_g.setColor(new Color(0, 102, 0));
 		_g.drawPolyline(xPoints, yPoints, nPoints);
 	}
-
-	public static void drawWayPoints(List<DragableWayPoint> waypointList, Graphics _g, Matrix _m) {
-		int[] xPoints = new int[waypointList.size()];
-		int[] yPoints = new int[waypointList.size()];
-		int nPoints = waypointList.size();
-		int i = 0;
-		for (Waypoint waypoint : waypointList) {
-			Point p = new Point(waypoint.getPosition().getX(), waypoint.getPosition().getY());
-			Point p2 = _m.multiply(p);
-			xPoints[i] = (int) p2.getX();
-			yPoints[i] = (int) p2.getY();
-			i++;
-		}
-
-		_g.setColor(new Color(0, 102, 0));
-		_g.drawPolyline(xPoints, yPoints, nPoints);
-	}
-
 
     public static void drawCells(Rectangle rectangle, Graphics g, Matrix _m, boolean containsPerson) {
 
