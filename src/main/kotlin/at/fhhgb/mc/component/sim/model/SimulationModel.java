@@ -18,8 +18,6 @@ import java.util.List;
 
 /**
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
- * 
- * @author Michael Nigl
  */
 public class SimulationModel extends BaseModel {
 

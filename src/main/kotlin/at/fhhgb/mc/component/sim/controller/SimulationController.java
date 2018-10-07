@@ -35,8 +35,6 @@ import java.util.List;
 /**
  * The Controler of the MVC pattern which is used for this application.
  * All Listeners are implemented in this class.
- * 
- * @author Michael Nigl
  */
 public class SimulationController implements WindowListener, ActionListener, MouseListener, MouseMotionListener, ComponentListener, ItemListener, PlaybackCallbackInterface, ChangeListener {
 

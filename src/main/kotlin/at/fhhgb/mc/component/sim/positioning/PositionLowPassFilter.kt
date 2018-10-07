@@ -2,6 +2,14 @@ package at.fhhgb.mc.component.sim.positioning
 
 import at.fhhgb.mc.component.sim.model.Position
 
+/**
+ * A Low Pass-Filter for filtering positions.
+ *
+ * @property alpha the smoothing value
+ * @property previousPos the previously filtered position
+ *
+ * @constructor Initializes a new Low Pass-Filter for Positions.
+ */
 class PositionLowPassFilter(private val alpha: Float) : IFilterable<Position> {
     private var previousPos: Position? = null
 

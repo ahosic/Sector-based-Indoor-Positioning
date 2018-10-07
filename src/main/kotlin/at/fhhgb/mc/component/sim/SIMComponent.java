@@ -11,6 +11,9 @@ import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * The Simulation component.
+ */
 public class SIMComponent extends BaseComponent implements Observer {
 
     ViewControllerInterface viewControllerInterface;

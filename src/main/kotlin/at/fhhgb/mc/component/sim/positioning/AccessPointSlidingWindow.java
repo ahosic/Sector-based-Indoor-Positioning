@@ -5,6 +5,9 @@ import at.fhhgb.mc.component.sim.model.recorder.network.AccessPoint;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * A sliding window for access points.
+ */
 public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
 
     private Map<String, SNRDataAverage> averageMap;
@@ -13,6 +16,10 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
         super(windowSize);
     }
 
+    /**
+     * Gets the BSSID of the access point that has the highest average signal strength at a specific point in time.
+     * @return the BSSID of the access point
+     */
     public String getBestAverageBSSID() {
         averageMap = new HashMap<>();
         List<AccessPoint> allAccessPoints = arrayLists.stream().flatMap(List::stream).collect(Collectors.toList());
@@ -37,6 +44,9 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
     }
 
 
+    /**
+     * An object for storing signal strength and calculating the average signal strength.
+     */
     private class SNRDataAverage {
         double cumulativeSNR = 0;
         double numberOfOccurences = 0;
@@ -45,11 +55,21 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
             addSNRValues(snr);
         }
 
+        /**
+         * Adds a signal strength value to the object.
+         *
+         * @param snr the signal strength in dBm.
+         */
         public void addSNRValues(double snr) {
             cumulativeSNR += snr;
             numberOfOccurences++;
         }
 
+        /**
+         * Gets the average signal strength in dBm.
+         *
+         * @return the average signal strength in dBm.
+         */
         public double getAverage() {
             return cumulativeSNR / numberOfOccurences;
         }

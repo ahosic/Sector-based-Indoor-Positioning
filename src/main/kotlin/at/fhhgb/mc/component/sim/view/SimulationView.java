@@ -15,9 +15,6 @@ import java.util.Observer;
 
 /**
  * The view of the MVC. The buttons and the Drawpanel are displayed here.
- *
- * @author Michael Nigl
- * @version 1.0
  */
 public class SimulationView extends Panel implements Observer, ViewControllerInterface {
 

@@ -2,6 +2,7 @@ package at.fhhgb.mc.component.sim.positioning
 
 /**
  * An interface for filtering data.
+ * @param T the type of object that should be filtered.
  */
 interface IFilterable<T> {
     /**
