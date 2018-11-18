@@ -1,6 +1,36 @@
+.jfx-rippler {
+    -jfx-rippler-fill: #0336FF;
+}
+
 .mainLayout {
     -fx-background-color: white;
 }
 
 .playButton {
+    -fx-padding: 16px;
+    -fx-background-radius: 50%;
+}
+
+.play {
+    -fx-graphic: url("icons/ic_play/ic_play.png");
+}
+
+.pause {
+    -fx-graphic: url("icons/ic_pause/ic_pause.png");
+}
+
+.stopButton {
+    -fx-graphic: url("icons/ic_stop/ic_stop.png");
+    -fx-padding: 8px;
+    -fx-background-radius: 50%;
+}
+
+.stopButton .jfx-rippler, .settingsButton .jfx-rippler {
+    -jfx-rippler-fill: #C2C2C2;
+}
+
+.settingsButton {
+    -fx-graphic: url("icons/ic_settings/ic_settings.png");
+    -fx-padding: 8px;
+    -fx-background-radius: 50%;
 }

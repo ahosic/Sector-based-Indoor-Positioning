@@ -33,7 +33,7 @@ abstract class BaseModel : Observable() {
         panelHeight = height - 1
     }
 
-    abstract fun generateFloorMap(floor: Floor, dimensions: IntArray)
+    abstract fun generateFloorMap(floor: Floor)
 
     /**
      * Zooms the entire world or the zooming rectangle to the screen size.
@@ -90,4 +90,8 @@ abstract class BaseModel : Observable() {
     }
 
     abstract fun createBufferedImage(): BufferedImage?
+
+    fun resetImage() {
+        callObserver(createBufferedImage() ?: return)
+    }
 }

@@ -7,6 +7,10 @@ import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callback: PlaybackCallbackInterface, internal val playBackEnum: PlayBackEnum) {
     private var playBackSpeed: Long = 500
     private var wayPointCount: IntArray? = null
+    var isRunning = false
+    private set
+    var pausePlayback = false
+    var stopPlayback = false
 
     init {
         setNumberOfAPSteps()
@@ -26,10 +30,26 @@ class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callba
         this.playBackSpeed = playBackSpeed
     }
 
-    fun startPlayback(): Boolean {
+    fun startPlayback() {
         println(dataSnapshots.size)
+        isRunning = true
         var i = 1
         for (dataSnapshot in dataSnapshots) {
+
+            while (pausePlayback) {
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                }
+            }
+
+            if (stopPlayback) {
+                isRunning = false
+                pausePlayback = false
+                stopPlayback = false
+                return
+            }
+
             println("Snapshot $i")
             i++
             for (wLanData in dataSnapshot.getwLanDataList()) {
@@ -43,6 +63,9 @@ class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callba
             }
 
         }
-        return false
+
+        isRunning = false
+        pausePlayback = false
+        return
     }
 }
