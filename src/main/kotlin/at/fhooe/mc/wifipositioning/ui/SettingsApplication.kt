@@ -3,7 +3,9 @@ package at.fhooe.mc.wifipositioning.ui
 import at.fhooe.mc.wifipositioning.controller.SettingsController
 import at.fhooe.mc.wifipositioning.model.configuration.Configuration
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
+import at.fhooe.mc.wifipositioning.model.positioning.PositioningType
 import com.jfoenix.controls.JFXButton
+import com.jfoenix.controls.JFXComboBox
 import com.jfoenix.controls.JFXTextField
 import javafx.application.Application
 import javafx.geometry.Insets
@@ -17,6 +19,8 @@ import javafx.scene.layout.VBox
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 
+
+
 class SettingsApplication(val configModel: ConfigurationModel) : Application() {
 
     private val controller: SettingsController
@@ -24,6 +28,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
 
     private var floorPlanPathField = JFXTextField()
     private var walkRecordingPathField = JFXTextField()
+    private var positioningCombobox = JFXComboBox<Label>()
 
     private val applyButton = JFXButton("Save".toUpperCase())
     private val cancelButton = JFXButton("Cancel".toUpperCase())
@@ -57,6 +62,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
 
         initFloorPlanSettings(settingsLayout)
         initWalkRecordingSettings(settingsLayout)
+        initPositoiningSelection(settingsLayout)
 
         val buttonPane = HBox()
         buttonPane.alignment = Pos.CENTER_RIGHT
@@ -81,7 +87,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         selectPathButton.styleClass.add("pathButton")
         selectPathButton.setOnAction {
             val path = getFilePathFromFileChooser("Select floor plan")
-            floorPlanPathField.text = path
+            floorPlanPathField.text = path ?: floorPlanPathField.text
         }
 
 
@@ -99,17 +105,33 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         selectPathButton.styleClass.add("pathButton")
         selectPathButton.setOnAction {
             val path = getFilePathFromFileChooser("Select walk recording")
-            walkRecordingPathField.text = path
+            walkRecordingPathField.text = path ?: walkRecordingPathField.text
         }
 
 
         layout.add(selectPathButton, 3, 1)
     }
 
+    private fun initPositoiningSelection(layout: GridPane) {
+        val floorLabel = Label("Positioning Method: ")
+        layout.add(floorLabel, 0, 2)
+
+        positioningCombobox.items.add(Label(PositioningType.STRONGEST_AP_POSITIONING.name))
+        positioningCombobox.items.add(Label(PositioningType.AVERAGE_POSITIONING.name))
+        positioningCombobox.items.add(Label(PositioningType.FILTERED_POSITIONING.name))
+
+        val idx = positioningCombobox.items.indexOfFirst { label -> label.text.equals(configModel.configuration.positioningType.name) }
+        positioningCombobox.selectionModel.select(idx)
+
+        layout.add(positioningCombobox, 1, 2)
+    }
+
     private fun initButtons() {
         applyButton.styleClass.add("applyButton")
         applyButton.setOnAction {
-            val configuration = Configuration(floorPlanPathField.text, walkRecordingPathField.text)
+
+            val positioningType = PositioningType.valueOf(positioningCombobox.value.text)
+            val configuration = Configuration(floorPlanPathField.text, walkRecordingPathField.text, positioningType)
             controller.applyConfiguration(configuration)
 
             stage?.let {

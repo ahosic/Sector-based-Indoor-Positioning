@@ -3,8 +3,7 @@ package at.fhooe.mc.wifipositioning.model.configuration
 import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
-import at.fhooe.mc.wifipositioning.model.positioning.FilteredPositioning
-import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
+import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
 import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.DataSnapshot
@@ -16,7 +15,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import java.util.*
 import javax.imageio.ImageIO
 import javax.imageio.ImageReader
@@ -40,11 +38,16 @@ class ConfigurationModel(val configPath: String): Observable() {
     }
 
     fun resetPositioning() {
-        positioning = FilteredPositioning(building!!.allAccessPoints)
+        when(configuration.positioningType) {
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
+        }
     }
 
     fun loadConfiguration(): Configuration? {
-        return Klaxon().parse<Configuration>(File(configPath))
+        val config = Klaxon().parse<Configuration>(File(configPath))
+        return config
     }
 
     fun saveConfiguration(configuration: Configuration) {
@@ -81,7 +84,12 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
 
         sectoring = VoronoiSectors()
-        positioning = FilteredPositioning(building!!.allAccessPoints)
+
+        when(configuration.positioningType) {
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
+        }
     }
 
     fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface): Player? {

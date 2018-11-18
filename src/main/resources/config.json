@@ -1,4 +1,5 @@
 {
   "floorsPath": "/Users/almin/Documents/projects/master/resources/final-nigl/all_floors.tiff",
-  "walkRecordingPath": "/Users/almin/Documents/projects/master/resources/final-nigl/FH2F4CCL_11202421.03.2016.txt"
+  "walkRecordingPath": "/Users/almin/Documents/projects/master/resources/final-nigl/FH2F4CCL_11202421.03.2016.txt",
+  "positioningType": "FILTERED_POSITIONING"
 }
