@@ -17,10 +17,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.util.*
 import javax.imageio.ImageIO
 import javax.imageio.ImageReader
 
-class ConfigurationModel(val inputStream: InputStream) {
+class ConfigurationModel(val configPath: String): Observable() {
     var building: Building? = null
         private set
     var configuration: Configuration
@@ -42,8 +43,21 @@ class ConfigurationModel(val inputStream: InputStream) {
         positioning = FilteredPositioning(building!!.allAccessPoints)
     }
 
-    private fun loadConfiguration(): Configuration? {
-        return Klaxon().parse<Configuration>(inputStream)
+    fun loadConfiguration(): Configuration? {
+        return Klaxon().parse<Configuration>(File(configPath))
+    }
+
+    fun saveConfiguration(configuration: Configuration) {
+        this.configuration = configuration
+
+        val klaxon = Klaxon()
+        val json = klaxon.toJsonString(configuration)
+
+        val configFile = File(configPath)
+        configFile.bufferedWriter().use { out -> out.write(json) }
+
+        setChanged()
+        notifyObservers()
     }
 
     fun loadFloors() {

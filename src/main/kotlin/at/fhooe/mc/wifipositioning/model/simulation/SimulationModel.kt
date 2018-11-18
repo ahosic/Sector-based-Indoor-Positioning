@@ -16,13 +16,12 @@ import at.fhooe.mc.wifipositioning.utility.Player
 
 import java.awt.*
 import java.awt.image.BufferedImage
-import java.util.ArrayList
+import java.util.*
 
 /**
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
  */
-class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface {
-
+class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
     private var accessPoints: List<AccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
@@ -41,12 +40,14 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     val positioning: IPositioning?
         get() = config.positioning
 
+    init {
+        config.addObserver(this)
+    }
+
     fun reloadConfiguration() {
         config.loadFloors()
 
         config.building?.let { building ->
-//            sectoring = VoronoiSectors()
-//            positioning = FilteredPositioning(building.allAccessPoints)
             generateFloorMap(building.getFloor(4))
         }
 
@@ -239,5 +240,14 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         wayPointCount?.let {
             this.wayPointCount = wayPointCount
         }
+    }
+
+    override fun update(o: Observable?, arg: Any?) {
+        if(o != config) return
+
+        resetSimulation()
+        reloadConfiguration()
+
+        println("Reloaded configuration.")
     }
 }

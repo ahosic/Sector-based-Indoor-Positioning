@@ -11,6 +11,7 @@ import javafx.scene.Scene
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import javafx.stage.Modality
 import javafx.stage.Stage
 import java.awt.Dimension
 import java.awt.image.BufferedImage
@@ -20,10 +21,11 @@ import kotlinx.coroutines.*
 
 class SimulationApplication : Application(), Observer {
     var controller: SimulationController? = null
+    var configModel: ConfigurationModel? = null
 
+    private var stage: Stage? = null
     private val mapView = MapView()
     private val playButton = JFXButton()
-    private val pauseButton = JFXButton()
     private val stopButton = JFXButton()
     private val settingsButton = JFXButton()
     private val stylePath: String
@@ -36,6 +38,7 @@ class SimulationApplication : Application(), Observer {
     }
 
     override fun start(stage: Stage) {
+        this.stage = stage
         val layout = createLayout()
 
         with(stage) {
@@ -83,6 +86,24 @@ class SimulationApplication : Application(), Observer {
         }
 
         settingsButton.styleClass.add("settingsButton")
+        settingsButton.setOnAction {
+            if(isPlaying) {
+                togglePlayingState()
+            }
+            controller?.onStop(it)
+
+            configModel?.let {configModel ->
+                stage?.let {stage ->
+                    val settingsStage = Stage()
+                    settingsStage.initModality(Modality.WINDOW_MODAL)
+                    settingsStage.initOwner(stage)
+
+                    val settings = SettingsApplication(configModel)
+                    settings.start(settingsStage)
+                }
+            }
+        }
+
         stopButton.styleClass.add("stopButton")
         stopButton.setOnAction {
             GlobalScope.launch {
@@ -96,10 +117,10 @@ class SimulationApplication : Application(), Observer {
 
     private fun initializeApplication() {
         println("Loading configuration.")
-        val config = ConfigurationModel(javaClass.classLoader.getResourceAsStream("config.json"))
+        configModel = ConfigurationModel(javaClass.classLoader.getResource("config.json").toURI().path)
         println("Done.")
 
-        config?.let { config ->
+        configModel?.let { config ->
             println("Initializing model.")
             val model = SimulationModel(config)
             model.reloadConfiguration()
