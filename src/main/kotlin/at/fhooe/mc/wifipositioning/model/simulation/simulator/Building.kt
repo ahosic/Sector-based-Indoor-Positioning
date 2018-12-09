@@ -1,6 +1,7 @@
 package at.fhooe.mc.wifipositioning.model.simulation.simulator
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
 
 import java.util.ArrayList
 
@@ -14,9 +15,9 @@ class Building @JvmOverloads constructor(private val name: String, floorList: Ar
     val allFloors: List<Floor>
         get() = floorList
 
-    val allAccessPoints: List<AccessPoint>
+    val allAccessPoints: List<InstalledAccessPoint>
         get() {
-            val accessPointList = ArrayList<AccessPoint>()
+            val accessPointList = ArrayList<InstalledAccessPoint>()
             for (floor in floorList) {
                 floor.accessPointList?.let { accessPoints ->
                     accessPointList.addAll(accessPoints)

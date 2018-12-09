@@ -1,7 +1,8 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
 import at.fhooe.mc.wifipositioning.model.simulation.Position
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
 
 /**
  * A Positioning method that uses the strongest access point (highest signal strength) for the position estimation.
@@ -10,10 +11,10 @@ import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint
  *
  * @constructor Initializes a new Positioning Method
  */
-class StrongestAccessPointPositioning(val allAccessPoints: List<AccessPoint>) : IPositioning {
+class StrongestAccessPointPositioning(val allAccessPoints: List<InstalledAccessPoint>) : IPositioning {
 
-    override fun calculatePosition(accessPointList: List<AccessPoint>): Position {
-        for (scanned in accessPointList.sorted().reversed()) {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): Position {
+        for (scanned in scannedAccessPointList.sorted().reversed()) {
             allAccessPoints
                     .filter { it.bssid.toLowerCase() == scanned.bssid.toLowerCase() }
                     .firstOrNull()?.let {

@@ -1,6 +1,7 @@
 package at.fhooe.mc.wifipositioning.model.simulation.simulator
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
 import com.fasterxml.jackson.annotation.JsonIgnore
 
 import java.awt.image.BufferedImage
@@ -16,7 +17,7 @@ class Floor {
     var floorImage: BufferedImage? = null
         private set
 
-    var accessPointList: MutableList<AccessPoint>? = null
+    var accessPointList: MutableList<InstalledAccessPoint>? = null
 
     val offsetLeft: Double
         get() = floorBounds?.offsetLeft ?: 0.0
@@ -36,14 +37,14 @@ class Floor {
     val floorHeight: Double
         get() = floorBounds?.floorHeight ?: 0.0
 
-    constructor(name: String, offsetLeft: Double, offsetRight: Double, offsetTop: Double, offsetBottom: Double, floorWidth: Double, floorHeight: Double, accessPointList: MutableList<AccessPoint>, floorImage: BufferedImage) {
+    constructor(name: String, offsetLeft: Double, offsetRight: Double, offsetTop: Double, offsetBottom: Double, floorWidth: Double, floorHeight: Double, accessPointList: MutableList<InstalledAccessPoint>, floorImage: BufferedImage) {
         this.name = name
         this.floorBounds = FloorBounds(offsetLeft, offsetRight, offsetTop, offsetBottom, floorWidth, floorHeight)
         this.accessPointList = accessPointList
         this.floorImage = floorImage
     }
 
-    constructor(name: String, floorBounds: FloorBounds, accessPointList: MutableList<AccessPoint>, floorImage: BufferedImage) {
+    constructor(name: String, floorBounds: FloorBounds, accessPointList: MutableList<InstalledAccessPoint>, floorImage: BufferedImage) {
         this.name = name
         this.floorBounds = floorBounds
         this.accessPointList = accessPointList
@@ -57,7 +58,7 @@ class Floor {
         this.floorImage = floorImage
     }
 
-    fun getAccessPoint(index: Int): AccessPoint {
+    fun getAccessPoint(index: Int): InstalledAccessPoint {
         return accessPointList!![index]
     }
 }

@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.positioning;
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint;
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * A sliding window for access points.
  */
-public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
+public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoint> {
 
     private Map<String, SNRDataAverage> averageMap;
 
@@ -22,15 +22,15 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<AccessPoint> {
      */
     public String getBestAverageBSSID() {
         averageMap = new HashMap<>();
-        List<AccessPoint> allAccessPoints = arrayLists.stream().flatMap(List::stream).collect(Collectors.toList());
+        List<ScannedAccessPoint> allScannedAccessPoints = arrayLists.stream().flatMap(List::stream).collect(Collectors.toList());
 
         // Generate Average Signal Levels per BSSID and store into Map
-        for (AccessPoint accessPoint : allAccessPoints) {
-            SNRDataAverage average = averageMap.get(accessPoint.getBSSID());
+        for (ScannedAccessPoint scannedAccessPoint : allScannedAccessPoints) {
+            SNRDataAverage average = averageMap.get(scannedAccessPoint.getBssid());
             if (average != null) {
-                average.addSNRValues(accessPoint.getSignalLevel());
+                average.addSNRValues(scannedAccessPoint.getSignalLevel());
             } else {
-                averageMap.put(accessPoint.getBSSID(), new SNRDataAverage(accessPoint.getSignalLevel()));
+                averageMap.put(scannedAccessPoint.getBssid(), new SNRDataAverage(scannedAccessPoint.getSignalLevel()));
             }
         }
 
