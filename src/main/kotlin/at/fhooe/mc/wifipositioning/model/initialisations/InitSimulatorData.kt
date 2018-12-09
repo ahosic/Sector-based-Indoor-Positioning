@@ -144,7 +144,7 @@ object InitSimulatorData {
         accessPoints.add(accessPoint)
         accessPoint = InstalledAccessPoint("08:EA:44:37:69:94", Position(73, 17), 4)
         accessPoints.add(accessPoint)
-        accessPoint = InstalledAccessPoint("08:EA:44:37:63:54,", Position(1, 27), 4)
+        accessPoint = InstalledAccessPoint("08:EA:44:37:63:54", Position(1, 27), 4)
         accessPoints.add(accessPoint)
         accessPoint = InstalledAccessPoint("08:EA:44:37:29:94", Position(16, 31), 4)
         accessPoints.add(accessPoint)
