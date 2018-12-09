@@ -1,6 +1,7 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
 import at.fhooe.mc.wifipositioning.model.simulation.Position
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
 
 /**
@@ -12,7 +13,7 @@ import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAcce
  *
  * @constructor Initializes a new Positioning Method
  */
-class FilteredPositioning(private val allAccessPoints: List<ScannedAccessPoint>) : IPositioning {
+class FilteredPositioning(private val allAccessPoints: List<InstalledAccessPoint>) : IPositioning {
     private val positioning: IPositioning
     private val filtering: IFilterable<Position>
 

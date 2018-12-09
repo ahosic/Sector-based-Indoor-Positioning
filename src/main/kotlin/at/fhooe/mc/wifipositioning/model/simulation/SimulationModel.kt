@@ -10,6 +10,7 @@ import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.utility.Player
 
 import java.awt.*
@@ -20,7 +21,7 @@ import java.util.*
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
-    private var accessPoints: List<ScannedAccessPoint>? = ArrayList()
+    private var accessPoints: List<InstalledAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
 

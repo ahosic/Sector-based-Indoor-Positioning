@@ -11,8 +11,8 @@ public class ScannedAccessPoint implements Comparable<ScannedAccessPoint> {
     private int frequency;
     private String capabilities;
     private long timeStamp;
-    private Position position;
-    private int floor;
+//    private Position position;
+//    private int floor;
 
     public ScannedAccessPoint(String bssid, String ssid, int signalLevel, int frequency, String capabilities, long timeStamp, int floor) {
         this.bssid = bssid;
@@ -21,15 +21,15 @@ public class ScannedAccessPoint implements Comparable<ScannedAccessPoint> {
         this.frequency = frequency;
         this.capabilities = capabilities;
         this.timeStamp = timeStamp;
-        this.floor = floor;
+//        this.floor = floor;
     }
 
     public ScannedAccessPoint(){}
 
     public ScannedAccessPoint(String bssid, Position position, int floor) {
         this.bssid = bssid;
-        this.position = position;
-        this.floor = floor;
+//        this.position = position;
+//        this.floor = floor;
     }
 
     public ScannedAccessPoint(ScannedAccessPoint ap) {
@@ -39,8 +39,8 @@ public class ScannedAccessPoint implements Comparable<ScannedAccessPoint> {
         this.frequency = ap.frequency;
         this.capabilities = ap.capabilities;
         this.timeStamp = ap.timeStamp;
-        this.position = new Position(ap.position.getX(), ap.position.getY());
-        this.floor = ap.floor;
+//        this.position = new Position(ap.position.getX(), ap.position.getY());
+//        this.floor = ap.floor;
     }
 
 
@@ -103,21 +103,21 @@ public class ScannedAccessPoint implements Comparable<ScannedAccessPoint> {
         return bssid;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
+//    public Position getPosition() {
+//        return position;
+//    }
+//
+//    public void setPosition(Position position) {
+//        this.position = position;
+//    }
+//
+//    public int getFloor() {
+//        return floor;
+//    }
+//
+//    public void setFloor(int floor) {
+//        this.floor = floor;
+//    }
 
     @Override
     public int compareTo(ScannedAccessPoint o) {
