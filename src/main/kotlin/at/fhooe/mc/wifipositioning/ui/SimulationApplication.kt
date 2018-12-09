@@ -87,19 +87,21 @@ class SimulationApplication : Application(), Observer {
 
         settingsButton.styleClass.add("settingsButton")
         settingsButton.setOnAction {
-            if(isPlaying) {
-                togglePlayingState()
-            }
-            controller?.onStop(it)
+            GlobalScope.launch {
+                if (isPlaying) {
+                    togglePlayingState()
+                }
+                controller?.onStop(it)
 
-            configModel?.let {configModel ->
-                stage?.let {stage ->
-                    val settingsStage = Stage()
-                    settingsStage.initModality(Modality.WINDOW_MODAL)
-                    settingsStage.initOwner(stage)
+                configModel?.let { configModel ->
+                    stage?.let { stage ->
+                        val settingsStage = Stage()
+                        settingsStage.initModality(Modality.WINDOW_MODAL)
+                        settingsStage.initOwner(stage)
 
-                    val settings = SettingsApplication(configModel)
-                    settings.start(settingsStage)
+                        val settings = SettingsApplication(configModel)
+                        settings.start(settingsStage)
+                    }
                 }
             }
         }
