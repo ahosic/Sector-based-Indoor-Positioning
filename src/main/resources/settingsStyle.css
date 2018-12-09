@@ -1,0 +1,31 @@
+.jfx-rippler {
+    -jfx-rippler-fill: #0336FF;
+}
+
+.mainLayout {
+    -fx-background-color: white;
+}
+
+.pathButton {
+    -jfx-button-type: FLAT;
+    -fx-background-color: white;
+    -fx-text-fill: #0336FF;
+}
+
+.applyButton {
+    -fx-padding: 8px 16px 8px 16px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: #0336FF;
+    -fx-text-fill: white;
+}
+
+.applyButton .jfx-rippler {
+    -jfx-rippler-fill: white;
+}
+
+.cancelButton {
+    -fx-padding: 8px 16px 8px 16px;
+    -jfx-button-type: FLAT;
+    -fx-background-color: white;
+    -fx-text-fill: #0336FF;
+}
