@@ -87,9 +87,10 @@ class SimulationApplication : Application(), Observer {
 
         settingsButton.styleClass.add("settingsButton")
         settingsButton.setOnAction {
-            GlobalScope.launch {
                 if (isPlaying) {
-                    togglePlayingState()
+                    GlobalScope.launch {
+                        togglePlayingState()
+                    }
                 }
                 controller?.onStop(it)
 
@@ -103,7 +104,6 @@ class SimulationApplication : Application(), Observer {
                         settings.start(settingsStage)
                     }
                 }
-            }
         }
 
         stopButton.styleClass.add("stopButton")
