@@ -1,13 +1,13 @@
 package at.fhooe.mc.wifipositioning.interfaces;
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint;
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint;
 
 import java.util.List;
 
 public interface PlaybackCallbackInterface {
-    public void nearestAccessPoint(List<AccessPoint> accessPoints);
+    public void nearestAccessPoint(List<ScannedAccessPoint> scannedAccessPoints);
 
-    public void allAccessPoints(List<AccessPoint> accessPointList);
+    public void allAccessPoints(List<ScannedAccessPoint> scannedAccessPointList);
 
     public void wayPointCount(int[] wayPointCount);
 }

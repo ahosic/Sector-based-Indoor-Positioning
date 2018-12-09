@@ -8,11 +8,11 @@ import java.util.List;
 public class WLanData {
     private String SSID;
 
-    private List<AccessPoint> accessPoints;
+    private List<ScannedAccessPoint> scannedAccessPoints;
 
     public WLanData(String SSID){
         this.SSID = SSID;
-        accessPoints = new ArrayList<AccessPoint>();
+        scannedAccessPoints = new ArrayList<ScannedAccessPoint>();
     }
 
     public WLanData(){}
@@ -30,12 +30,12 @@ public class WLanData {
         this.SSID = SSID;
     }
 
-    public List<AccessPoint> getAccessPoints() {
-        return accessPoints;
+    public List<ScannedAccessPoint> getScannedAccessPoints() {
+        return scannedAccessPoints;
     }
 
     @JsonProperty("accessPoints")
-    public void setAccessPoints(List<AccessPoint> accessPoints) {
-        this.accessPoints = accessPoints;
+    public void setScannedAccessPoints(List<ScannedAccessPoint> scannedAccessPoints) {
+        this.scannedAccessPoints = scannedAccessPoints;
     }
 }

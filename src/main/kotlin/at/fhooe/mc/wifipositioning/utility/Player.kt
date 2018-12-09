@@ -54,7 +54,7 @@ class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callba
             i++
             for (wLanData in dataSnapshot.getwLanDataList()) {
                 if (wLanData.ssid == "fhhgb") {
-                    callback.allAccessPoints(wLanData.accessPoints)
+                    callback.allAccessPoints(wLanData.scannedAccessPoints)
                 }
             }
             try {

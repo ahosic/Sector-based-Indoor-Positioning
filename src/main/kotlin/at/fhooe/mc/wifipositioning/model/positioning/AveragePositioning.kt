@@ -1,7 +1,7 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
 import at.fhooe.mc.wifipositioning.model.simulation.Position
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.positioning.AccessPointSlidingWindow
 
 /**
@@ -13,12 +13,12 @@ import at.fhooe.mc.wifipositioning.positioning.AccessPointSlidingWindow
  *
  * @constructor Initializes a new Positioning Method.
  */
-class AveragePositioning(val allAccessPoints: List<AccessPoint>, private val windowSize: Int) : IPositioning {
+class AveragePositioning(val allAccessPoints: List<ScannedAccessPoint>, private val windowSize: Int) : IPositioning {
 
     private val accessPointSlidingWindow: AccessPointSlidingWindow = AccessPointSlidingWindow(windowSize)
 
-    override fun calculatePosition(accessPointList: List<AccessPoint>): Position {
-        accessPointSlidingWindow.addElement(accessPointList)
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): Position {
+        accessPointSlidingWindow.addElement(scannedAccessPointList)
 
         val bssid = accessPointSlidingWindow.bestAverageBSSID.toLowerCase()
 

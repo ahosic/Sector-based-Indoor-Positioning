@@ -4,62 +4,62 @@ package at.fhooe.mc.wifipositioning.model.simulation.recorder.network;
 import at.fhooe.mc.wifipositioning.model.simulation.Position;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AccessPoint implements Comparable<AccessPoint> {
-    private String BSSID;
-    private String SSID;
+public class ScannedAccessPoint implements Comparable<ScannedAccessPoint> {
+    private String bssid;
+    private String ssid;
     private int signalLevel;
     private int frequency;
-    private String capabilites;
+    private String capabilities;
     private long timeStamp;
     private Position position;
     private int floor;
 
-    public AccessPoint(String BSSID, String SSID, int signalLevel, int frequency, String capabilites, long timeStamp, int floor) {
-        this.BSSID = BSSID;
-        this.SSID = SSID;
+    public ScannedAccessPoint(String bssid, String ssid, int signalLevel, int frequency, String capabilities, long timeStamp, int floor) {
+        this.bssid = bssid;
+        this.ssid = ssid;
         this.signalLevel = signalLevel;
         this.frequency = frequency;
-        this.capabilites = capabilites;
+        this.capabilities = capabilities;
         this.timeStamp = timeStamp;
         this.floor = floor;
     }
 
-    public AccessPoint(){}
+    public ScannedAccessPoint(){}
 
-    public AccessPoint(String BSSID, Position position, int floor) {
-        this.BSSID = BSSID;
+    public ScannedAccessPoint(String bssid, Position position, int floor) {
+        this.bssid = bssid;
         this.position = position;
         this.floor = floor;
     }
 
-    public AccessPoint(AccessPoint ap) {
-        this.BSSID = ap.BSSID;
-        this.SSID = ap.SSID;
+    public ScannedAccessPoint(ScannedAccessPoint ap) {
+        this.bssid = ap.bssid;
+        this.ssid = ap.ssid;
         this.signalLevel = ap.signalLevel;
         this.frequency = ap.frequency;
-        this.capabilites = ap.capabilites;
+        this.capabilities = ap.capabilities;
         this.timeStamp = ap.timeStamp;
         this.position = new Position(ap.position.getX(), ap.position.getY());
         this.floor = ap.floor;
     }
 
 
-    public String getBSSID() {
-        return BSSID;
+    public String getBssid() {
+        return bssid;
     }
 
     @JsonProperty("bssid")
-    public void setBSSID(String BSSID) {
-        this.BSSID = BSSID;
+    public void setBssid(String bssid) {
+        this.bssid = bssid;
     }
 
-    public String getSSID() {
-        return SSID;
+    public String getSsid() {
+        return ssid;
     }
 
     @JsonProperty("ssid")
-    public void setSSID(String SSID) {
-        this.SSID = SSID;
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
     }
 
     public int getSignalLevel() {
@@ -80,13 +80,13 @@ public class AccessPoint implements Comparable<AccessPoint> {
         this.frequency = frequency;
     }
 
-    public String getCapabilites() {
-        return capabilites;
+    public String getCapabilities() {
+        return capabilities;
     }
 
     @JsonProperty("capabilities")
-    public void setCapabilites(String capabilites) {
-        this.capabilites = capabilites;
+    public void setCapabilities(String capabilities) {
+        this.capabilities = capabilities;
     }
 
     public long getTimeStamp() {
@@ -100,7 +100,7 @@ public class AccessPoint implements Comparable<AccessPoint> {
 
     @Override
     public String toString(){
-        return BSSID;
+        return bssid;
     }
 
     public Position getPosition() {
@@ -120,7 +120,7 @@ public class AccessPoint implements Comparable<AccessPoint> {
     }
 
     @Override
-    public int compareTo(AccessPoint o) {
+    public int compareTo(ScannedAccessPoint o) {
         return Integer.compare(signalLevel,o.signalLevel);
     }
 }

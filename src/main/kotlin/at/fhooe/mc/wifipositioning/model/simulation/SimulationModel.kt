@@ -5,13 +5,11 @@ import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
 import at.fhooe.mc.wifipositioning.model.initialisations.WaypointPosition
 import at.fhooe.mc.wifipositioning.model.initialisations.WaypointRoute
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.AccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
-import at.fhooe.mc.wifipositioning.model.positioning.FilteredPositioning
-import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
 import at.fhooe.mc.wifipositioning.utility.Player
 
 import java.awt.*
@@ -22,7 +20,7 @@ import java.util.*
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
-    private var accessPoints: List<AccessPoint>? = ArrayList()
+    private var accessPoints: List<ScannedAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
 
@@ -121,9 +119,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         }
     }
 
-    private fun calculateSimplePersonPosition(accessPoints: List<AccessPoint>) {
+    private fun calculateSimplePersonPosition(scannedAccessPoints: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
-        for (accessPoint in accessPoints) {
+        for (accessPoint in scannedAccessPoints) {
             for (ap in this.accessPoints!!) {
                 if (ap.bssid.toLowerCase() == accessPoint.bssid.toLowerCase()) {
                     person.x = ap.position.x
@@ -148,9 +146,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         return Position(xPos, yPos)
     }
 
-    private fun addPlayerData(accessPointList: List<AccessPoint>) {
+    private fun addPlayerData(scannedAccessPointList: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
-        val p = positioning?.calculatePosition(accessPointList)
+        val p = positioning?.calculatePosition(scannedAccessPointList)
         if (sectoring == null || p == null) {
             callObserver(createBufferedImage() ?: return)
             return
@@ -224,13 +222,13 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         return images
     }
 
-    override fun nearestAccessPoint(accessPoints: MutableList<AccessPoint>?) {
-        accessPoints?.let {
-            calculateSimplePersonPosition(accessPoints)
+    override fun nearestAccessPoint(scannedAccessPoints: MutableList<ScannedAccessPoint>?) {
+        scannedAccessPoints?.let {
+            calculateSimplePersonPosition(scannedAccessPoints)
         }
     }
 
-    override fun allAccessPoints(accessPointList: MutableList<AccessPoint>?) {
+    override fun allAccessPoints(accessPointList: MutableList<ScannedAccessPoint>?) {
         accessPointList?.let {
             addPlayerData(accessPointList)
         }
