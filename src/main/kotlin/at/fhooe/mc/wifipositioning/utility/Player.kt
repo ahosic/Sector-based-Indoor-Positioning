@@ -5,7 +5,7 @@ import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 
 class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callback: PlaybackCallbackInterface, internal val playBackEnum: PlayBackEnum) {
-    private var playBackSpeed: Long = 500
+    private var playBackSpeed: Long = 1
     private var wayPointCount: IntArray? = null
     var isRunning = false
     private set
@@ -39,8 +39,7 @@ class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callba
             while (pausePlayback) {
                 try {
                     Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                }
+                } catch (e: InterruptedException) {}
             }
 
             if (stopPlayback) {
@@ -52,13 +51,16 @@ class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callba
 
             println("Snapshot $i")
             i++
-            for (wLanData in dataSnapshot.getwLanDataList()) {
-                if (wLanData.ssid == "fhhgb") {
-                    callback.allAccessPoints(wLanData.scannedAccessPoints)
-                }
-            }
+
+            dataSnapshot.getwLanDataList()
+                    .stream()
+                    .filter { wd -> wd.ssid == "fhhgb" }
+                    .forEach {
+                        callback.allAccessPoints(it.scannedAccessPoints)
+                    }
+
             try {
-                Thread.sleep(10)
+                Thread.sleep(playBackSpeed)
             } catch (e: InterruptedException) {
             }
 
