@@ -33,7 +33,7 @@ object DrawingContext {
         graphics.color = Color(0, 0, 255)
 
         graphics.font = graphics.font.deriveFont(12f)
-        graphics.drawString(accessPoint.displayName, p2.x, p2.y - 5)
+        graphics.drawString(accessPoint.id, p2.x, p2.y - 5)
         graphics.fillOval(p2.getX().toInt() - 5, p2.getY().toInt() - 5, 10, 10)
     }
 
