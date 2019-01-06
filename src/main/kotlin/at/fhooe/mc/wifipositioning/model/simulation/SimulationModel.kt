@@ -181,10 +181,14 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         var i = 0
 
         i = 0
-        while (i < accessPoints!!.size) {
-            val pos = floorManager.calculatePixelPositionFromMeter(accessPoints!![i].position.x, accessPoints!![i].position.y)
-            DrawingContext.drawAccessPoint(pos.x, pos.y, g, matrix)
-            i++
+
+        accessPoints?.let { accessPoints ->
+            while (i < accessPoints.size) {
+                val ap = accessPoints[i]
+                val pos = floorManager.calculatePixelPositionFromMeter(ap.position.x, ap.position.y)
+                DrawingContext.drawAccessPoint(ap, pos.x, pos.y, g, matrix)
+                i++
+            }
         }
 
         if (waypointRoute != null) {
