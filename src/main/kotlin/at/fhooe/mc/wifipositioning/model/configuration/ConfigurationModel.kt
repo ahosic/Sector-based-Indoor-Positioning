@@ -2,6 +2,7 @@ package at.fhooe.mc.wifipositioning.model.configuration
 
 import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
+import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
 import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
@@ -14,6 +15,7 @@ import com.beust.klaxon.Klaxon
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
 import javax.imageio.ImageIO
@@ -27,6 +29,8 @@ class ConfigurationModel(val configPath: String): Observable() {
     var sectoring: ISectoring? = null
         private set
     var positioning: IPositioning? = null
+        private set
+    var graph: List<BuildingGraphNode>? = null
         private set
 
     init {
@@ -104,5 +108,13 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
 
         return null
+    }
+
+    fun loadBuildingGraph() {
+        println("Load building graph.")
+        graph = Klaxon().parseArray<BuildingGraphNode>(FileInputStream(File(configuration.buildingGraphPath)))
+        graph?.let {
+            print("Loaded " + it.size + " graph nodes.")
+        }
     }
 }

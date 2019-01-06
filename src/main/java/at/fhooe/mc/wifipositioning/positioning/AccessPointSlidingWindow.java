@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
  */
 public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoint> {
 
-    private Map<String, SNRDataAverage> averageMap;
-
     public AccessPointSlidingWindow(int windowSize) {
         super(windowSize);
     }
@@ -21,28 +19,51 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
      * @return the BSSID of the access point
      */
     public String getBestAverageBSSID() {
-        averageMap = new HashMap<>();
+        Map<String, SNRDataAverage> averages = computeAverages();
+
+        // Find BSSID with best average signal level
+        Optional<Map.Entry<String, SNRDataAverage>> averageEntry = averages.entrySet().stream()
+                .max(Comparator.comparingDouble(entry -> entry.getValue().getAverage()));
+
+        if (!averageEntry.isPresent()) return "";
+
+        return averageEntry.get().getKey();
+    }
+
+    public String getBestAverageBSSID(List<ScannedAccessPoint> allowedAccessPoints) {
+        Map<String, SNRDataAverage> averages = computeAverages();
+        List<String> allowedBSSIDs = allowedAccessPoints
+                .stream()
+                .map(ScannedAccessPoint::getBssid)
+                .collect(Collectors.toList());
+
+        // Find BSSID with best average signal level
+        Optional<Map.Entry<String, SNRDataAverage>> averageEntry = averages.entrySet()
+                .stream()
+                .filter(entry -> allowedBSSIDs.contains(entry.getKey()))
+                .max(Comparator.comparingDouble(entry -> entry.getValue().getAverage()));
+
+        if (!averageEntry.isPresent()) return "";
+
+        return averageEntry.get().getKey();
+    }
+
+    private Map<String, SNRDataAverage> computeAverages() {
+        Map<String, SNRDataAverage> averages = new HashMap<>();
         List<ScannedAccessPoint> allScannedAccessPoints = arrayLists.stream().flatMap(List::stream).collect(Collectors.toList());
 
         // Generate Average Signal Levels per BSSID and store into Map
         for (ScannedAccessPoint scannedAccessPoint : allScannedAccessPoints) {
-            SNRDataAverage average = averageMap.get(scannedAccessPoint.getBssid());
+            SNRDataAverage average = averages.get(scannedAccessPoint.getBssid());
             if (average != null) {
                 average.addSNRValues(scannedAccessPoint.getSignalLevel());
             } else {
-                averageMap.put(scannedAccessPoint.getBssid(), new SNRDataAverage(scannedAccessPoint.getSignalLevel()));
+                averages.put(scannedAccessPoint.getBssid(), new SNRDataAverage(scannedAccessPoint.getSignalLevel()));
             }
         }
 
-        // Find BSSID with best average signal level
-        Optional<Map.Entry<String, SNRDataAverage>> averageEntry = averageMap.entrySet().stream()
-                .max(Comparator.comparingDouble(entry -> entry.getValue().getAverage()));
-
-        if (averageEntry.isPresent()) return averageEntry.get().getKey();
-
-        return "";
+        return averages;
     }
-
 
     /**
      * An object for storing signal strength and calculating the average signal strength.

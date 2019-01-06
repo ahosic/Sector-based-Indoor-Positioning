@@ -50,6 +50,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             generateFloorMap(building.getFloor(4))
         }
 
+        config.loadBuildingGraph()
         player = config.loadWalkRecording(this)
     }
 
