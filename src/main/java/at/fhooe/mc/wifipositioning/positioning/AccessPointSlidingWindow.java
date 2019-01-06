@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.positioning;
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint;
+import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint;
 
 import java.util.*;
 import java.util.stream.Collectors;

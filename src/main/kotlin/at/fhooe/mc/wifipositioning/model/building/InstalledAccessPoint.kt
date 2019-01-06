@@ -1,4 +1,4 @@
-package at.fhooe.mc.wifipositioning.model.simulation.recorder.network
+package at.fhooe.mc.wifipositioning.model.building
 
 import at.fhooe.mc.wifipositioning.model.simulation.Position
 

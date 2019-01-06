@@ -2,8 +2,7 @@ package at.fhooe.mc.wifipositioning.model.graphics
 
 import at.fhooe.mc.wifipositioning.model.initialisations.WaypointPosition
 import at.fhooe.mc.wifipositioning.model.simulation.Person
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
-import org.intellij.lang.annotations.JdkConstants
+import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 
 import java.awt.*
 import java.util.ArrayList

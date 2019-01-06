@@ -6,7 +6,7 @@ import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
 import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.DataSnapshot
+import at.fhooe.mc.wifipositioning.model.simulation.recording.DataSnapshot
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Building
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.utility.Player

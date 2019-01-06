@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.utility
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.DataSnapshot
+import at.fhooe.mc.wifipositioning.model.simulation.recording.DataSnapshot
 import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 
