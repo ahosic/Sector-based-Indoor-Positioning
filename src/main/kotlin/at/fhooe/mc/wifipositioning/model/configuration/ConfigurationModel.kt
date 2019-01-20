@@ -46,6 +46,7 @@ class ConfigurationModel(val configPath: String): Observable() {
             PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
             PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
             PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
         }
     }
 
@@ -88,12 +89,6 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
 
         sectoring = VoronoiSectors()
-
-        when(configuration.positioningType) {
-            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
-            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
-            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
-        }
     }
 
     fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface): Player? {
@@ -115,6 +110,15 @@ class ConfigurationModel(val configPath: String): Observable() {
         graph = Klaxon().parseArray<BuildingGraphNode>(FileInputStream(File(configuration.buildingGraphPath)))
         graph?.let {
             print("Loaded " + it.size + " graph nodes.")
+        }
+    }
+
+    fun loadPositioningMethod() {
+        when(configuration.positioningType) {
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
         }
     }
 }

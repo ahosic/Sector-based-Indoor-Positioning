@@ -1,5 +1,6 @@
 package at.fhooe.mc.wifipositioning.positioning;
 
+import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint;
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint;
 
 import java.util.*;
@@ -27,20 +28,20 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
 
         if (!averageEntry.isPresent()) return "";
 
-        return averageEntry.get().getKey();
+        return averageEntry.get().getKey().toLowerCase();
     }
 
-    public String getBestAverageBSSID(List<ScannedAccessPoint> allowedAccessPoints) {
+    public String getBestAverageBSSID(List<InstalledAccessPoint> allowedAccessPoints) {
         Map<String, SNRDataAverage> averages = computeAverages();
         List<String> allowedBSSIDs = allowedAccessPoints
                 .stream()
-                .map(ScannedAccessPoint::getBssid)
+                .map(ap -> ap.getBssid().toLowerCase())
                 .collect(Collectors.toList());
 
         // Find BSSID with best average signal level
         Optional<Map.Entry<String, SNRDataAverage>> averageEntry = averages.entrySet()
                 .stream()
-                .filter(entry -> allowedBSSIDs.contains(entry.getKey()))
+                .filter(entry -> allowedBSSIDs.contains(entry.getKey().toLowerCase()))
                 .max(Comparator.comparingDouble(entry -> entry.getValue().getAverage()));
 
         if (!averageEntry.isPresent()) return "";

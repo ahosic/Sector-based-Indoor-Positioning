@@ -139,6 +139,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         positioningCombobox.items.add(Label(PositioningType.STRONGEST_AP_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.AVERAGE_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.FILTERED_POSITIONING.name))
+        positioningCombobox.items.add(Label(PositioningType.GRAPH_POSITIONING.name))
 
         val idx = positioningCombobox.items.indexOfFirst { label -> label.text.equals(configModel.configuration.positioningType.name) }
         positioningCombobox.selectionModel.select(idx)

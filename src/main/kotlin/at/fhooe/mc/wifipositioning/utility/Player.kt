@@ -49,7 +49,7 @@ class Player(internal var dataSnapshots: List<DataSnapshot>, internal var callba
                 return
             }
 
-            println("Snapshot $i")
+            //println("Snapshot $i")
             i++
 
             dataSnapshot.getwLanDataList()

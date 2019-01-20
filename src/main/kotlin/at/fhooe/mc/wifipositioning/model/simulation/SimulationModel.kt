@@ -51,6 +51,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         }
 
         config.loadBuildingGraph()
+        config.loadPositioningMethod()
         player = config.loadWalkRecording(this)
     }
 
@@ -155,7 +156,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             callObserver(createBufferedImage() ?: return)
             return
         }
-        val newPos = floorManager?.calculatePixelPositionFromMeter(p.x, p.y)
+        val newPos = floorManager?.calculatePixelPositionFromMeter(p.position.x, p.position.y)
         newPos?.let {
             sectoring!!.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
             callObserver(createBufferedImage() ?: return)

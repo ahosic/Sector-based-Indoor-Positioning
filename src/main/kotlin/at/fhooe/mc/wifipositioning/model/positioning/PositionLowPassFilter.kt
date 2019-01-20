@@ -19,9 +19,7 @@ class PositionLowPassFilter(private val alpha: Float) : IFilterable<Position> {
      * @param input data that should be filtered
      * @return smoothed data based on `input` and `alpha`
      */
-    override fun filter(input: Position?): Position {
-        if (input == null) return previousPos ?: Position(0, 0)
-
+    override fun filter(input: Position): Position {
         previousPos?.let { previous ->
             val smoothX = Math.round(previous.x + alpha * (input.x - previous.x))
             val smoothY = Math.round(previous.y + alpha * (input.y - previous.y))

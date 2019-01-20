@@ -13,15 +13,15 @@ import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
  */
 class StrongestAccessPointPositioning(val allAccessPoints: List<InstalledAccessPoint>) : IPositioning {
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): Position {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
         for (scanned in scannedAccessPointList.sorted().reversed()) {
             allAccessPoints
                     .filter { it.bssid.toLowerCase() == scanned.bssid.toLowerCase() }
                     .firstOrNull()?.let {
-                        return it.position
+                        return it
                     }
         }
 
-        return Position(0, 0)
+        return null
     }
 }
