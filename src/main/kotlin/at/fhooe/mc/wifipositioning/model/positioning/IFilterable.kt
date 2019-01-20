@@ -11,5 +11,5 @@ interface IFilterable<T> {
      * @param input data that should be filtered
      * @return the smoothed data
      */
-    fun filter(input: T?): T
+    fun filter(input: T): T
 }

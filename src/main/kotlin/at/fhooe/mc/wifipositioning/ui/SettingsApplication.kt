@@ -28,6 +28,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
 
     private var floorPlanPathField = JFXTextField()
     private var walkRecordingPathField = JFXTextField()
+    private var buildingGraphPathField = JFXTextField()
     private var positioningCombobox = JFXComboBox<Label>()
 
     private val applyButton = JFXButton("Save".toUpperCase())
@@ -62,7 +63,8 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
 
         initFloorPlanSettings(settingsLayout)
         initWalkRecordingSettings(settingsLayout)
-        initPositoiningSelection(settingsLayout)
+        initBuildingGraphSettings(settingsLayout)
+        initPositioningSelection(settingsLayout)
 
         val buttonPane = HBox()
         buttonPane.alignment = Pos.CENTER_RIGHT
@@ -112,18 +114,37 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 1)
     }
 
-    private fun initPositoiningSelection(layout: GridPane) {
+    private fun initBuildingGraphSettings(layout: GridPane) {
+        val graphLabel = Label("Graph file: ")
+        layout.add(graphLabel, 0, 2)
+
+        buildingGraphPathField.text = configModel.configuration.buildingGraphPath
+        layout.add(buildingGraphPathField, 1,2)
+
+        val selectPathButton = JFXButton("Select".toUpperCase())
+        selectPathButton.styleClass.add("pathButton")
+        selectPathButton.setOnAction {
+            val path = getFilePathFromFileChooser("Select building graph")
+            buildingGraphPathField.text = path ?: walkRecordingPathField.text
+        }
+
+
+        layout.add(selectPathButton, 3, 2)
+    }
+
+    private fun initPositioningSelection(layout: GridPane) {
         val floorLabel = Label("Positioning Method: ")
-        layout.add(floorLabel, 0, 2)
+        layout.add(floorLabel, 0, 3)
 
         positioningCombobox.items.add(Label(PositioningType.STRONGEST_AP_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.AVERAGE_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.FILTERED_POSITIONING.name))
+        positioningCombobox.items.add(Label(PositioningType.GRAPH_POSITIONING.name))
 
         val idx = positioningCombobox.items.indexOfFirst { label -> label.text.equals(configModel.configuration.positioningType.name) }
         positioningCombobox.selectionModel.select(idx)
 
-        layout.add(positioningCombobox, 1, 2)
+        layout.add(positioningCombobox, 1, 3)
     }
 
     private fun initButtons() {
@@ -131,7 +152,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         applyButton.setOnAction {
 
             val positioningType = PositioningType.valueOf(positioningCombobox.value.text)
-            val configuration = Configuration(floorPlanPathField.text, walkRecordingPathField.text, positioningType)
+            val configuration = Configuration(floorPlanPathField.text, walkRecordingPathField.text, buildingGraphPathField.text, positioningType)
             controller.applyConfiguration(configuration)
 
             stage?.let {

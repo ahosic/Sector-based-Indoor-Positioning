@@ -2,6 +2,7 @@ package at.fhooe.mc.wifipositioning.model.graphics
 
 import at.fhooe.mc.wifipositioning.model.initialisations.WaypointPosition
 import at.fhooe.mc.wifipositioning.model.simulation.Person
+import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 
 import java.awt.*
 import java.util.ArrayList
@@ -25,10 +26,13 @@ object DrawingContext {
         g2.stroke = oldStroke
     }
 
-    fun drawAccessPoint(x: Int, y: Int, graphics: Graphics, matrix: Matrix) {
+    fun drawAccessPoint(accessPoint: InstalledAccessPoint, x: Int, y: Int, graphics: Graphics, matrix: Matrix) {
         val p = Point(x, y)
         val p2 = matrix.multiply(p)
         graphics.color = Color(0, 0, 255)
+
+        graphics.font = graphics.font.deriveFont(12f)
+        graphics.drawString(accessPoint.id, p2.x, p2.y - 5)
         graphics.fillOval(p2.getX().toInt() - 5, p2.getY().toInt() - 5, 10, 10)
     }
 

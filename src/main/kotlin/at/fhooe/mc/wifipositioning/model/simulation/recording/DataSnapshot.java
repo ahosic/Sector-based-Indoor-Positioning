@@ -1,4 +1,4 @@
-package at.fhooe.mc.wifipositioning.model.simulation.recorder.network;
+package at.fhooe.mc.wifipositioning.model.simulation.recording;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

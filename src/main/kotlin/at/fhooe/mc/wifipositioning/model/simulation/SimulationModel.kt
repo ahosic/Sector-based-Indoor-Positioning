@@ -5,12 +5,12 @@ import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
 import at.fhooe.mc.wifipositioning.model.initialisations.WaypointPosition
 import at.fhooe.mc.wifipositioning.model.initialisations.WaypointRoute
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
+import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.utility.Player
 
 import java.awt.*
@@ -50,6 +50,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             generateFloorMap(building.getFloor(4))
         }
 
+        config.loadBuildingGraph()
+        config.loadPositioningMethod()
         player = config.loadWalkRecording(this)
     }
 
@@ -154,7 +156,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             callObserver(createBufferedImage() ?: return)
             return
         }
-        val newPos = floorManager?.calculatePixelPositionFromMeter(p.x, p.y)
+        val newPos = floorManager?.calculatePixelPositionFromMeter(p.position.x, p.position.y)
         newPos?.let {
             sectoring!!.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
             callObserver(createBufferedImage() ?: return)
@@ -181,10 +183,14 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         var i = 0
 
         i = 0
-        while (i < accessPoints!!.size) {
-            val pos = floorManager.calculatePixelPositionFromMeter(accessPoints!![i].position.x, accessPoints!![i].position.y)
-            DrawingContext.drawAccessPoint(pos.x, pos.y, g, matrix)
-            i++
+
+        accessPoints?.let { accessPoints ->
+            while (i < accessPoints.size) {
+                val ap = accessPoints[i]
+                val pos = floorManager.calculatePixelPositionFromMeter(ap.position.x, ap.position.y)
+                DrawingContext.drawAccessPoint(ap, pos.x, pos.y, g, matrix)
+                i++
+            }
         }
 
         if (waypointRoute != null) {

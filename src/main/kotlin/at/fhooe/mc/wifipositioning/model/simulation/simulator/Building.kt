@@ -1,7 +1,6 @@
 package at.fhooe.mc.wifipositioning.model.simulation.simulator
 
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.ScannedAccessPoint
+import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 
 import java.util.ArrayList
 

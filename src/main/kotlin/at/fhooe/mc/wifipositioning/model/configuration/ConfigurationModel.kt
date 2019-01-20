@@ -2,11 +2,12 @@ package at.fhooe.mc.wifipositioning.model.configuration
 
 import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
+import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
 import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
-import at.fhooe.mc.wifipositioning.model.simulation.recorder.network.DataSnapshot
+import at.fhooe.mc.wifipositioning.model.simulation.recording.DataSnapshot
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Building
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.utility.Player
@@ -14,6 +15,7 @@ import com.beust.klaxon.Klaxon
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
 import javax.imageio.ImageIO
@@ -27,6 +29,8 @@ class ConfigurationModel(val configPath: String): Observable() {
     var sectoring: ISectoring? = null
         private set
     var positioning: IPositioning? = null
+        private set
+    var graph: List<BuildingGraphNode>? = null
         private set
 
     init {
@@ -42,6 +46,7 @@ class ConfigurationModel(val configPath: String): Observable() {
             PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
             PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
             PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
         }
     }
 
@@ -84,12 +89,6 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
 
         sectoring = VoronoiSectors()
-
-        when(configuration.positioningType) {
-            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
-            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
-            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
-        }
     }
 
     fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface): Player? {
@@ -104,5 +103,22 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
 
         return null
+    }
+
+    fun loadBuildingGraph() {
+        println("Load building graph.")
+        graph = Klaxon().parseArray<BuildingGraphNode>(FileInputStream(File(configuration.buildingGraphPath)))
+        graph?.let {
+            print("Loaded " + it.size + " graph nodes.")
+        }
+    }
+
+    fun loadPositioningMethod() {
+        when(configuration.positioningType) {
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
+        }
     }
 }

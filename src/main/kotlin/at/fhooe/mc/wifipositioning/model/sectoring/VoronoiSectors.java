@@ -63,7 +63,7 @@ public class VoronoiSectors implements ISectoring {
         List<Polygon> polygons = new ArrayList<Polygon>();
         int i = 0;
         for (List<GraphEdge> list : edgesByPolygon.values()) {
-            System.out.println("Polygon " + i);
+            //System.out.println("Polygon " + i);
             i++;
 
             if (list.size() < 3) {
@@ -87,7 +87,7 @@ public class VoronoiSectors implements ISectoring {
                 yValuesVoronoi[j] = (int) Math.round(mGraphEdge.y2);
                 j++;
 
-                System.out.println("Site 1" + mGraphEdge.site1 + " Site 2" + mGraphEdge.site2);
+                //System.out.println("Site 1" + mGraphEdge.site1 + " Site 2" + mGraphEdge.site2);
 
             }
 
