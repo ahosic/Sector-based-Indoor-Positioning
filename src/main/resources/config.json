@@ -1,6 +1,7 @@
 {
-  "floorsPath": "/Users/almin/Documents/projects/master/resources/final-nigl/compressed.tiff",
-  "walkRecordingPath": "/Users/almin/Documents/projects/master/resources/final-nigl/FH2F4CCL_11202421.03.2016.txt",
+  "floorsPath": "/Users/almin/Documents/projects/master/resources/building_plan.tiff",
+  "walkRecordingPath": "/Users/almin/Documents/projects/master/resources/FH2F4CCL_11202421.03.2016.txt",
+  "waypointsPath": "/Users/almin/Documents/projects/master/resources/new-data-recordings/waypoints/FH2-Floor-4-Waypoints.json",
   "buildingGraphPath": "/Users/almin/Documents/projects/master/resources/graph.json",
   "positioningType": "FILTERED_POSITIONING"
 }

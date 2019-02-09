@@ -1,8 +1,8 @@
 package at.fhooe.mc.wifipositioning.model.graphics
 
-import at.fhooe.mc.wifipositioning.model.initialisations.WaypointPosition
 import at.fhooe.mc.wifipositioning.model.simulation.Person
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.initialisations.Waypoint
 
 import java.awt.*
 import java.util.ArrayList
@@ -50,7 +50,7 @@ object DrawingContext {
         graphics.fillOval(p2.getX().toInt() - 10, p2.getY().toInt() - 10, 20, 20)
     }
 
-    fun drawWayPointPosition(waypointPosition: WaypointPosition, graphics: Graphics, matrix: Matrix) {
+    fun drawWayPointPosition(waypointPosition: Waypoint, graphics: Graphics, matrix: Matrix) {
         val p = Point(waypointPosition.position.x, waypointPosition.position.y)
         val p2 = matrix.multiply(p)
         graphics.color = Color(0, 102, 0)
@@ -82,7 +82,7 @@ object DrawingContext {
     }
 
 
-    fun drawWayPointLine(waypointPositionList: ArrayList<WaypointPosition>, graphics: Graphics, matrix: Matrix) {
+    fun drawWayPointLine(waypointPositionList: ArrayList<Waypoint>, graphics: Graphics, matrix: Matrix) {
         val xPoints = IntArray(waypointPositionList.size)
         val yPoints = IntArray(waypointPositionList.size)
         val nPoints = waypointPositionList.size

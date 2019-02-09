@@ -3,14 +3,14 @@ package at.fhooe.mc.wifipositioning.model.simulation
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
-import at.fhooe.mc.wifipositioning.model.initialisations.WaypointPosition
-import at.fhooe.mc.wifipositioning.model.initialisations.WaypointRoute
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.initialisations.Route
+import at.fhooe.mc.wifipositioning.model.initialisations.Waypoint
 import at.fhooe.mc.wifipositioning.utility.Player
 
 import java.awt.*
@@ -25,7 +25,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
 
-    private var waypointRoute: WaypointRoute? = null
+    private var route: Route? = null
+        get() = config.route
+
     private var wayPointCount: IntArray? = null
     private var wayPointNumber = 1
     private var interpolationStep = 0
@@ -52,6 +54,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
 
         config.loadBuildingGraph()
         config.loadPositioningMethod()
+        config.loadWaypoints()
         player = config.loadWalkRecording(this)
     }
 
@@ -98,27 +101,30 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     private fun checkForInitializedWaypoints() {
-        if(player?.isRunning == false || player?.stopPlayback == true) {
+        if(player?.isRunning == false || player?.stopPlayback == true || route == null) {
             return
         }
 
-        if (waypointRoute == null) {
-            waypointRoute = WaypointRoute()
-        }
         var pos: Position? = null
-        if (wayPointNumber < wayPointCount!!.size) {
-            pos = interpolate(waypointRoute!!.getWayPointPositionAtIndex(wayPointNumber - 1).position, waypointRoute!!.getWayPointPositionAtIndex(wayPointNumber).position, wayPointCount!![wayPointNumber - 1], interpolationStep)
-        } else {
-            pos = interpolate(waypointRoute!!.getWayPointPositionAtIndex(wayPointNumber - 1).position, waypointRoute!!.getWayPointPositionAtIndex(0).position, wayPointCount!![wayPointNumber - 1], interpolationStep)
+        route?.let { route ->
+            if (wayPointNumber < wayPointCount!!.size) {
+                pos = interpolate(route.waypointList[wayPointNumber - 1].position, route.waypointList[wayPointNumber].position, wayPointCount!![wayPointNumber - 1], interpolationStep)
+            } else {
+                wayPointCount?.let {
+                    pos = interpolate(route.waypointList[wayPointNumber - 1].position, route.waypointList[0].position, wayPointCount!![wayPointNumber - 1], interpolationStep)
+                }
+            }
         }
 
-        actualPosition.x = pos.x
-        actualPosition.y = pos.y
+        pos?.let {pos ->
+            actualPosition.x = pos.x
+            actualPosition.y = pos.y
 
-        interpolationStep += 1
-        if (interpolationStep == wayPointCount!![wayPointNumber - 1]) {
-            wayPointNumber += 1
-            interpolationStep = 0
+            interpolationStep += 1
+            if (interpolationStep == wayPointCount!![wayPointNumber - 1]) {
+                wayPointNumber += 1
+                interpolationStep = 0
+            }
         }
     }
 
@@ -193,16 +199,15 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             }
         }
 
-        if (waypointRoute != null) {
+        if (route != null) {
             i = 0
-            val wayPointPositions = waypointRoute!!.waypointPositionList
-            val wayPointPositions2 = ArrayList<WaypointPosition>()
+            val wayPointPositions = route!!.waypointList
+            val wayPointPositions2 = ArrayList<Waypoint>()
 
             while (i < wayPointPositions.size) {
                 val waypointPosition = wayPointPositions[i]
                 val pos = floorManager.calculatePixelPositionFromMeter(waypointPosition.position.x, waypointPosition.position.y)
-                val waypointPosition1 = WaypointPosition(waypointPosition.id,
-                        Position(pos.x, pos.y))
+                val waypointPosition1 = Waypoint(waypointPosition.id, waypointPosition.description, waypointPosition.floor, Position(pos.x, pos.y))
                 wayPointPositions2.add(waypointPosition1)
 
                 DrawingContext.drawWayPointPosition(waypointPosition1, g, matrix)
