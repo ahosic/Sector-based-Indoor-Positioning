@@ -113,7 +113,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
 
 
-        layout.add(selectPathButton, 3, 0)
+        layout.add(selectPathButton, 3, 1)
     }
 
     private fun initWalkRecordingSettings(layout: GridPane) {
@@ -131,7 +131,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
 
 
-        layout.add(selectPathButton, 3, 1)
+        layout.add(selectPathButton, 3, 2)
     }
 
     private fun initBuildingGraphSettings(layout: GridPane) {
@@ -149,7 +149,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
 
 
-        layout.add(selectPathButton, 3, 2)
+        layout.add(selectPathButton, 3, 3)
     }
 
     private fun initPositioningSelection(layout: GridPane) {

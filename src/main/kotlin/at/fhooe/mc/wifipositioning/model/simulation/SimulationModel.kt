@@ -49,7 +49,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config.loadFloors()
 
         config.building?.let { building ->
-            generateFloorMap(building.getFloor(4))
+            generateFloorMap(building.getFloor(3))
         }
 
         config.loadBuildingGraph()
