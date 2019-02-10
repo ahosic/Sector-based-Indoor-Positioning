@@ -100,7 +100,7 @@ class ConfigurationModel(val configPath: String): Observable() {
         try {
             val mapper = ObjectMapper().registerKotlinModule()
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            val waypointFile = File("/Users/almin/Documents/projects/master/resources/new-data-recordings/waypoints/FH2-Floor-4-Waypoints.json")
+            val waypointFile = File(configuration.routePath)
             route = mapper.readValue(waypointFile, object : TypeReference<Route>() {})
         } catch (e: IOException) {
             e.printStackTrace()
