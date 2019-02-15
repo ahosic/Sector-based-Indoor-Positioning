@@ -1,6 +1,8 @@
 package at.fhooe.mc.wifipositioning.model.simulation
 
-class Position(var x: Int, var y: Int) {
+import com.fasterxml.jackson.annotation.JsonProperty
+
+class Position(@JsonProperty("x") var x: Int, @JsonProperty("y") var y: Int) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

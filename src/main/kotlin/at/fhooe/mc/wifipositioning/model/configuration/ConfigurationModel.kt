@@ -4,6 +4,7 @@ import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
+import at.fhooe.mc.wifipositioning.model.initialisations.Route
 import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
@@ -13,7 +14,9 @@ import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.utility.Player
 import com.beust.klaxon.Klaxon
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -22,15 +25,17 @@ import javax.imageio.ImageIO
 import javax.imageio.ImageReader
 
 class ConfigurationModel(val configPath: String): Observable() {
-    var building: Building? = null
-        private set
     var configuration: Configuration
+        private set
+    var building: Building? = null
         private set
     var sectoring: ISectoring? = null
         private set
     var positioning: IPositioning? = null
         private set
     var graph: List<BuildingGraphNode>? = null
+        private set
+    var route: Route? = null
         private set
 
     init {
@@ -89,6 +94,17 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
 
         sectoring = VoronoiSectors()
+    }
+
+    fun loadWaypoints() {
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            val waypointFile = File(configuration.routePath)
+            route = mapper.readValue(waypointFile, object : TypeReference<Route>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface): Player? {
