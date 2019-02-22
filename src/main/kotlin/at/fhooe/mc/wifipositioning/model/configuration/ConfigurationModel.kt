@@ -3,6 +3,7 @@ package at.fhooe.mc.wifipositioning.model.configuration
 import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
+import at.fhooe.mc.wifipositioning.model.building.NewBuilding
 import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
 import at.fhooe.mc.wifipositioning.model.initialisations.Route
 import at.fhooe.mc.wifipositioning.model.positioning.*
@@ -28,6 +29,8 @@ class ConfigurationModel(val configPath: String): Observable() {
     var configuration: Configuration
         private set
     var building: Building? = null
+        private set
+    var newBuilding: NewBuilding? = null
         private set
     var sectoring: ISectoring? = null
         private set
@@ -71,6 +74,18 @@ class ConfigurationModel(val configPath: String): Observable() {
 
         setChanged()
         notifyObservers()
+    }
+
+    fun loadBuilding() {
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val buildingFile = File("/Users/almin/Documents/projects/master/resources/building.json")
+            newBuilding = mapper.readValue(buildingFile, object: TypeReference<NewBuilding>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        print("test")
     }
 
     fun loadFloors() {

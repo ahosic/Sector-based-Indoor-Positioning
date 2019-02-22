@@ -52,6 +52,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             generateFloorMap(building.getFloor(3))
         }
 
+        config.loadBuilding()
         config.loadBuildingGraph()
         config.loadPositioningMethod()
         config.loadWaypoints()
