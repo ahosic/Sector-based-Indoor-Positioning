@@ -4,15 +4,14 @@ import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
+import at.fhooe.mc.wifipositioning.model.building.Floor
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.building.NewFloor
-import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.initialisations.Route
-import at.fhooe.mc.wifipositioning.model.initialisations.Waypoint
+import at.fhooe.mc.wifipositioning.model.building.Position
+import at.fhooe.mc.wifipositioning.model.recording.Route
+import at.fhooe.mc.wifipositioning.model.recording.Waypoint
 import at.fhooe.mc.wifipositioning.utility.Player
 
 import java.awt.*
@@ -23,7 +22,7 @@ import java.util.*
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
-    private var accessPoints: List<NewInstalledAccessPoint>? = ArrayList()
+    private var accessPoints: List<InstalledAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
 
@@ -94,7 +93,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config?.resetSectoring()
     }
 
-    override fun generateFloorMap(floor: NewFloor) {
+    override fun generateFloorMap(floor: Floor) {
         accessPoints = floor.accessPoints
         if (floorManager == null) {
             floorManager = FloorManager(floor)

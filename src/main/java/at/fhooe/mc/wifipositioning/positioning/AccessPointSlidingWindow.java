@@ -1,7 +1,6 @@
 package at.fhooe.mc.wifipositioning.positioning;
 
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint;
-import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint;
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint;
 
 import java.util.*;
@@ -32,7 +31,7 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
         return averageEntry.get().getKey().toLowerCase();
     }
 
-    public String getBestAverageBSSID(List<NewInstalledAccessPoint> allowedAccessPoints) {
+    public String getBestAverageBSSID(List<InstalledAccessPoint> allowedAccessPoints) {
         Map<String, SNRDataAverage> averages = computeAverages();
         List<String> allowedBSSIDs = allowedAccessPoints
                 .stream()

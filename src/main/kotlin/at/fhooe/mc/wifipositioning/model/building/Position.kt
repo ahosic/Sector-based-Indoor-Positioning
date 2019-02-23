@@ -1,4 +1,4 @@
-package at.fhooe.mc.wifipositioning.model.simulation
+package at.fhooe.mc.wifipositioning.model.building
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

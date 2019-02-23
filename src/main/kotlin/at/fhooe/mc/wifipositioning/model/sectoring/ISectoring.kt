@@ -2,7 +2,7 @@ package at.fhooe.mc.wifipositioning.model.sectoring
 
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
 import at.fhooe.mc.wifipositioning.model.graphics.Matrix
-import at.fhooe.mc.wifipositioning.model.simulation.Position
+import at.fhooe.mc.wifipositioning.model.building.Position
 
 import java.awt.*
 

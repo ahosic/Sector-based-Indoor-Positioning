@@ -2,15 +2,14 @@ package at.fhooe.mc.wifipositioning.model.positioning
 
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.positioning.AccessPointSlidingWindow
 import kotlin.streams.toList
 
-class GraphPositioning(private val installedAccessPoints: List<NewInstalledAccessPoint>, private val graph: List<BuildingGraphNode>, windowSize: Int) : IPositioning {
+class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>, private val graph: List<BuildingGraphNode>, windowSize: Int) : IPositioning {
 
-    private val history: MutableList<NewInstalledAccessPoint> = arrayListOf()
-    private val filtering: IFilterable<NewInstalledAccessPoint>
+    private val history: MutableList<InstalledAccessPoint> = arrayListOf()
+    private val filtering: IFilterable<InstalledAccessPoint>
     private val slidingWindow: AccessPointSlidingWindow
 
     init {
@@ -18,7 +17,7 @@ class GraphPositioning(private val installedAccessPoints: List<NewInstalledAcces
         slidingWindow = AccessPointSlidingWindow(windowSize)
     }
 
-    override fun calculatePosition(scannedAccessPoints: List<ScannedAccessPoint>): NewInstalledAccessPoint? {
+    override fun calculatePosition(scannedAccessPoints: List<ScannedAccessPoint>): InstalledAccessPoint? {
         slidingWindow.addElement(scannedAccessPoints)
 
         var bssid = ""
@@ -55,7 +54,7 @@ class GraphPositioning(private val installedAccessPoints: List<NewInstalledAcces
         return null
     }
 
-    private fun getAccessPoint(bssid: String): NewInstalledAccessPoint? {
+    private fun getAccessPoint(bssid: String): InstalledAccessPoint? {
         bssid.trim().ifEmpty {
             return null
         }

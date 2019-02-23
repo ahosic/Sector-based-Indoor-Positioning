@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
-import at.fhooe.mc.wifipositioning.model.simulation.Position
+import at.fhooe.mc.wifipositioning.model.building.Position
 
 /**
  * A Low Pass-Filter for filtering positions.

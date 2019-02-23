@@ -3,8 +3,8 @@ package at.fhooe.mc.wifipositioning.model.configuration
 import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
-import at.fhooe.mc.wifipositioning.model.building.NewBuilding
-import at.fhooe.mc.wifipositioning.model.initialisations.Route
+import at.fhooe.mc.wifipositioning.model.building.Building
+import at.fhooe.mc.wifipositioning.model.recording.Route
 import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
@@ -23,7 +23,7 @@ import javax.imageio.ImageReader
 class ConfigurationModel(val configPath: String): Observable() {
     var configuration: Configuration
         private set
-    var building: NewBuilding? = null
+    var building: Building? = null
         private set
     var sectoring: ISectoring? = null
         private set
@@ -44,10 +44,10 @@ class ConfigurationModel(val configPath: String): Observable() {
 
     fun resetPositioning() {
         when(configuration.positioningType) {
-            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
-            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
-            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
-            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.accessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.accessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.accessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.accessPoints, graph!!, 5)
         }
     }
 
@@ -82,8 +82,8 @@ class ConfigurationModel(val configPath: String): Observable() {
     fun loadBuilding() {
         try {
             val mapper = ObjectMapper().registerKotlinModule()
-            val buildingFile = File("/Users/almin/Documents/projects/master/resources/building.json")
-            building = mapper.readValue(buildingFile, object: TypeReference<NewBuilding>() {})
+            val buildingFile = File("/Users/almin/Documents/projects/master/resources/building-old.json")
+            building = mapper.readValue(buildingFile, object: TypeReference<Building>() {})
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -150,10 +150,10 @@ class ConfigurationModel(val configPath: String): Observable() {
 
     fun loadPositioningMethod() {
         when(configuration.positioningType) {
-            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
-            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
-            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
-            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.accessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.accessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.accessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.accessPoints, graph!!, 5)
         }
     }
 }

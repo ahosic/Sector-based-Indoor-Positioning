@@ -1,7 +1,6 @@
-package at.fhooe.mc.wifipositioning.model.initialisations
+package at.fhooe.mc.wifipositioning.model.recording
 
-import at.fhooe.mc.wifipositioning.model.simulation.Position
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import at.fhooe.mc.wifipositioning.model.building.Position
 import com.fasterxml.jackson.annotation.JsonProperty
 
 class Waypoint(

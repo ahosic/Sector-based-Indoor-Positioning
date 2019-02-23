@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
-import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
 
 /**
@@ -10,9 +10,9 @@ import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
  *
  * @constructor Initializes a new Positioning Method
  */
-class StrongestAccessPointPositioning(val allAccessPoints: List<NewInstalledAccessPoint>) : IPositioning {
+class StrongestAccessPointPositioning(val allAccessPoints: List<InstalledAccessPoint>) : IPositioning {
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): NewInstalledAccessPoint? {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
         for (scanned in scannedAccessPointList.sorted().reversed()) {
             allAccessPoints
                     .filter { it.bssid.toLowerCase() == scanned.bssid.toLowerCase() }

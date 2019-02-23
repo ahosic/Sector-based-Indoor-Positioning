@@ -1,10 +1,9 @@
 package at.fhooe.mc.wifipositioning.model.sectoring;
 
-import at.fhooe.mc.wifipositioning.model.building.NewFloor;
+import at.fhooe.mc.wifipositioning.model.building.Floor;
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager;
 import at.fhooe.mc.wifipositioning.model.graphics.Matrix;
-import at.fhooe.mc.wifipositioning.model.simulation.Position;
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor;
+import at.fhooe.mc.wifipositioning.model.building.Position;
 import at.fhooe.mc.wifipositioning.model.sectoring.voronoi.GrahamScan;
 import at.fhooe.mc.wifipositioning.model.sectoring.voronoi.GraphEdge;
 import at.fhooe.mc.wifipositioning.model.sectoring.voronoi.Voronoi;
@@ -27,7 +26,7 @@ public class VoronoiSectors implements ISectoring {
 
     @Override
     public void createSectors(FloorManager floorManager, Graphics g, Matrix m_tMatrix) {
-        NewFloor floor = floorManager.getFloor();
+        Floor floor = floorManager.getFloor();
         double[] xvalues = new double[floor.getAccessPoints().size()];
         double[] yvalues = new double[xvalues.length];
 

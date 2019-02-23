@@ -1,8 +1,6 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
-import at.fhooe.mc.wifipositioning.model.simulation.Position
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
 
 /**
@@ -14,16 +12,16 @@ import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
  *
  * @constructor Initializes a new Positioning Method
  */
-class FilteredPositioning(private val allAccessPoints: List<NewInstalledAccessPoint>) : IPositioning {
+class FilteredPositioning(private val allAccessPoints: List<InstalledAccessPoint>) : IPositioning {
     private val positioning: IPositioning
-    private val filtering: IFilterable<NewInstalledAccessPoint>
+    private val filtering: IFilterable<InstalledAccessPoint>
 
     init {
         positioning = AveragePositioning(allAccessPoints, 5)
         filtering = SectorLowPassFilter(10)
     }
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): NewInstalledAccessPoint? {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
         // Calculate Position
         val averagePos = positioning.calculatePosition(scannedAccessPointList)
 

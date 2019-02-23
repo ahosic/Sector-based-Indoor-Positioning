@@ -1,9 +1,8 @@
 package at.fhooe.mc.wifipositioning.model.simulation
 
-import at.fhooe.mc.wifipositioning.model.building.NewFloor
+import at.fhooe.mc.wifipositioning.model.building.Floor
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
 import at.fhooe.mc.wifipositioning.model.graphics.Matrix
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -34,7 +33,7 @@ abstract class BaseModel : Observable() {
         panelHeight = height - 1
     }
 
-    abstract fun generateFloorMap(floor: NewFloor)
+    abstract fun generateFloorMap(floor: Floor)
 
     /**
      * Zooms the entire world or the zooming rectangle to the screen size.

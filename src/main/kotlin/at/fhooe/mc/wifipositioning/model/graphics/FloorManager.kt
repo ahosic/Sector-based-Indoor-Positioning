@@ -1,12 +1,11 @@
 package at.fhooe.mc.wifipositioning.model.graphics
 
-import at.fhooe.mc.wifipositioning.model.building.NewFloor
-import at.fhooe.mc.wifipositioning.model.simulation.Position
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
+import at.fhooe.mc.wifipositioning.model.building.Floor
+import at.fhooe.mc.wifipositioning.model.building.Position
 
-class FloorManager(floor: NewFloor) {
+class FloorManager(floor: Floor) {
 
-    var floor: NewFloor? = null
+    var floor: Floor? = null
         private set
     var widthMultiplikator: Double = 0.toDouble()
         private set
@@ -46,7 +45,7 @@ class FloorManager(floor: NewFloor) {
         return Position(xPos, yPos)
     }
 
-    fun changeFloor(floor: NewFloor) {
+    fun changeFloor(floor: Floor) {
         this.floor = floor
         calculateMultiplicators()
     }

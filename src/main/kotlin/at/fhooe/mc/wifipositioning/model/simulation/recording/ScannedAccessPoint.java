@@ -1,7 +1,7 @@
 package at.fhooe.mc.wifipositioning.model.simulation.recording;
 
 
-import at.fhooe.mc.wifipositioning.model.simulation.Position;
+import at.fhooe.mc.wifipositioning.model.building.Position;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ScannedAccessPoint implements Comparable<ScannedAccessPoint> {

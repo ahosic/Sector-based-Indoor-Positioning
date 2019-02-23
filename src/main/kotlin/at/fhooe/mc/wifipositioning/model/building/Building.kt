@@ -2,12 +2,12 @@ package at.fhooe.mc.wifipositioning.model.building
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class NewBuilding(@JsonProperty("name") val name: String,
-                       @JsonProperty("floors") val floors: List<NewFloor>) {
+data class Building(@JsonProperty("name") val name: String,
+                    @JsonProperty("floors") val floors: List<Floor>) {
 
-    val allAccessPoints: List<NewInstalledAccessPoint>
+    val accessPoints: List<InstalledAccessPoint>
         get() {
-            val accessPointList = ArrayList<NewInstalledAccessPoint>()
+            val accessPointList = ArrayList<InstalledAccessPoint>()
             for (floor in floors) {
                 floor.accessPoints.let { accessPoints ->
                     accessPointList.addAll(accessPoints)
