@@ -1,19 +1,19 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
-import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint
 
-class SectorLowPassFilter(val threshold: Long): IFilterable<InstalledAccessPoint> {
+class SectorLowPassFilter(val threshold: Long): IFilterable<NewInstalledAccessPoint> {
 
-    private var estimatedSectors: MutableList<InstalledAccessPoint> = arrayListOf()
-    private var currentSector: InstalledAccessPoint? = null
+    private var estimatedSectors: MutableList<NewInstalledAccessPoint> = arrayListOf()
+    private var currentSector: NewInstalledAccessPoint? = null
 
-    override fun filter(input: InstalledAccessPoint): InstalledAccessPoint {
+    override fun filter(input: NewInstalledAccessPoint): NewInstalledAccessPoint {
         estimatedSectors.add(input)
         currentSector = nextSector(input)
         return currentSector ?: input
     }
 
-    private fun nextSector(inputSector: InstalledAccessPoint): InstalledAccessPoint {
+    private fun nextSector(inputSector: NewInstalledAccessPoint): NewInstalledAccessPoint {
         // If first sector
         if (estimatedSectors.size == 1) return getInitialSector()
 
@@ -34,7 +34,7 @@ class SectorLowPassFilter(val threshold: Long): IFilterable<InstalledAccessPoint
         }
     }
 
-    private fun getInitialSector(): InstalledAccessPoint {
+    private fun getInitialSector(): NewInstalledAccessPoint {
         return estimatedSectors.last()
     }
 }

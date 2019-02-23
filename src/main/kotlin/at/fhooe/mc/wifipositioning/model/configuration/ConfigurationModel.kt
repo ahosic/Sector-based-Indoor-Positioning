@@ -28,9 +28,7 @@ import javax.imageio.ImageReader
 class ConfigurationModel(val configPath: String): Observable() {
     var configuration: Configuration
         private set
-    var building: Building? = null
-        private set
-    var newBuilding: NewBuilding? = null
+    var building: NewBuilding? = null
         private set
     var sectoring: ISectoring? = null
         private set
@@ -80,12 +78,10 @@ class ConfigurationModel(val configPath: String): Observable() {
         try {
             val mapper = ObjectMapper().registerKotlinModule()
             val buildingFile = File("/Users/almin/Documents/projects/master/resources/building.json")
-            newBuilding = mapper.readValue(buildingFile, object: TypeReference<NewBuilding>() {})
+            building = mapper.readValue(buildingFile, object: TypeReference<NewBuilding>() {})
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
-        print("test")
     }
 
     fun loadFloors() {
@@ -97,15 +93,11 @@ class ConfigurationModel(val configPath: String): Observable() {
             throw IOException("Image file format not supported by ImageIO")
         }
 
-        building = Building("Building")
-
-
         val reader = iterator.next() as ImageReader
         reader.input = inputStream
 
         for (i in 0 until reader.getNumImages(true)) {
-            val bounds = InitSimulatorData.getFloorBounds(i)
-            building?.addFloor(Floor("Floor", bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5], InitSimulatorData.getTargetFloorAccessPoints(i), reader.read(i)))
+            building!!.floors[i].floorImage = reader.read(i)
         }
 
         sectoring = VoronoiSectors()

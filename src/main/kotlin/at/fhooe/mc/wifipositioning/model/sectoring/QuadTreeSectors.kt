@@ -21,7 +21,7 @@ class QuadTreeSectors : ISectoring {
         val tree = PointQuadTree<String>(Point(floorManager.offsetLeftInPixel, floorManager.offsetTopInPixel),
                 Dimension(floorManager.offsetRightInPixel - floorManager.offsetLeftInPixel, floorManager.offsetBottomInPixel - floorManager.offsetTopInPixel))
 
-        for (accessPoint in floorManager.floor!!.accessPointList!!) {
+        for (accessPoint in floorManager.floor!!.accessPoints!!) {
             val pixelPosition = floorManager.calculatePixelPositionFromMeter(accessPoint.position.x, accessPoint.position.y)
             tree.insert(pixelPosition.x, pixelPosition.y, accessPoint.bssid)
         }

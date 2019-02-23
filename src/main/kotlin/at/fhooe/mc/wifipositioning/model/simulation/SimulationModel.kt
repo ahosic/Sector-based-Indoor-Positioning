@@ -9,6 +9,8 @@ import at.fhooe.mc.wifipositioning.model.positioning.IPositioning
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
+import at.fhooe.mc.wifipositioning.model.building.NewFloor
+import at.fhooe.mc.wifipositioning.model.building.NewInstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.initialisations.Route
 import at.fhooe.mc.wifipositioning.model.initialisations.Waypoint
 import at.fhooe.mc.wifipositioning.utility.Player
@@ -21,7 +23,7 @@ import java.util.*
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
-    private var accessPoints: List<InstalledAccessPoint>? = ArrayList()
+    private var accessPoints: List<NewInstalledAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
 
@@ -46,13 +48,13 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     fun reloadConfiguration() {
+        config.loadBuilding()
         config.loadFloors()
 
         config.building?.let { building ->
-            generateFloorMap(building.getFloor(3))
+            generateFloorMap(building.floors[4])
         }
 
-        config.loadBuilding()
         config.loadBuildingGraph()
         config.loadPositioningMethod()
         config.loadWaypoints()
@@ -92,8 +94,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config?.resetSectoring()
     }
 
-    override fun generateFloorMap(floor: Floor) {
-        accessPoints = floor.accessPointList
+    override fun generateFloorMap(floor: NewFloor) {
+        accessPoints = floor.accessPoints
         if (floorManager == null) {
             floorManager = FloorManager(floor)
         } else {

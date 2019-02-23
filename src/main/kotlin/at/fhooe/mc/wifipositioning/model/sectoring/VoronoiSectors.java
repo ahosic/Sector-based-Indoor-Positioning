@@ -1,5 +1,6 @@
 package at.fhooe.mc.wifipositioning.model.sectoring;
 
+import at.fhooe.mc.wifipositioning.model.building.NewFloor;
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager;
 import at.fhooe.mc.wifipositioning.model.graphics.Matrix;
 import at.fhooe.mc.wifipositioning.model.simulation.Position;
@@ -26,12 +27,12 @@ public class VoronoiSectors implements ISectoring {
 
     @Override
     public void createSectors(FloorManager floorManager, Graphics g, Matrix m_tMatrix) {
-        Floor floor = floorManager.getFloor();
-        double[] xvalues = new double[floor.getAccessPointList().size()];
+        NewFloor floor = floorManager.getFloor();
+        double[] xvalues = new double[floor.getAccessPoints().size()];
         double[] yvalues = new double[xvalues.length];
 
-        for (int i = 0; i < floorManager.getFloor().getAccessPointList().size(); i++) {
-            Position pixelPosition = floorManager.calculatePixelPositionFromMeter(floor.getAccessPoint(i).getPosition().getX(), floor.getAccessPoint(i).getPosition().getY());
+        for (int i = 0; i < floorManager.getFloor().getAccessPoints().size(); i++) {
+            Position pixelPosition = floorManager.calculatePixelPositionFromMeter(floor.getAccessPoints().get(i).getPosition().getX(), floor.getAccessPoints().get(i).getPosition().getY());
             xvalues[i] = pixelPosition.getX();
             yvalues[i] = pixelPosition.getY();
         }

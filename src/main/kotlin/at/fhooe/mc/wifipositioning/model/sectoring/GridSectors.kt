@@ -15,8 +15,8 @@ class GridSectors : ISectoring {
 
     override fun createSectors(floorManager: FloorManager, g: Graphics, m_tMatrix: Matrix) {
         val floor = floorManager.floor
-        val cellHeight = (floor!!.floorHeight * floorManager.heightMultiplikator / yGrid).toInt()
-        val cellWidth = (floor.floorWidth * floorManager.widthMultiplikator / xGrid).toInt()
+        val cellHeight = (floor!!.bounds.heigth * floorManager.heightMultiplikator / yGrid).toInt()
+        val cellWidth = (floor.bounds.width * floorManager.widthMultiplikator / xGrid).toInt()
         var y = floorManager.offsetTopInPixel
 
         while (y < floorManager.offsetBottomInPixel - cellHeight / 2) {
