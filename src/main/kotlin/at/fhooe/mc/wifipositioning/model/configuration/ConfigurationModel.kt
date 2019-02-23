@@ -4,22 +4,17 @@ import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.building.NewBuilding
-import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
 import at.fhooe.mc.wifipositioning.model.initialisations.Route
 import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
 import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
 import at.fhooe.mc.wifipositioning.model.simulation.recording.DataSnapshot
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Building
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
 import at.fhooe.mc.wifipositioning.utility.Player
-import com.beust.klaxon.Klaxon
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
-import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
 import javax.imageio.ImageIO
@@ -56,19 +51,29 @@ class ConfigurationModel(val configPath: String): Observable() {
         }
     }
 
-    fun loadConfiguration(): Configuration? {
-        val config = Klaxon().parse<Configuration>(File(configPath))
-        return config
+    private fun loadConfiguration(): Configuration? {
+        var configuration: Configuration? = null
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val configFile = File(configPath)
+            configuration = mapper.readValue(configFile, object : TypeReference<Configuration>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return configuration
     }
 
     fun saveConfiguration(configuration: Configuration) {
         this.configuration = configuration
 
-        val klaxon = Klaxon()
-        val json = klaxon.toJsonString(configuration)
-
-        val configFile = File(configPath)
-        configFile.bufferedWriter().use { out -> out.write(json) }
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val configFile = File(configPath)
+            mapper.writeValue(configFile, configuration)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
         setChanged()
         notifyObservers()
@@ -89,9 +94,8 @@ class ConfigurationModel(val configPath: String): Observable() {
         val inputStream = ImageIO.createImageInputStream(floorFile)
 
         val iterator = ImageIO.getImageReaders(inputStream!!)
-        if (iterator == null || !iterator.hasNext()) {
-            throw IOException("Image file format not supported by ImageIO")
-        }
+
+        if (iterator == null || !iterator.hasNext()) throw IOException("Image file format not supported by ImageIO")
 
         val reader = iterator.next() as ImageReader
         reader.input = inputStream
@@ -130,7 +134,15 @@ class ConfigurationModel(val configPath: String): Observable() {
 
     fun loadBuildingGraph() {
         println("Load building graph.")
-        graph = Klaxon().parseArray<BuildingGraphNode>(FileInputStream(File(configuration.buildingGraphPath)))
+
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val graphFile = File(configuration.buildingGraphPath)
+            graph = mapper.readValue(graphFile, object: TypeReference<List<BuildingGraphNode>>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         graph?.let {
             print("Loaded " + it.size + " graph nodes.")
         }
