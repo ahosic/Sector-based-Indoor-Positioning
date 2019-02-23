@@ -2,14 +2,15 @@ package at.fhooe.mc.wifipositioning.model.positioning
 
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
-import at.fhooe.mc.wifipositioning.positioning.AccessPointSlidingWindow
+import at.fhooe.mc.wifipositioning.model.filtering.Filtering
+import at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter
+import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import kotlin.streams.toList
 
-class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>, private val graph: List<BuildingGraphNode>, windowSize: Int) : IPositioning {
+class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>, private val graph: List<BuildingGraphNode>, windowSize: Int) : Positioning {
 
     private val history: MutableList<InstalledAccessPoint> = arrayListOf()
-    private val filtering: IFilterable<InstalledAccessPoint>
+    private val filtering: Filtering<InstalledAccessPoint>
     private val slidingWindow: AccessPointSlidingWindow
 
     init {

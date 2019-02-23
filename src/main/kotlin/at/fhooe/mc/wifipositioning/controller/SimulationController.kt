@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.controller
 
-import at.fhooe.mc.wifipositioning.model.simulation.SimulationModel
+import at.fhooe.mc.wifipositioning.model.SimulationModel
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.stage.WindowEvent

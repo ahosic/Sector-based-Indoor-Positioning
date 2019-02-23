@@ -2,7 +2,7 @@ package at.fhooe.mc.wifipositioning.ui
 
 import at.fhooe.mc.wifipositioning.controller.SimulationController
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
-import at.fhooe.mc.wifipositioning.model.simulation.SimulationModel
+import at.fhooe.mc.wifipositioning.model.SimulationModel
 import com.jfoenix.controls.JFXButton
 import javafx.application.Application
 import javafx.geometry.Insets

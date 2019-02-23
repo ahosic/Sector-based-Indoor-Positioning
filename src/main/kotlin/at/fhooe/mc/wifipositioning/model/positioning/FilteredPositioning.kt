@@ -1,7 +1,9 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
+import at.fhooe.mc.wifipositioning.model.filtering.Filtering
+import at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter
+import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 
 /**
  * A Positioning method that uses a combination of AveragePositioning and a low pass-filter for the position estimation.
@@ -12,9 +14,9 @@ import at.fhooe.mc.wifipositioning.model.simulation.recording.ScannedAccessPoint
  *
  * @constructor Initializes a new Positioning Method
  */
-class FilteredPositioning(private val allAccessPoints: List<InstalledAccessPoint>) : IPositioning {
-    private val positioning: IPositioning
-    private val filtering: IFilterable<InstalledAccessPoint>
+class FilteredPositioning(private val allAccessPoints: List<InstalledAccessPoint>) : Positioning {
+    private val positioning: Positioning
+    private val filtering: Filtering<InstalledAccessPoint>
 
     init {
         positioning = AveragePositioning(allAccessPoints, 5)

@@ -1,15 +1,14 @@
 package at.fhooe.mc.wifipositioning.model.configuration
 
-import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.building.Building
 import at.fhooe.mc.wifipositioning.model.recording.Route
 import at.fhooe.mc.wifipositioning.model.positioning.*
-import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
-import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
-import at.fhooe.mc.wifipositioning.model.simulation.recording.DataSnapshot
-import at.fhooe.mc.wifipositioning.utility.Player
+import at.fhooe.mc.wifipositioning.sectoring.VoronoiSectors
+import at.fhooe.mc.wifipositioning.model.recording.DataSnapshot
+import at.fhooe.mc.wifipositioning.model.recording.Player
+import at.fhooe.mc.wifipositioning.sectoring.Sectoring
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -25,9 +24,9 @@ class ConfigurationModel(val configPath: String): Observable() {
         private set
     var building: Building? = null
         private set
-    var sectoring: ISectoring? = null
+    var sectoring: Sectoring? = null
         private set
-    var positioning: IPositioning? = null
+    var positioning: Positioning? = null
         private set
     var graph: List<BuildingGraphNode>? = null
         private set
@@ -124,7 +123,7 @@ class ConfigurationModel(val configPath: String): Observable() {
             val simulationFile = File(configuration.walkRecordingPath)
             val dataSnapshots: List<DataSnapshot> = mapper.readValue(simulationFile, object : TypeReference<List<DataSnapshot>>() {})
 
-            return Player(dataSnapshots, playbackCallback, PlayBackEnum.SIMPLE)
+            return Player(dataSnapshots, playbackCallback)
         } catch (e: IOException) {
             e.printStackTrace()
         }
