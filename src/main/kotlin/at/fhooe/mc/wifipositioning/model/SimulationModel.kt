@@ -1,6 +1,7 @@
 package at.fhooe.mc.wifipositioning.model
 
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
+import at.fhooe.mc.wifipositioning.model.building.Building
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager
 import at.fhooe.mc.wifipositioning.model.positioning.Positioning
@@ -22,25 +23,31 @@ import java.util.*
  * The Model of the MVC pattern. The new positions and polygons are drawn here.
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
+
     private var accessPoints: List<InstalledAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
-
-    private var route: Route? = null
-        get() = config.route
 
     private var wayPointCount: IntArray? = null
     private var wayPointNumber = 1
     private var interpolationStep = 0
 
-    private var player: Player? = null
     private var playerThread: Thread? = null
 
-    val sectoring: Sectoring?
+    private val route: Route
+        get() = config.route
+
+    private val sectoring: Sectoring
         get() = config.sectoring
 
-    val positioning: Positioning?
+    private val positioning: Positioning
         get() = config.positioning
+
+    private val building: Building
+        get() = config.building
+
+    private val player: Player
+        get() = config.player
 
     init {
         config.addObserver(this)
@@ -50,37 +57,33 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config.loadBuilding()
         config.loadFloors()
 
-        config.building?.let { building ->
-            generateFloorMap(building.floors[4])
-        }
+        generateFloorMap(building.floors[4])
 
         config.loadBuildingGraph()
         config.loadPositioningMethod()
         config.loadWaypoints()
-        player = config.loadWalkRecording(this)
+        config.loadWalkRecording(this)
     }
 
     fun toggleSimulation() {
-        if (player?.isRunning == true) {
-            player?.pausePlayback = player?.pausePlayback != true
+        if (player.isRunning) {
+            player.pausePlayback = !player.pausePlayback
             return
         }
 
-        player?.let { player ->
+        player.let { player ->
             playerThread = (object : Thread() {
                 override fun run() {
                     player.startPlayback()
                 }
             })
 
-            playerThread?.let {
-                it.start()
-            }
+            playerThread?.start()
         }
     }
 
     fun resetSimulation() {
-        player?.stopPlayback = true
+        player.stopPlayback = true
         playerThread = null
 
         person = Position(-1000, 1000)
@@ -89,8 +92,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         wayPointNumber = 1
         interpolationStep = 0
 
-        config?.resetPositioning()
-        config?.resetSectoring()
+        config.resetPositioning()
+        config.resetSectoring()
     }
 
     override fun generateFloorMap(floor: Floor) {
@@ -103,47 +106,27 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     private fun checkForInitializedWaypoints() {
-        if(player?.isRunning == false || player?.stopPlayback == true || route == null) {
+        if(!player.isRunning || player.stopPlayback) {
             return
         }
 
-        var pos: Position? = null
-        route?.let { route ->
-            if (wayPointNumber < wayPointCount!!.size) {
-                pos = interpolate(route.waypointList[wayPointNumber - 1].position, route.waypointList[wayPointNumber].position, wayPointCount!![wayPointNumber - 1], interpolationStep)
-            } else {
-                wayPointCount?.let {
-                    pos = interpolate(route.waypointList[wayPointNumber - 1].position, route.waypointList[0].position, wayPointCount!![wayPointNumber - 1], interpolationStep)
-                }
+        lateinit var pos: Position
+        if (wayPointNumber < wayPointCount!!.size) {
+            pos = interpolate(route.waypointList[wayPointNumber - 1].position, route.waypointList[wayPointNumber].position, wayPointCount!![wayPointNumber - 1], interpolationStep)
+        } else {
+            wayPointCount?.let {
+                pos = interpolate(route.waypointList[wayPointNumber - 1].position, route.waypointList[0].position, wayPointCount!![wayPointNumber - 1], interpolationStep)
             }
         }
 
-        pos?.let {pos ->
-            actualPosition.x = pos.x
-            actualPosition.y = pos.y
+        actualPosition.x = pos.x
+        actualPosition.y = pos.y
 
-            interpolationStep += 1
-            if (interpolationStep == wayPointCount!![wayPointNumber - 1]) {
-                wayPointNumber += 1
-                interpolationStep = 0
-            }
+        interpolationStep += 1
+        if (interpolationStep == wayPointCount!![wayPointNumber - 1]) {
+            wayPointNumber += 1
+            interpolationStep = 0
         }
-    }
-
-    private fun calculateSimplePersonPosition(scannedAccessPoints: List<ScannedAccessPoint>) {
-        checkForInitializedWaypoints()
-        for (accessPoint in scannedAccessPoints) {
-            for (ap in this.accessPoints!!) {
-                if (ap.bssid.toLowerCase() == accessPoint.bssid.toLowerCase()) {
-                    person.x = ap.position.x
-                    person.y = ap.position.y
-                    callObserver(createBufferedImage() ?: return)
-                    return
-                }
-            }
-        }
-
-        callObserver(createBufferedImage() ?: return)
     }
 
     private fun interpolate(start: Position, end: Position, steps: Int, iterationStep: Int): Position {
@@ -159,14 +142,14 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
 
     private fun addPlayerData(scannedAccessPointList: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
-        val p = positioning?.calculatePosition(scannedAccessPointList)
-        if (sectoring == null || p == null) {
+        val p = positioning.calculatePosition(scannedAccessPointList)
+        if (p == null) {
             callObserver(createBufferedImage() ?: return)
             return
         }
         val newPos = floorManager?.calculatePixelPositionFromMeter(p.position.x, p.position.y)
         newPos?.let {
-            sectoring!!.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
+            sectoring.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
             callObserver(createBufferedImage() ?: return)
         }
     }
@@ -180,7 +163,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     override fun createBufferedImage(): BufferedImage? {
         val floorManager = this.floorManager ?: return null
 
-        val images = applyMatrixToBufferedImage(floorManager.floor?.floorImage ?: return null)
+        val images = applyMatrixToBufferedImage(floorManager.floor.floorImage ?: return null)
 
         val g = images.createGraphics()
         val clipRect = Rectangle(floorManager.offsetLeftInPixel - 10, floorManager.offsetTopInPixel - 10, floorManager.offsetRightInPixel - floorManager.offsetLeftInPixel + 15, floorManager.offsetBottomInPixel - floorManager.offsetTopInPixel + 15)
@@ -201,26 +184,22 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             }
         }
 
-        if (route != null) {
-            i = 0
-            val wayPointPositions = route!!.waypointList
-            val wayPointPositions2 = ArrayList<Waypoint>()
+        i = 0
+        val wayPointPositions = route.waypointList
+        val wayPointPositions2 = ArrayList<Waypoint>()
 
-            while (i < wayPointPositions.size) {
-                val waypointPosition = wayPointPositions[i]
-                val pos = floorManager.calculatePixelPositionFromMeter(waypointPosition.position.x, waypointPosition.position.y)
-                val waypointPosition1 = Waypoint(waypointPosition.id, waypointPosition.description, waypointPosition.floor, Position(pos.x, pos.y))
-                wayPointPositions2.add(waypointPosition1)
+        while (i < wayPointPositions.size) {
+            val waypointPosition = wayPointPositions[i]
+            val pos = floorManager.calculatePixelPositionFromMeter(waypointPosition.position.x, waypointPosition.position.y)
+            val waypointPosition1 = Waypoint(waypointPosition.id, waypointPosition.description, waypointPosition.floor, Position(pos.x, pos.y))
+            wayPointPositions2.add(waypointPosition1)
 
-                DrawingContext.drawWayPointPosition(waypointPosition1, g, matrix)
-                i++
-            }
-            DrawingContext.drawWayPointLine(wayPointPositions2, g, matrix)
+            DrawingContext.drawWayPointPosition(waypointPosition1, g, matrix)
+            i++
         }
+        DrawingContext.drawWayPointLine(wayPointPositions2, g, matrix)
 
-        if (sectoring != null) {
-            sectoring!!.createSectors(floorManager, g, matrix)
-        }
+        sectoring.createSectors(floorManager, g, matrix)
 
         var pos = floorManager.calculatePixelPositionFromMeter(person.x, person.y)
         person.x = pos.x
@@ -236,22 +215,12 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         return images
     }
 
-    override fun nearestAccessPoint(scannedAccessPoints: List<ScannedAccessPoint>) {
-        scannedAccessPoints?.let {
-            calculateSimplePersonPosition(scannedAccessPoints)
-        }
-    }
-
     override fun allAccessPoints(scannedAccessPointList: List<ScannedAccessPoint>) {
-        scannedAccessPointList?.let {
-            addPlayerData(scannedAccessPointList)
-        }
+        addPlayerData(scannedAccessPointList)
     }
 
     override fun wayPointCount(wayPointCount: IntArray) {
-        wayPointCount?.let {
-            this.wayPointCount = wayPointCount
-        }
+        this.wayPointCount = wayPointCount
     }
 
     override fun update(o: Observable?, arg: Any?) {
@@ -260,6 +229,6 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         resetSimulation()
         reloadConfiguration()
 
-        println("Reloaded configuration.")
+        println("Reloaded settings.")
     }
 }

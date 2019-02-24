@@ -25,7 +25,6 @@ class Player(private var dataSnapshots: List<DataSnapshot>, private var callback
     }
 
     fun startPlayback() {
-        println(dataSnapshots.size)
         isRunning = true
         var i = 1
         for (dataSnapshot in dataSnapshots) {
@@ -43,7 +42,6 @@ class Player(private var dataSnapshots: List<DataSnapshot>, private var callback
                 return
             }
 
-            //println("Snapshot $i")
             i++
 
             dataSnapshot.wifiDataList

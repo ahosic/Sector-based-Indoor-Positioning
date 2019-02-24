@@ -16,24 +16,23 @@ import javafx.stage.Stage
 import java.awt.Dimension
 import java.awt.image.BufferedImage
 import java.util.*
-import kotlinx.coroutines.*
+import javafx.application.Platform
 
 
 class SimulationApplication : Application(), Observer {
-    var controller: SimulationController? = null
-    var configModel: ConfigurationModel? = null
+    private var controller: SimulationController? = null
+    private var configModel: ConfigurationModel? = null
 
     private var stage: Stage? = null
     private val mapView = MapView()
     private val playButton = JFXButton()
     private val stopButton = JFXButton()
     private val settingsButton = JFXButton()
-    private val stylePath: String
+    private val stylePath: String = javaClass.classLoader.getResource("mainStyle.css").toExternalForm()
 
     private var isPlaying = false
 
     init {
-        stylePath = javaClass.classLoader.getResource("mainStyle.css").toExternalForm()
         initializeApplication()
     }
 
@@ -51,7 +50,7 @@ class SimulationApplication : Application(), Observer {
         }
     }
 
-    private fun createLayout() : Pane {
+    private fun createLayout(): Pane {
         val root = VBox()
         root.styleClass.add("mainLayout")
         root.padding = Insets(8.0)
@@ -79,47 +78,48 @@ class SimulationApplication : Application(), Observer {
     private fun initButtons() {
         playButton.styleClass.addAll("playButton", "play")
         playButton.setOnAction {
-            GlobalScope.launch {
-                togglePlayingState()
-                controller?.onPlay(it)
-            }
+                Platform.runLater {
+                    togglePlayingState()
+                    controller?.onPlay(it)
+                }
         }
 
         settingsButton.styleClass.add("settingsButton")
         settingsButton.setOnAction {
-                if (isPlaying) {
-                    GlobalScope.launch {
-                        togglePlayingState()
-                    }
+            if (isPlaying) {
+                Platform.runLater {
+                    togglePlayingState()
                 }
-                controller?.onStop(it)
+            }
+            controller?.onStop(it)
 
-                configModel?.let { configModel ->
-                    stage?.let { stage ->
-                        val settingsStage = Stage()
-                        settingsStage.initModality(Modality.WINDOW_MODAL)
-                        settingsStage.initOwner(stage)
+            configModel?.let { configModel ->
+                stage?.let { stage ->
+                    val settingsStage = Stage()
+                    settingsStage.initModality(Modality.WINDOW_MODAL)
+                    settingsStage.initOwner(stage)
 
-                        val settings = SettingsApplication(configModel)
-                        settings.start(settingsStage)
-                    }
+                    val settings = SettingsApplication(configModel)
+                    settings.start(settingsStage)
                 }
+            }
         }
 
         stopButton.styleClass.add("stopButton")
         stopButton.setOnAction {
-            GlobalScope.launch {
-                if(isPlaying) {
+            Platform.runLater {
+                if (isPlaying) {
                     togglePlayingState()
                 }
                 controller?.onStop(it)
             }
+
         }
     }
 
     private fun initializeApplication() {
-        println("Loading configuration.")
-        configModel = ConfigurationModel(javaClass.classLoader.getResource("config.json").toURI().path)
+        println("Loading settings.")
+        configModel = ConfigurationModel(javaClass.classLoader.getResource("settings.json").toURI().path)
         println("Done.")
 
         configModel?.let { config ->
@@ -146,7 +146,7 @@ class SimulationApplication : Application(), Observer {
     private fun togglePlayingState() {
         isPlaying = !isPlaying
 
-        if(isPlaying) {
+        if (isPlaying) {
             playButton.styleClass.remove("play")
             playButton.styleClass.add("pause")
         } else {

@@ -22,12 +22,10 @@ class SimulationController(val model: SimulationModel) : EventHandler<WindowEven
     }
 
     fun onPlay(event: ActionEvent) {
-        print("Toggle simulation.")
         model.toggleSimulation()
     }
 
     fun onStop(event: ActionEvent) {
-        print("Reset simulation.")
         model.resetSimulation()
         model.resetImage()
     }
