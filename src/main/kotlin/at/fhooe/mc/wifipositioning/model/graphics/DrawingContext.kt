@@ -1,8 +1,8 @@
 package at.fhooe.mc.wifipositioning.model.graphics
 
-import at.fhooe.mc.wifipositioning.model.simulation.Person
+import at.fhooe.mc.wifipositioning.model.building.Person
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
-import at.fhooe.mc.wifipositioning.model.initialisations.Waypoint
+import at.fhooe.mc.wifipositioning.model.recording.Waypoint
 
 import java.awt.*
 import java.util.ArrayList

@@ -1,7 +1,7 @@
 package at.fhooe.mc.wifipositioning.ui
 
 import at.fhooe.mc.wifipositioning.controller.SettingsController
-import at.fhooe.mc.wifipositioning.model.configuration.Configuration
+import at.fhooe.mc.wifipositioning.model.configuration.Settings
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.positioning.PositioningType
 import com.jfoenix.controls.JFXButton
@@ -27,6 +27,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
     private var stage: Stage? = null
 
     private var floorPlanPathField = JFXTextField()
+    private var buildingPathField = JFXTextField()
     private var routePathField = JFXTextField()
     private var walkRecordingPathField = JFXTextField()
     private var buildingGraphPathField = JFXTextField()
@@ -63,6 +64,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         settingsLayout.vgap = 8.0
 
         initFloorPlanSettings(settingsLayout)
+        initBuildingSettings(settingsLayout)
         initRouteSettings(settingsLayout)
         initWalkRecordingSettings(settingsLayout)
         initBuildingGraphSettings(settingsLayout)
@@ -84,7 +86,7 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         val floorLabel = Label("Floor plan file: ")
         layout.add(floorLabel, 0, 0)
 
-        floorPlanPathField.text = configModel.configuration.floorsPath
+        floorPlanPathField.text = configModel.settings.floorsPath
         layout.add(floorPlanPathField, 1,0)
 
         val selectPathButton = JFXButton("Select".toUpperCase())
@@ -98,12 +100,30 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 0)
     }
 
+    private fun initBuildingSettings(layout: GridPane) {
+        val buildingLabel = Label("Building file: ")
+        layout.add(buildingLabel, 0, 1)
+
+        buildingPathField.text = configModel.settings.buildingPath
+        layout.add(buildingPathField, 1,1)
+
+        val selectPathButton = JFXButton("Select".toUpperCase())
+        selectPathButton.styleClass.add("pathButton")
+        selectPathButton.setOnAction {
+            val path = getFilePathFromFileChooser("Select building file")
+            buildingPathField.text = path ?: floorPlanPathField.text
+        }
+
+
+        layout.add(selectPathButton, 3, 1)
+    }
+
     private fun initRouteSettings(layout: GridPane) {
         val routeLabel = Label("Route file: ")
-        layout.add(routeLabel, 0, 1)
+        layout.add(routeLabel, 0, 2)
 
-        routePathField.text = configModel.configuration.routePath
-        layout.add(routePathField, 1,1)
+        routePathField.text = configModel.settings.routePath
+        layout.add(routePathField, 1,2)
 
         val selectPathButton = JFXButton("Select".toUpperCase())
         selectPathButton.styleClass.add("pathButton")
@@ -113,15 +133,15 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
 
 
-        layout.add(selectPathButton, 3, 1)
+        layout.add(selectPathButton, 3, 2)
     }
 
     private fun initWalkRecordingSettings(layout: GridPane) {
         val floorLabel = Label("Walk recording file: ")
-        layout.add(floorLabel, 0, 2)
+        layout.add(floorLabel, 0, 3)
 
-        walkRecordingPathField.text = configModel.configuration.walkRecordingPath
-        layout.add(walkRecordingPathField, 1,2)
+        walkRecordingPathField.text = configModel.settings.walkRecordingPath
+        layout.add(walkRecordingPathField, 1,3)
 
         val selectPathButton = JFXButton("Select".toUpperCase())
         selectPathButton.styleClass.add("pathButton")
@@ -131,15 +151,15 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
 
 
-        layout.add(selectPathButton, 3, 2)
+        layout.add(selectPathButton, 3, 3)
     }
 
     private fun initBuildingGraphSettings(layout: GridPane) {
         val graphLabel = Label("Graph file: ")
-        layout.add(graphLabel, 0, 3)
+        layout.add(graphLabel, 0, 4)
 
-        buildingGraphPathField.text = configModel.configuration.buildingGraphPath
-        layout.add(buildingGraphPathField, 1,3)
+        buildingGraphPathField.text = configModel.settings.buildingGraphPath
+        layout.add(buildingGraphPathField, 1,4)
 
         val selectPathButton = JFXButton("Select".toUpperCase())
         selectPathButton.styleClass.add("pathButton")
@@ -149,22 +169,22 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
 
 
-        layout.add(selectPathButton, 3, 3)
+        layout.add(selectPathButton, 3, 4)
     }
 
     private fun initPositioningSelection(layout: GridPane) {
         val floorLabel = Label("Positioning Method: ")
-        layout.add(floorLabel, 0, 4)
+        layout.add(floorLabel, 0, 5)
 
         positioningCombobox.items.add(Label(PositioningType.STRONGEST_AP_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.AVERAGE_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.FILTERED_POSITIONING.name))
         positioningCombobox.items.add(Label(PositioningType.GRAPH_POSITIONING.name))
 
-        val idx = positioningCombobox.items.indexOfFirst { label -> label.text.equals(configModel.configuration.positioningType.name) }
+        val idx = positioningCombobox.items.indexOfFirst { label -> label.text.equals(configModel.settings.positioningType.name) }
         positioningCombobox.selectionModel.select(idx)
 
-        layout.add(positioningCombobox, 1, 4)
+        layout.add(positioningCombobox, 1, 5)
     }
 
     private fun initButtons() {
@@ -172,8 +192,8 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         applyButton.setOnAction {
 
             val positioningType = PositioningType.valueOf(positioningCombobox.value.text)
-            val configuration = Configuration(floorPlanPathField.text, walkRecordingPathField.text, routePathField.text, buildingGraphPathField.text, positioningType)
-            controller.applyConfiguration(configuration)
+            val configuration = Settings(floorPlanPathField.text, buildingPathField.text, walkRecordingPathField.text, routePathField.text, buildingGraphPathField.text, positioningType)
+            controller.applySettings(configuration)
 
             stage?.let {
                 it.close()

@@ -1,45 +1,42 @@
 package at.fhooe.mc.wifipositioning.model.configuration
 
-import at.fhooe.mc.wifipositioning.interfaces.PlayBackEnum
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
-import at.fhooe.mc.wifipositioning.model.initialisations.InitSimulatorData
-import at.fhooe.mc.wifipositioning.model.initialisations.Route
+import at.fhooe.mc.wifipositioning.model.building.Building
+import at.fhooe.mc.wifipositioning.model.recording.Route
 import at.fhooe.mc.wifipositioning.model.positioning.*
-import at.fhooe.mc.wifipositioning.model.sectoring.ISectoring
-import at.fhooe.mc.wifipositioning.model.sectoring.VoronoiSectors
-import at.fhooe.mc.wifipositioning.model.simulation.recording.DataSnapshot
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Building
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
-import at.fhooe.mc.wifipositioning.utility.Player
-import com.beust.klaxon.Klaxon
+import at.fhooe.mc.wifipositioning.sectoring.VoronoiSectors
+import at.fhooe.mc.wifipositioning.model.recording.DataSnapshot
+import at.fhooe.mc.wifipositioning.model.recording.Player
+import at.fhooe.mc.wifipositioning.sectoring.Sectoring
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
-import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
 import javax.imageio.ImageIO
 import javax.imageio.ImageReader
 
-class ConfigurationModel(val configPath: String): Observable() {
-    var configuration: Configuration
+class ConfigurationModel(private val settingsPath: String): Observable() {
+    var settings: Settings
         private set
-    var building: Building? = null
+    lateinit var building: Building
         private set
-    var sectoring: ISectoring? = null
+    lateinit var sectoring: Sectoring
         private set
-    var positioning: IPositioning? = null
+    lateinit var positioning: Positioning
         private set
-    var graph: List<BuildingGraphNode>? = null
+    lateinit var graph: List<BuildingGraphNode>
         private set
-    var route: Route? = null
+    lateinit var route: Route
+        private set
+    lateinit var player: Player
         private set
 
     init {
-        configuration = loadConfiguration()!!
+        settings = loadConfiguration()!!
     }
 
     fun resetSectoring() {
@@ -47,50 +44,64 @@ class ConfigurationModel(val configPath: String): Observable() {
     }
 
     fun resetPositioning() {
-        when(configuration.positioningType) {
-            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
-            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
-            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
-            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
+        when(settings.positioningType) {
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building.accessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building.accessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building.accessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building.accessPoints, graph, 5)
         }
     }
 
-    fun loadConfiguration(): Configuration? {
-        val config = Klaxon().parse<Configuration>(File(configPath))
-        return config
+    private fun loadConfiguration(): Settings? {
+        var settings: Settings? = null
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val configFile = File(settingsPath)
+            settings = mapper.readValue(configFile, object : TypeReference<Settings>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return settings
     }
 
-    fun saveConfiguration(configuration: Configuration) {
-        this.configuration = configuration
+    fun saveConfiguration(settings: Settings) {
+        this.settings = settings
 
-        val klaxon = Klaxon()
-        val json = klaxon.toJsonString(configuration)
-
-        val configFile = File(configPath)
-        configFile.bufferedWriter().use { out -> out.write(json) }
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val configFile = File(settingsPath)
+            mapper.writeValue(configFile, settings)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
         setChanged()
         notifyObservers()
     }
 
-    fun loadFloors() {
-        val floorFile = File(configuration.floorsPath)
-        val inputStream = ImageIO.createImageInputStream(floorFile)
-
-        val iterator = ImageIO.getImageReaders(inputStream!!)
-        if (iterator == null || !iterator.hasNext()) {
-            throw IOException("Image file format not supported by ImageIO")
+    fun loadBuilding() {
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val buildingFile = File(settings.buildingPath)
+            building = mapper.readValue(buildingFile, object: TypeReference<Building>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+    }
 
-        building = Building("Building")
+    fun loadFloors() {
+        val floorFile = File(settings.floorsPath)
+        val inputStream = ImageIO.createImageInputStream(floorFile)
+        val iterator = ImageIO.getImageReaders(inputStream!!)
 
+        if (iterator == null || !iterator.hasNext()) throw IOException("Image file format not supported by ImageIO")
 
         val reader = iterator.next() as ImageReader
         reader.input = inputStream
 
         for (i in 0 until reader.getNumImages(true)) {
-            val bounds = InitSimulatorData.getFloorBounds(i)
-            building?.addFloor(Floor("Floor", bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5], InitSimulatorData.getTargetFloorAccessPoints(i), reader.read(i)))
+            building!!.floors[i].floorImage = reader.read(i)
         }
 
         sectoring = VoronoiSectors()
@@ -100,41 +111,44 @@ class ConfigurationModel(val configPath: String): Observable() {
         try {
             val mapper = ObjectMapper().registerKotlinModule()
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            val waypointFile = File(configuration.routePath)
+            val waypointFile = File(settings.routePath)
             route = mapper.readValue(waypointFile, object : TypeReference<Route>() {})
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
 
-    fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface): Player? {
+    fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface) {
         try {
             val mapper = ObjectMapper()
-            val simulationFile = File(configuration.walkRecordingPath)
+            val simulationFile = File(settings.walkRecordingPath)
             val dataSnapshots: List<DataSnapshot> = mapper.readValue(simulationFile, object : TypeReference<List<DataSnapshot>>() {})
-
-            return Player(dataSnapshots, playbackCallback, PlayBackEnum.SIMPLE)
+            player = Player(dataSnapshots, playbackCallback)
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
-        return null
     }
 
     fun loadBuildingGraph() {
         println("Load building graph.")
-        graph = Klaxon().parseArray<BuildingGraphNode>(FileInputStream(File(configuration.buildingGraphPath)))
-        graph?.let {
-            print("Loaded " + it.size + " graph nodes.")
+
+        try {
+            val mapper = ObjectMapper().registerKotlinModule()
+            val graphFile = File(settings.buildingGraphPath)
+            graph = mapper.readValue(graphFile, object: TypeReference<List<BuildingGraphNode>>() {})
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+
+        print("Loaded " + graph.size + " graph nodes.")
     }
 
     fun loadPositioningMethod() {
-        when(configuration.positioningType) {
-            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building!!.allAccessPoints)
-            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building!!.allAccessPoints, 5)
-            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building!!.allAccessPoints)
-            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building!!.allAccessPoints, graph!!, 5)
+        when(settings.positioningType) {
+            PositioningType.STRONGEST_AP_POSITIONING -> positioning = StrongestAccessPointPositioning(building.accessPoints)
+            PositioningType.AVERAGE_POSITIONING -> positioning = AveragePositioning(building.accessPoints, 5)
+            PositioningType.FILTERED_POSITIONING -> positioning = FilteredPositioning(building.accessPoints)
+            PositioningType.GRAPH_POSITIONING -> positioning = GraphPositioning(building.accessPoints, graph, 5)
         }
     }
 }

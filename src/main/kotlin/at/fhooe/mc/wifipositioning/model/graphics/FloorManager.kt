@@ -1,52 +1,44 @@
 package at.fhooe.mc.wifipositioning.model.graphics
 
-import at.fhooe.mc.wifipositioning.model.simulation.Position
-import at.fhooe.mc.wifipositioning.model.simulation.simulator.Floor
+import at.fhooe.mc.wifipositioning.model.building.Floor
+import at.fhooe.mc.wifipositioning.model.building.Position
 
-class FloorManager(floor: Floor) {
-
-    var floor: Floor? = null
-        private set
-    var widthMultiplikator: Double = 0.toDouble()
-        private set
-    var heightMultiplikator: Double = 0.toDouble()
-        private set
+class FloorManager(var floor: Floor) {
+    private var widthMultiplier: Double = 0.0
+    private var heightMultiplier: Double = 0.0
 
     val offsetTopInPixel: Int
-        get() = Math.round(floor!!.offsetTop * heightMultiplikator).toInt()
+        get() = Math.round(floor.bounds.top * heightMultiplier).toInt()
 
     val offsetLeftInPixel: Int
-        get() = Math.round(floor!!.offsetLeft * widthMultiplikator).toInt()
+        get() = Math.round(floor.bounds.left * widthMultiplier).toInt()
 
     val offsetBottomInPixel: Int
-        get() = Math.round((floor!!.offsetTop + floor!!.floorHeight) * heightMultiplikator).toInt()
+        get() = Math.round((floor.bounds.top + floor.bounds.heigth) * heightMultiplier).toInt()
 
     val offsetRightInPixel: Int
-        get() = Math.round((floor!!.offsetLeft + floor!!.floorWidth) * widthMultiplikator).toInt()
+        get() = Math.round((floor.bounds.left + floor.bounds.width) * widthMultiplier).toInt()
 
     init {
-        this.floor = floor
-        calculateMultiplicators()
+        calculateMultipliers()
     }
 
-    private fun calculateMultiplicators() {
-        floor?.let { floor ->
-            floor.floorImage?.let { floorImage ->
-                widthMultiplikator = floorImage.width / (floor.floorWidth + floor.offsetRight + floor.offsetLeft)
-                heightMultiplikator = floorImage.height / (floor.floorHeight + floor.offsetTop + floor.offsetBottom)
-            }
+    private fun calculateMultipliers() {
+        floor.floorImage?.let { floorImage ->
+            widthMultiplier = floorImage.width / (floor.bounds.width + floor.bounds.right + floor.bounds.left)
+            heightMultiplier = floorImage.height / (floor.bounds.heigth + floor.bounds.top + floor.bounds.bottom)
         }
     }
 
     fun calculatePixelPositionFromMeter(x: Int, y: Int): Position {
-        val xPos = (x * widthMultiplikator + floor!!.offsetLeft * widthMultiplikator).toInt()
-        val yPos = (y * heightMultiplikator + floor!!.offsetTop * heightMultiplikator).toInt()
+        val xPos = (x * widthMultiplier + floor.bounds.left * widthMultiplier).toInt()
+        val yPos = (y * heightMultiplier + floor.bounds.top * heightMultiplier).toInt()
 
         return Position(xPos, yPos)
     }
 
     fun changeFloor(floor: Floor) {
         this.floor = floor
-        calculateMultiplicators()
+        calculateMultipliers()
     }
 }
