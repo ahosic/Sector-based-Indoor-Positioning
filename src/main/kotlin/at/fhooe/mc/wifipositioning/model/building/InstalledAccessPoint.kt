@@ -8,6 +8,9 @@ data class InstalledAccessPoint(@JsonProperty("id") val id: String,
                                 @JsonProperty("bssid") val bssid: String,
                                 @JsonProperty("position") val position: Position) {
 
+    val fiveBytePrefix: String
+        get() = bssid.substringBeforeLast(":")
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false

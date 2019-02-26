@@ -7,42 +7,29 @@ import at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import kotlin.streams.toList
 
-class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>, private val graph: List<BuildingGraphNode>, windowSize: Int) : Positioning {
+class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>,
+                       private val graph: List<BuildingGraphNode>,
+                       windowSize: Int) : Positioning {
 
     private val history: MutableList<InstalledAccessPoint> = arrayListOf()
     private val filtering: Filtering<InstalledAccessPoint>
     private val slidingWindow: AccessPointSlidingWindow
+    private val mode: AccessPointIdentificationMode
 
     init {
+        mode = AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION
         filtering = SectorLowPassFilter(5)
-        slidingWindow = AccessPointSlidingWindow(windowSize)
+        slidingWindow = AccessPointSlidingWindow(windowSize, mode)
     }
 
-    override fun calculatePosition(scannedAccessPoints: List<ScannedAccessPoint>): InstalledAccessPoint? {
-        slidingWindow.addElement(scannedAccessPoints)
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
+        slidingWindow.addElement(scannedAccessPointList)
 
-        var bssid = ""
-        if (history.size == 0) {
-            bssid = slidingWindow.bestAverageBSSID
-        } else {
-            // Get neighbors from last position
-            val lastAccessPoint = history.last()
-            val node = graph
-                    .filter { node -> node.id == lastAccessPoint.id }
-                    .firstOrNull()
-
-            node?.let {
-                val allowedAccessPoints = installedAccessPoints
-                        .stream()
-                        .filter { ap -> it.neighbors.contains(ap.id) }
-                        .toList()
-
-                bssid = slidingWindow.getBestAverageBSSID(allowedAccessPoints)
-            }
-        }
+        val allowedAccessPoints = getAllowedAccessPoints()
+        val bssid = slidingWindow.getBestAverageBSSID(allowedAccessPoints)
 
         // Retrieve sector
-        val accessPoint = getAccessPoint(bssid)
+        val accessPoint = getAccessPoint(bssid, allowedAccessPoints)
 
         accessPoint?.let {
             val filteredPosition = filtering.filter(it)
@@ -55,13 +42,36 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         return null
     }
 
-    private fun getAccessPoint(bssid: String): InstalledAccessPoint? {
+    private fun getAccessPoint(bssid: String, accessPoints: List<InstalledAccessPoint>): InstalledAccessPoint? {
         bssid.trim().ifEmpty {
             return null
         }
 
-        return installedAccessPoints
-                .filter { ap -> ap.bssid.toLowerCase() == bssid }
-                .firstOrNull()
+        var searchedBSSID = bssid.toLowerCase()
+        if(mode == AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION) {
+            searchedBSSID = searchedBSSID.substringBeforeLast(":")
+        }
+
+        return accessPoints.firstOrNull { ap -> ap.bssid.toLowerCase().startsWith(searchedBSSID)}
+    }
+
+    private fun getAllowedAccessPoints(): List<InstalledAccessPoint> {
+        if(history.size == 0) {
+            return installedAccessPoints
+                    .stream()
+                    .filter { ap -> ap.id == "4-10" }
+                    .toList()
+        } else {
+            // Get neighbors from last position
+            val lastAccessPoint = history.last()
+            val node = graph
+                    .filter { node -> node.id == lastAccessPoint.id }
+                    .first()
+
+            return installedAccessPoints
+                    .stream()
+                    .filter { ap -> node.neighbors.contains(ap.id) }
+                    .toList()
+        }
     }
 }

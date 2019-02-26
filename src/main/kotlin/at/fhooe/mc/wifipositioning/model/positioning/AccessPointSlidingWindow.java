@@ -11,8 +11,17 @@ import java.util.stream.Collectors;
  */
 public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoint> {
 
+    private List<String> allowedBSSIDs;
+    private AccessPointIdentificationMode mode;
+
+    public AccessPointSlidingWindow(int windowSize, AccessPointIdentificationMode mode) {
+        super(windowSize);
+        this.mode = mode;
+    }
+
     public AccessPointSlidingWindow(int windowSize) {
         super(windowSize);
+        mode = AccessPointIdentificationMode.SIX_BYTE_IDENTIFICATION;
     }
 
     /**
@@ -33,15 +42,12 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
 
     public String getBestAverageBSSID(List<InstalledAccessPoint> allowedAccessPoints) {
         Map<String, SNRDataAverage> averages = computeAverages();
-        List<String> allowedBSSIDs = allowedAccessPoints
-                .stream()
-                .map(ap -> ap.getBssid().toLowerCase())
-                .collect(Collectors.toList());
+        setAllowedBSSIDs(allowedAccessPoints);
 
         // Find BSSID with best average signal level
         Optional<Map.Entry<String, SNRDataAverage>> averageEntry = averages.entrySet()
                 .stream()
-                .filter(entry -> allowedBSSIDs.contains(entry.getKey().toLowerCase()))
+                .filter(entry -> isValidBSSID(entry.getKey().toLowerCase()))
                 .max(Comparator.comparingDouble(entry -> entry.getValue().getAverage()));
 
         if (!averageEntry.isPresent()) return "";
@@ -64,6 +70,27 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
         }
 
         return averages;
+    }
+
+    private boolean isValidBSSID(String bssid) {
+        return allowedBSSIDs.stream().anyMatch(bssid::startsWith);
+    }
+
+    private void setAllowedBSSIDs(List<InstalledAccessPoint> allowedAccessPoints) {
+        switch (mode) {
+            case SIX_BYTE_IDENTIFICATION:
+                allowedBSSIDs = allowedAccessPoints
+                        .stream()
+                        .map(ap -> ap.getBssid().toLowerCase())
+                        .collect(Collectors.toList());
+                break;
+            case FIVE_BYTE_IDENTIFICATION:
+                allowedBSSIDs = allowedAccessPoints
+                        .stream()
+                        .map(ap -> ap.getFiveBytePrefix().toLowerCase())
+                        .collect(Collectors.toList());
+                break;
+        }
     }
 
     /**
