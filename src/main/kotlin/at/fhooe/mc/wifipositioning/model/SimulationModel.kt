@@ -1,5 +1,7 @@
 package at.fhooe.mc.wifipositioning.model
 
+import at.fhooe.mc.wifipositioning.App
+import at.fhooe.mc.wifipositioning.debug.ApplicationState
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.building.Building
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
@@ -27,6 +29,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     private var accessPoints: List<InstalledAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
+
+    private var currentSector: InstalledAccessPoint? = null
 
     private var wayPointCount: IntArray? = null
     private var wayPointNumber = 1
@@ -142,16 +146,17 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
 
     private fun addPlayerData(scannedAccessPointList: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
-        val p = positioning.calculatePosition(scannedAccessPointList)
-        if (p == null) {
-            callObserver(createBufferedImage() ?: return)
-            return
+
+        currentSector = positioning.calculatePosition(scannedAccessPointList)
+
+        currentSector?.let { currentSector ->
+            val newPos = floorManager?.calculatePixelPositionFromMeter(currentSector.position.x, currentSector.position.y)
+            newPos?.let {
+                sectoring.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
+            }
         }
-        val newPos = floorManager?.calculatePixelPositionFromMeter(p.position.x, p.position.y)
-        newPos?.let {
-            sectoring.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
-            callObserver(createBufferedImage() ?: return)
-        }
+
+        callObserver(createBufferedImage() ?: return)
     }
 
     /**
@@ -216,6 +221,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     override fun allAccessPoints(scannedAccessPointList: List<ScannedAccessPoint>) {
+        App.debugger.state = ApplicationState(scannedAccessPointList, currentSector, null)
         addPlayerData(scannedAccessPointList)
     }
 

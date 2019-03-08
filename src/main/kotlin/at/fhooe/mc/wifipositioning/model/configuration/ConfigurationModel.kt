@@ -35,6 +35,10 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
     lateinit var player: Player
         private set
 
+    companion object {
+        var debugMode = false
+    }
+
     init {
         settings = loadConfiguration()!!
     }
