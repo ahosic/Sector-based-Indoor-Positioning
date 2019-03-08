@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.debug
 
-import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
+import at.fhooe.mc.wifipositioning.App
 
 class DebugController : Debugging {
     private var paused = false
@@ -22,7 +22,7 @@ class DebugController : Debugging {
     private var debuggables: MutableList<Debuggable> = mutableListOf()
 
     override fun isPaused(): Boolean {
-        return if (ConfigurationModel.debugMode) paused else false
+        return if (App.isDebugMode) paused else false
     }
 
     override fun resume() {
@@ -49,7 +49,7 @@ class DebugController : Debugging {
     }
 
     private fun notify(executionBlock: (Debuggable) -> Unit) {
-        if (!ConfigurationModel.debugMode) return
+        if (!App.isDebugMode) return
 
         debuggables.forEach {
             executionBlock(it)

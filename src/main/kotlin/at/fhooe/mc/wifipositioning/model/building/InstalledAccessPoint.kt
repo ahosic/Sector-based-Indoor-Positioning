@@ -11,6 +11,10 @@ data class InstalledAccessPoint(@JsonProperty("id") val id: String,
     val fiveBytePrefix: String
         get() = bssid.substringBeforeLast(":")
 
+    override fun toString(): String {
+        return "[$id] $description - $bssid"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
