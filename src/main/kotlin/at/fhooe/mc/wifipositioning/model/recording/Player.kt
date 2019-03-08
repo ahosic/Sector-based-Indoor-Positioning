@@ -5,8 +5,11 @@ import at.fhooe.mc.wifipositioning.debug.ApplicationState
 import at.fhooe.mc.wifipositioning.debug.DebugController
 import at.fhooe.mc.wifipositioning.debug.Debuggable
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
+import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 
-class Player(private var dataSnapshots: List<DataSnapshot>, private var callback: PlaybackCallbackInterface) : Debuggable {
+class Player(private var dataSnapshots: List<DataSnapshot>,
+             private var callback: PlaybackCallbackInterface,
+             private val config: ConfigurationModel) : Debuggable {
 
     private var playBackSpeed: Long = 1
     private var wayPointCount: IntArray? = null
@@ -57,7 +60,7 @@ class Player(private var dataSnapshots: List<DataSnapshot>, private var callback
 
             dataSnapshot.wifiDataList
                     .stream()
-                    .filter { wd -> wd.ssid == "fhhgb" }
+                    .filter { wd -> wd.ssid == config.building.ssid }
                     .forEach {
                         callback.allAccessPoints(it.scannedAccessPoints)
                     }
