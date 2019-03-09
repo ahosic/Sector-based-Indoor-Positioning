@@ -221,7 +221,12 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     override fun allAccessPoints(scannedAccessPointList: List<ScannedAccessPoint>) {
-        App.debugger.state = ApplicationState(scannedAccessPointList, currentSector, null)
+        App.debugger.state = ApplicationState(scannedAccessPointList,
+                currentSector,
+                null,
+                wayPointNumber,
+                interpolationStep)
+
         addPlayerData(scannedAccessPointList)
     }
 

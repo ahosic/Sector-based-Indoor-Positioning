@@ -3,6 +3,7 @@ package at.fhooe.mc.wifipositioning.debug
 import at.fhooe.mc.wifipositioning.App
 
 class DebugController : Debugging {
+
     private var paused = false
 
     override var state: ApplicationState? = null
@@ -11,6 +12,10 @@ class DebugController : Debugging {
             paused = true
 
             value?.let {
+                report {
+                    it.stateChanged(this, value)
+                }
+
                 notify {
                     it.onDebugPause(this, value)
                 }
@@ -20,6 +25,7 @@ class DebugController : Debugging {
     private var entries: MutableList<DebugLogEntry> = mutableListOf()
 
     private var debuggables: MutableList<Debuggable> = mutableListOf()
+    private var debugObservers: MutableList<DebugReporting> = mutableListOf()
 
     override fun isPaused(): Boolean {
         return if (App.isDebugMode) paused else false
@@ -36,6 +42,10 @@ class DebugController : Debugging {
 
     override fun log(entry: DebugLogEntry) {
         entries.add(entry)
+
+        report {
+            it.logged(this, entry)
+        }
     }
 
     // Debuggable Observers
@@ -54,5 +64,23 @@ class DebugController : Debugging {
         debuggables.forEach {
             executionBlock(it)
         }
+    }
+
+    // Debug Reporting
+
+    private fun report(executionBlock: (DebugReporting) -> Unit) {
+        if (!App.isDebugMode) return
+
+        debugObservers.forEach {
+            executionBlock(it)
+        }
+    }
+
+    override fun addDebugReportObserver(observer: DebugReporting) {
+        debugObservers.add(observer)
+    }
+
+    override fun removeDebugReportObserver(observer: DebugReporting) {
+        debugObservers.remove(observer)
     }
 }

@@ -5,4 +5,6 @@ import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 
 data class ApplicationState(val scannedAccessPoints: List<ScannedAccessPoint>,
                             val currentSector: InstalledAccessPoint?,
-                            val allowedSectors: List<InstalledAccessPoint>?)
+                            val allowedSectors: List<InstalledAccessPoint>?,
+                            val wayPointNumber: Int,
+                            val interpolationStep: Int)

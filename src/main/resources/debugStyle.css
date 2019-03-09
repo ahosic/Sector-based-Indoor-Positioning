@@ -1,0 +1,26 @@
+.jfx-rippler {
+    -jfx-rippler-fill: #0336FF;
+}
+
+.mainLayout {
+    -fx-background-color: white;
+}
+
+
+.resumeButton {
+    -fx-padding: 8px 16px 8px 16px;
+    -jfx-button-type: FLAT;
+    -fx-background-color: #0336FF;
+    -fx-text-fill: white;
+}
+
+.resumeButton .jfx-rippler {
+    -jfx-rippler-fill: white;
+}
+
+.pane {
+    -jfx-unfocus-color: transparent;
+    -jfx-focus-color: transparent;
+    -fx-border-color: #C2C2C2 ;
+    -fx-border-width: 1 ;
+}

@@ -1,5 +1,6 @@
 package at.fhooe.mc.wifipositioning.ui
 
+import at.fhooe.mc.wifipositioning.App
 import at.fhooe.mc.wifipositioning.controller.SimulationController
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel
 import at.fhooe.mc.wifipositioning.model.SimulationModel
@@ -47,6 +48,15 @@ class SimulationApplication : Application(), Observer {
             stage.onCloseRequest = controller
 
             show()
+
+            if(App.isDebugMode) {
+                val debugStage = Stage()
+                debugStage.initModality(Modality.NONE)
+                debugStage.initOwner(stage)
+
+                val debugView = DebugApplication(App.debugger)
+                debugView.start(debugStage)
+            }
         }
     }
 

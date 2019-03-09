@@ -9,4 +9,7 @@ interface Debugging {
 
     fun addDebuggable(debuggable: Debuggable)
     fun removeDebuggable(debuggable: Debuggable)
+
+    fun addDebugReportObserver(observer: DebugReporting)
+    fun removeDebugReportObserver(observer: DebugReporting)
 }
