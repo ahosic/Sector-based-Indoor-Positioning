@@ -22,6 +22,9 @@ class DebugController : Debugging {
             }
         }
 
+    override val allLogEntries: List<DebugLogEntry>
+        get() = entries
+
     private var entries: MutableList<DebugLogEntry> = mutableListOf()
 
     private var debuggables: MutableList<Debuggable> = mutableListOf()

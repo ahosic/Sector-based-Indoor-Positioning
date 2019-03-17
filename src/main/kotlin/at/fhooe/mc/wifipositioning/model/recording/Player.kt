@@ -3,6 +3,7 @@ package at.fhooe.mc.wifipositioning.model.recording
 import at.fhooe.mc.wifipositioning.App
 import at.fhooe.mc.wifipositioning.debug.ApplicationState
 import at.fhooe.mc.wifipositioning.debug.DebugController
+import at.fhooe.mc.wifipositioning.debug.DebugLogEntry
 import at.fhooe.mc.wifipositioning.debug.Debuggable
 import at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface
 import at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel

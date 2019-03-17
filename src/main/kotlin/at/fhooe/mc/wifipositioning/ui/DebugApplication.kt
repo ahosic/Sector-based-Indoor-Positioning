@@ -111,6 +111,13 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         outputPane.styleClass.add("pane")
         outputPane.isEditable = false
 
+        val output = StringBuilder()
+        for(entry in debugger.allLogEntries) {
+            output.appendln(entry)
+        }
+
+        outputPane.text = output.toString()
+
         box.top = label
         box.center = outputPane
 
