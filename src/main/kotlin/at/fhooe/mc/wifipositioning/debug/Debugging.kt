@@ -6,6 +6,7 @@ interface Debugging {
 
     fun isPaused(): Boolean
     fun resume()
+    fun skipToNextWayPoint()
     fun log(entry: DebugLogEntry)
 
     fun addDebuggable(debuggable: Debuggable)

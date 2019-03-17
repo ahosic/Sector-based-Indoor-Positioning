@@ -23,6 +23,7 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
     private val scanningInputPane = JFXTextArea()
     private val outputPane = JFXTextArea()
     private val resumeButton = JFXButton("Resume".toUpperCase())
+    private val skipToNextWaypointButton = JFXButton("Skip to next Waypoint".toUpperCase())
 
     init {
         stylePath = javaClass.classLoader.getResource("debugStyle.css").toExternalForm()
@@ -56,6 +57,7 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         mainPane.spacing = 8.0
 
         appendResumeButton(toolBoxPane)
+        appendSkipToNextWaypointButton(toolBoxPane)
 
         appendStatePane(mainPane)
         appendScanningPane(mainPane)
@@ -78,12 +80,24 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         pane.children.add(resumeButton)
     }
 
+    private fun appendSkipToNextWaypointButton(pane: HBox) {
+        skipToNextWaypointButton.styleClass.add("resumeButton")
+        skipToNextWaypointButton.setOnAction {
+            Platform.runLater {
+                debugger.skipToNextWayPoint()
+            }
+        }
+
+        pane.children.add(skipToNextWaypointButton)
+    }
+
     private fun appendStatePane(pane: HBox) {
         val box = BorderPane()
         val label = Label("Application State")
 
         statePane.styleClass.add("pane")
         statePane.isEditable = false
+        statePane.prefWidth = 200.0
 
         box.top = label
         box.center = statePane
@@ -97,6 +111,7 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
 
         scanningInputPane.styleClass.add("pane")
         scanningInputPane.isEditable = false
+        scanningInputPane.prefWidth = 250.0
 
         box.top = label
         box.center = scanningInputPane
@@ -110,6 +125,7 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
 
         outputPane.styleClass.add("pane")
         outputPane.isEditable = false
+        outputPane.prefWidth = 500.0
 
         val output = StringBuilder()
         for(entry in debugger.allLogEntries) {
@@ -125,29 +141,38 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
     }
 
     override fun stateChanged(debugger: Debugging, state: ApplicationState) {
-        // Application State
-        val output = StringBuilder()
-        output.appendln("Sector ID: ${state.currentSector?.id}")
-        output.appendln("Description: ${state.currentSector?.description}")
-        output.appendln("Waypoint: ${state.wayPointNumber}")
-        output.appendln("Interpolation step: ${state.interpolationStep}")
+        Platform.runLater {
+            synchronized(this) {
+                // Application State
+                val output = StringBuilder()
+                output.appendln("Sector ID: ${state.currentSector?.id}")
+                output.appendln("Description: ${state.currentSector?.description}")
+                output.appendln("Waypoint: ${state.wayPointNumber}")
+                output.appendln("Interpolation step: ${state.interpolationStep}")
 
-        statePane.text = output.toString()
+                statePane.text = output.toString()
 
-        // Scanning
+                // Scanning
 
-        val scannedOutput = StringBuilder()
-        for(scanned in state.scannedAccessPoints){
-            scannedOutput.appendln(scanned)
+                val scannedOutput = StringBuilder()
+                for (scanned in state.scannedAccessPoints.sortedByDescending { it.signalLevel }) {
+                    scannedOutput.appendln(scanned)
+                }
+
+                scanningInputPane.text = scannedOutput.toString()
+                outputPane.text = ""
+            }
         }
-
-        scanningInputPane.text = scannedOutput.toString()
     }
 
     override fun logged(debugger: Debugging, entry: DebugLogEntry) {
-        val output = StringBuilder(outputPane.text)
-        output.appendln(entry)
+        Platform.runLater {
+            synchronized(this) {
+                val output = StringBuilder(outputPane.text)
+                output.appendln(entry)
 
-        outputPane.text = output.toString()
+                outputPane.text = output.toString()
+            }
+        }
     }
 }

@@ -9,6 +9,10 @@ class DebugController : Debugging {
     override var state: ApplicationState? = null
         set(value) {
             field = value
+
+            if (nextWaypointNumber != null && nextWaypointNumber != value?.wayPointNumber) return
+
+            nextWaypointNumber = null
             paused = true
 
             value?.let {
@@ -20,6 +24,7 @@ class DebugController : Debugging {
                     it.onDebugPause(this, value)
                 }
             }
+
         }
 
     override val allLogEntries: List<DebugLogEntry>
@@ -30,6 +35,8 @@ class DebugController : Debugging {
     private var debuggables: MutableList<Debuggable> = mutableListOf()
     private var debugObservers: MutableList<DebugReporting> = mutableListOf()
 
+    private var nextWaypointNumber: Int? = null
+
     override fun isPaused(): Boolean {
         return if (App.isDebugMode) paused else false
     }
@@ -37,6 +44,17 @@ class DebugController : Debugging {
     override fun resume() {
         paused = false
         state?.let { state ->
+            notify {
+                it.onDebugResume(this, state)
+            }
+        }
+    }
+
+    override fun skipToNextWayPoint() {
+        paused = false
+        state?.let { state ->
+            nextWaypointNumber = state.wayPointNumber + 1
+
             notify {
                 it.onDebugResume(this, state)
             }

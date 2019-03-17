@@ -1,5 +1,8 @@
 package at.fhooe.mc.wifipositioning.model.positioning
 
+import at.fhooe.mc.wifipositioning.App
+import at.fhooe.mc.wifipositioning.debug.DebugLogEntry
+import at.fhooe.mc.wifipositioning.debug.DebugLogEntryCategory
 import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.filtering.Filtering
@@ -16,6 +19,8 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
     private val slidingWindow: AccessPointSlidingWindow
     private val mode: AccessPointIdentificationMode
 
+    private val tag = "Graph Positioning"
+
     init {
         mode = AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION
         filtering = SectorLowPassFilter(5)
@@ -26,13 +31,19 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         slidingWindow.addElement(scannedAccessPointList)
 
         val allowedAccessPoints = getAllowedAccessPoints()
+        App.debugger.log(DebugLogEntry(tag, "Allowed Access Points:", DebugLogEntryCategory.Positioning))
+        printAccessPoints(allowedAccessPoints)
+
         val bssid = slidingWindow.getBestAverageBSSID(allowedAccessPoints)
+        App.debugger.log(DebugLogEntry(tag, "Best BSSID: $bssid", DebugLogEntryCategory.Positioning))
 
         // Retrieve sector
         val accessPoint = getAccessPoint(bssid, allowedAccessPoints)
+        App.debugger.log(DebugLogEntry(tag, "Best Access Point: $accessPoint", DebugLogEntryCategory.Positioning))
 
         accessPoint?.let {
             val filteredPosition = filtering.filter(it)
+            App.debugger.log(DebugLogEntry(tag, "Filtered Position: $filteredPosition", DebugLogEntryCategory.Positioning))
 
             // Add position to history
             history.add(filteredPosition)
@@ -72,6 +83,12 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
                     .stream()
                     .filter { ap -> node.neighbors.contains(ap.id) }
                     .toList()
+        }
+    }
+
+    private fun printAccessPoints(accessPoints: List<InstalledAccessPoint>) {
+        accessPoints.forEach {
+            App.debugger.log(DebugLogEntry(tag, it.toString(), DebugLogEntryCategory.Positioning))
         }
     }
 }
