@@ -38,24 +38,26 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         App.debugger.log(DebugLogEntry(tag, "Best BSSID: $bssid", DebugLogEntryCategory.Positioning))
 
         // Retrieve sector
-        val accessPoint = getAccessPoint(bssid, allowedAccessPoints)
-        App.debugger.log(DebugLogEntry(tag, "Best Access Point: $accessPoint", DebugLogEntryCategory.Positioning))
+        val accessPoints = getAccessPoints(bssid, allowedAccessPoints)
+        //App.debugger.log(DebugLogEntry(tag, "Best Access Point: $accessPoint", DebugLogEntryCategory.Positioning))
 
-        accessPoint?.let {
+        accessPoints?.let {
 //            val filteredPosition = filtering.filter(it)
 //            App.debugger.log(DebugLogEntry(tag, "Filtered Position: $filteredPosition", DebugLogEntryCategory.Positioning))
 
-            // Add position to history
-            history.add(accessPoint)
+            if (accessPoints.isEmpty()) return null
 
-            val estimation = SectorEstimation(listOf(accessPoint))
+            // Add position to history
+            history.add(accessPoints.first())
+
+            val estimation = SectorEstimation(accessPoints)
             return estimation
         }
 
         return null
     }
 
-    private fun getAccessPoint(bssid: String, accessPoints: List<InstalledAccessPoint>): InstalledAccessPoint? {
+    private fun getAccessPoints(bssid: String, accessPoints: List<InstalledAccessPoint>): List<InstalledAccessPoint>? {
         bssid.trim().ifEmpty {
             return null
         }
@@ -65,7 +67,7 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
             searchedBSSID = searchedBSSID.substringBeforeLast(":")
         }
 
-        return accessPoints.firstOrNull { ap -> ap.bssid.toLowerCase().startsWith(searchedBSSID)}
+        return accessPoints.filter { ap -> ap.bssid.toLowerCase().startsWith(searchedBSSID)}
     }
 
     private fun getAllowedAccessPoints(): List<InstalledAccessPoint> {
