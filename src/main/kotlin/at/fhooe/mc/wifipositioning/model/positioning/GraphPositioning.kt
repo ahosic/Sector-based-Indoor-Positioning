@@ -14,7 +14,7 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
                        private val graph: List<BuildingGraphNode>,
                        windowSize: Int) : Positioning {
 
-    private val history: MutableList<InstalledAccessPoint> = arrayListOf()
+    private val history: MutableList<SectorEstimation> = arrayListOf()
     private val filtering: Filtering<InstalledAccessPoint>
     private val slidingWindow: AccessPointSlidingWindow
     private val mode: AccessPointIdentificationMode
@@ -47,10 +47,11 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
 
             if (accessPoints.isEmpty()) return null
 
-            // Add position to history
-            history.add(accessPoints.first())
-
             val estimation = SectorEstimation(accessPoints)
+
+            // Add position to history
+            history.add(estimation)
+
             return estimation
         }
 
@@ -78,14 +79,14 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
                     .toList()
         } else {
             // Get neighbors from last position
-            val lastAccessPoint = history.last()
-            val node = graph
-                    .filter { node -> node.id == lastAccessPoint.id }
-                    .first()
+            val lastEstimation= history.last()
+            val nodes = graph
+                    .filter { node -> lastEstimation.sectors.any { it.id == node.id }}
+                    .toList()
 
             return installedAccessPoints
                     .stream()
-                    .filter { ap -> node.neighbors.contains(ap.id) }
+                    .filter { ap -> nodes.any { node -> node.neighbors.contains(ap.id) } }
                     .toList()
         }
     }
