@@ -23,13 +23,16 @@ class FilteredPositioning(private val allAccessPoints: List<InstalledAccessPoint
         filtering = SectorLowPassFilter(10)
     }
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
         // Calculate Position
         val averagePos = positioning.calculatePosition(scannedAccessPointList)
 
         // Filter Position
         averagePos?.let {
-            return filtering.filter(it)
+            if (it.sectors.isEmpty()) return null
+
+            val filtered = filtering.filter(it.sectors.first())
+            return SectorEstimation(listOf(filtered))
         }
 
         return null

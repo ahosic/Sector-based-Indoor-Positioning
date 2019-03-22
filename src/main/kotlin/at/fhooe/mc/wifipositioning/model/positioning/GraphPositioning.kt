@@ -27,7 +27,7 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         slidingWindow = AccessPointSlidingWindow(windowSize, mode)
     }
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
         slidingWindow.addElement(scannedAccessPointList)
 
         val allowedAccessPoints = getAllowedAccessPoints()
@@ -42,12 +42,14 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         App.debugger.log(DebugLogEntry(tag, "Best Access Point: $accessPoint", DebugLogEntryCategory.Positioning))
 
         accessPoint?.let {
-            val filteredPosition = filtering.filter(it)
-            App.debugger.log(DebugLogEntry(tag, "Filtered Position: $filteredPosition", DebugLogEntryCategory.Positioning))
+//            val filteredPosition = filtering.filter(it)
+//            App.debugger.log(DebugLogEntry(tag, "Filtered Position: $filteredPosition", DebugLogEntryCategory.Positioning))
 
             // Add position to history
-            history.add(filteredPosition)
-            return filteredPosition
+            history.add(accessPoint)
+
+            val estimation = SectorEstimation(listOf(accessPoint))
+            return estimation
         }
 
         return null

@@ -16,13 +16,19 @@ class AveragePositioning(val allAccessPoints: List<InstalledAccessPoint>, privat
 
     private val accessPointSlidingWindow: AccessPointSlidingWindow = AccessPointSlidingWindow(windowSize)
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): InstalledAccessPoint? {
+    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
         accessPointSlidingWindow.addElement(scannedAccessPointList)
 
         val bssid = accessPointSlidingWindow.bestAverageBSSID
 
-        return allAccessPoints
+        val accessPoint = allAccessPoints
                 .filter { ap -> ap.bssid.toLowerCase() == bssid }
                 .firstOrNull()
+
+        accessPoint?.let {
+            return SectorEstimation(listOf(it))
+        }
+        
+        return null
     }
 }
