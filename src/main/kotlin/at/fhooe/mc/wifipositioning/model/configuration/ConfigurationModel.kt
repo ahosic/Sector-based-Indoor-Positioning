@@ -123,7 +123,7 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
             val mapper = ObjectMapper()
             val simulationFile = File(settings.walkRecordingPath)
             val dataSnapshots: List<DataSnapshot> = mapper.readValue(simulationFile, object : TypeReference<List<DataSnapshot>>() {})
-            player = Player(dataSnapshots, playbackCallback)
+            player = Player(dataSnapshots, playbackCallback, this)
         } catch (e: IOException) {
             e.printStackTrace()
         }

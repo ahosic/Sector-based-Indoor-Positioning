@@ -14,6 +14,6 @@ data class ScannedAccessPoint(@JsonProperty("bssid") val bssid: String,
     }
 
     override fun toString(): String {
-        return bssid
+        return "$bssid [$signalLevel dbM]"
     }
 }
