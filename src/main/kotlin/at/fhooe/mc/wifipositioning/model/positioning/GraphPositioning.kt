@@ -24,7 +24,7 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
 
     init {
         mode = AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION
-        filtering = EstimationLowPassFilter(2)
+        filtering = EstimationLowPassFilter(4)
         slidingWindow = AccessPointSlidingWindow(windowSize, mode, RSSILowPassFilter(0.1f))
     }
 
