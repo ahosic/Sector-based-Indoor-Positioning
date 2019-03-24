@@ -9,6 +9,7 @@ import at.fhooe.mc.wifipositioning.model.filtering.EstimationLowPassFilter
 import at.fhooe.mc.wifipositioning.model.filtering.Filtering
 import at.fhooe.mc.wifipositioning.model.filtering.RSSILowPassFilter
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
+import at.fhooe.mc.wifipositioning.model.slidingwindow.NewAccessPointSlidingWindow
 import kotlin.streams.toList
 
 class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>,
@@ -17,19 +18,18 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
 
     private val history: MutableList<SectorEstimation> = arrayListOf()
     private val filtering: Filtering<SectorEstimation>
-    private val slidingWindow: AccessPointSlidingWindow
-    private val mode: AccessPointIdentificationMode
+    private val slidingWindow: NewAccessPointSlidingWindow
+    private val mode: AccessPointIdentificationMode = AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION
 
     private val tag = "Graph Positioning"
 
     init {
-        mode = AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION
         filtering = EstimationLowPassFilter(4)
-        slidingWindow = AccessPointSlidingWindow(windowSize, mode, RSSILowPassFilter(0.1f))
+        slidingWindow = NewAccessPointSlidingWindow(windowSize, mode, RSSILowPassFilter(0.1f)) //AccessPointSlidingWindow(windowSize, mode, RSSILowPassFilter(0.1f))
     }
 
     override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
-        slidingWindow.addElement(scannedAccessPointList)
+        slidingWindow.addAccessPoints(scannedAccessPointList)
 
         // Generate allowed path a user can go
         val allowedAccessPoints = getAllowedSectors()
@@ -37,8 +37,10 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         printAccessPoints(allowedAccessPoints)
 
         // Find best BSSID
-        val bssid = slidingWindow.getBestAverageBSSID(allowedAccessPoints)
+        val bssid = slidingWindow.getBestBSSID(allowedAccessPoints)
         App.debugger.log(DebugLogEntry(tag, "Best BSSID: $bssid", DebugLogEntryCategory.Positioning))
+
+        if (bssid == null) return null
 
         // Retrieve sectors for best BSSID
         val sectors = getSectors(bssid, allowedAccessPoints)
