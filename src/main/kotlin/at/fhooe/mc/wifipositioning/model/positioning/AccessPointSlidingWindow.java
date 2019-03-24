@@ -1,6 +1,7 @@
 package at.fhooe.mc.wifipositioning.model.positioning;
 
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint;
+import at.fhooe.mc.wifipositioning.model.filtering.Filtering;
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint;
 
 import java.util.*;
@@ -13,6 +14,13 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
 
     private List<String> allowedBSSIDs;
     private AccessPointIdentificationMode mode;
+    private Filtering<ScannedAccessPoint> filter;
+
+    public AccessPointSlidingWindow(int windowSize, AccessPointIdentificationMode mode, Filtering<ScannedAccessPoint> filter) {
+        super(windowSize);
+        this.mode = mode;
+        this.filter = filter;
+    }
 
     public AccessPointSlidingWindow(int windowSize, AccessPointIdentificationMode mode) {
         super(windowSize);
@@ -61,11 +69,16 @@ public class AccessPointSlidingWindow extends BaseSlidingWindow<ScannedAccessPoi
 
         // Generate Average Signal Levels per BSSID and store into Map
         for (ScannedAccessPoint scannedAccessPoint : allScannedAccessPoints) {
-            SNRDataAverage average = averages.get(scannedAccessPoint.getBssid());
+            ScannedAccessPoint ap = scannedAccessPoint;
+            if (filter != null) {
+                ap = filter.filter(scannedAccessPoint);
+            }
+
+            SNRDataAverage average = averages.get(ap.getBssid());
             if (average != null) {
-                average.addSNRValues(scannedAccessPoint.getSignalLevel());
+                average.addSNRValues(ap.getSignalLevel());
             } else {
-                averages.put(scannedAccessPoint.getBssid(), new SNRDataAverage(scannedAccessPoint.getSignalLevel()));
+                averages.put(ap.getBssid(), new SNRDataAverage(ap.getSignalLevel()));
             }
         }
 
