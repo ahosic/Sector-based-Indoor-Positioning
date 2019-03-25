@@ -3,14 +3,14 @@ package at.fhooe.mc.wifipositioning.model.positioning
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 
 /**
- * An interface for calculating positions.
+ * An interface for a positioning algorithm
  */
 interface Positioning {
     /**
-     * Calculates a sector-based position using detected access points.
+     * Calculates a sector estimation using detected access points.
      *
      * @param scannedAccessPointList a list of detected access points.
-     * @return a sector-based position
+     * @return an estimation of a sector
      */
-    fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation?
+    fun estimateSector(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation?
 }

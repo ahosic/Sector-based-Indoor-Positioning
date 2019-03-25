@@ -176,10 +176,10 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         val floorLabel = Label("Positioning Method: ")
         layout.add(floorLabel, 0, 5)
 
-        positioningCombobox.items.add(Label(PositioningType.STRONGEST_AP_POSITIONING.name))
-        positioningCombobox.items.add(Label(PositioningType.AVERAGE_POSITIONING.name))
-        positioningCombobox.items.add(Label(PositioningType.FILTERED_POSITIONING.name))
-        positioningCombobox.items.add(Label(PositioningType.GRAPH_POSITIONING.name))
+        positioningCombobox.items.add(Label(PositioningType.StrongestRSSI.name))
+        positioningCombobox.items.add(Label(PositioningType.SlidingWindow.name))
+        positioningCombobox.items.add(Label(PositioningType.Filtered.name))
+        positioningCombobox.items.add(Label(PositioningType.Graphed.name))
 
         val idx = positioningCombobox.items.indexOfFirst { label -> label.text.equals(configModel.settings.positioningType.name) }
         positioningCombobox.selectionModel.select(idx)

@@ -4,5 +4,5 @@
   "walkRecordingPath": "/Users/almin/Documents/projects/master/resources/new-data-recordings/FH2_Floor4_2019-03-11.txt",
   "routePath": "/Users/almin/Documents/projects/master/resources/new-data-recordings/waypoints/FH2-Floor-4-Waypoints.json",
   "buildingGraphPath": "/Users/almin/Documents/projects/master/resources/graph.json",
-  "positioningType": "GRAPH_POSITIONING"
+  "positioningType": "Graphed"
 }

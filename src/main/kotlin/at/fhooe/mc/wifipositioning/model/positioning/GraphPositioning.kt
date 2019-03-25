@@ -3,33 +3,39 @@ package at.fhooe.mc.wifipositioning.model.positioning
 import at.fhooe.mc.wifipositioning.App
 import at.fhooe.mc.wifipositioning.debug.DebugLogEntry
 import at.fhooe.mc.wifipositioning.debug.DebugLogEntryCategory
-import at.fhooe.mc.wifipositioning.model.building.BuildingGraphNode
+import at.fhooe.mc.wifipositioning.model.building.Building
+import at.fhooe.mc.wifipositioning.model.building.Graph
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.filtering.EstimationLowPassFilter
 import at.fhooe.mc.wifipositioning.model.filtering.Filtering
 import at.fhooe.mc.wifipositioning.model.filtering.RSSILowPassFilter
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
-import at.fhooe.mc.wifipositioning.model.slidingwindow.NewAccessPointSlidingWindow
-import kotlin.streams.toList
+import at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow
+import at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType
+import at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow
 
-class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPoint>,
-                       private val graph: List<BuildingGraphNode>,
-                       windowSize: Int) : Positioning {
+class GraphPositioning(private val building: Building,
+                       private val graph: Graph,
+                       windowSize: Int,
+                       metricType: MetricType) : Positioning {
 
     private val history: MutableList<SectorEstimation> = arrayListOf()
     private val filtering: Filtering<SectorEstimation>
-    private val slidingWindow: NewAccessPointSlidingWindow
-    private val mode: AccessPointIdentificationMode = AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION
+    private val slidingWindow: SlidingWindow<ScannedAccessPoint, InstalledAccessPoint, String>
 
     private val tag = "Graph Positioning"
 
     init {
         filtering = EstimationLowPassFilter(4)
-        slidingWindow = NewAccessPointSlidingWindow(windowSize, mode, RSSILowPassFilter(0.1f)) //AccessPointSlidingWindow(windowSize, mode, RSSILowPassFilter(0.1f))
+        slidingWindow = AccessPointSlidingWindow(
+                windowSize,
+                building.mode,
+                RSSILowPassFilter(0.1f),
+                metricType)
     }
 
-    override fun calculatePosition(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
-        slidingWindow.addAccessPoints(scannedAccessPointList)
+    override fun estimateSector(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
+        slidingWindow.add(scannedAccessPointList)
 
         // Generate allowed path a user can go
         val allowedAccessPoints = getAllowedSectors()
@@ -37,7 +43,7 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         printAccessPoints(allowedAccessPoints)
 
         // Find best BSSID
-        val bssid = slidingWindow.getBestBSSID(allowedAccessPoints)
+        val bssid = slidingWindow.getBestItem(allowedAccessPoints)
         App.debugger.log(DebugLogEntry(tag, "Best BSSID: $bssid", DebugLogEntryCategory.Positioning))
 
         if (bssid == null) return null
@@ -88,7 +94,7 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
         }
 
         var searchedBSSID = bssid.toLowerCase()
-        if(mode == AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION) {
+        if(building.mode == AccessPointIdentificationMode.FiveBytePrefixIdentification) {
             searchedBSSID = searchedBSSID.substringBeforeLast(":")
         }
 
@@ -97,33 +103,27 @@ class GraphPositioning(private val installedAccessPoints: List<InstalledAccessPo
 
     private fun getAllowedSectors(): List<InstalledAccessPoint> {
         if(history.size == 0) {
-            return installedAccessPoints
-                    .stream()
-                    .filter { ap -> ap.id == "4-10" }
-                    .toList()
+            return building.accessPoints
+                    .filter { ap -> graph.entrances.contains(ap.id) }
         } else {
             // Get neighbors from last position
             val lastEstimation= history.last()
-            val nodes = graph
+            val nodes = graph.nodes
                     .filter { node -> lastEstimation.sectors.any { it.id == node.id }}
                     .toList()
 
-            return installedAccessPoints
-                    .stream()
+            return building.accessPoints
                     .filter { ap -> nodes.any { node -> node.neighbors.contains(ap.id) } }
                     .toList()
         }
     }
 
     private fun getAllowedSectorsFor(sector: InstalledAccessPoint): List<InstalledAccessPoint> {
-        val nodes = graph
+        val nodes = graph.nodes
                 .filter { node -> sector.id == node.id }
-                .toList()
 
-        return installedAccessPoints
-                .stream()
+        return building.accessPoints
                 .filter { ap -> nodes.any { node -> node.neighbors.contains(ap.id) } }
-                .toList()
     }
 
     private fun printAccessPoints(accessPoints: List<InstalledAccessPoint>) {

@@ -6,24 +6,25 @@ import at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMo
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import java.util.HashMap
 
-class NewAccessPointSlidingWindow(private val windowSize: Int,
-                                  private val mode: AccessPointIdentificationMode = AccessPointIdentificationMode.SIX_BYTE_IDENTIFICATION,
-                                  private val filter: Filtering<ScannedAccessPoint>?) {
+class AccessPointSlidingWindow(private val windowSize: Int,
+                               private val mode: AccessPointIdentificationMode = AccessPointIdentificationMode.FullAddressIdentification,
+                               private val filter: Filtering<ScannedAccessPoint>? = null,
+                               private val metricType: MetricType): SlidingWindow<ScannedAccessPoint, InstalledAccessPoint, String> {
 
     private var accessPointLists: MutableList<List<ScannedAccessPoint>> = mutableListOf()
     private var allowedBSSIDs: List<String>? = null
 
-    fun addAccessPoints(accessPoints: List<ScannedAccessPoint>) {
+    override fun add(items: List<ScannedAccessPoint>) {
         if (accessPointLists.size > windowSize) {
             accessPointLists.removeAt(0)
         }
 
-        accessPointLists.add(accessPoints)
+        accessPointLists.add(items)
     }
 
-    fun getBestBSSID(allowedAccessPoints: List<InstalledAccessPoint>? = null): String? {
+    override fun getBestItem(restriction: List<InstalledAccessPoint>?): String? {
         val computations = computeMetric()
-        setAllowedBSSIDs(allowedAccessPoints)
+        setAllowedBSSIDs(restriction)
 
         // Find BSSID with best signal level computed by Metric
         val bestEntry = computations.entries
@@ -33,8 +34,8 @@ class NewAccessPointSlidingWindow(private val windowSize: Int,
         return bestEntry?.key
     }
 
-    private fun computeMetric(): Map<String, Metric> {
-        val computations = HashMap<String, Metric>()
+    private fun computeMetric(): Map<String, Metric<Double, Double>> {
+        val metrics = HashMap<String, Metric<Double, Double>>()
         val allScannedAccessPoints = accessPointLists.flatten()
 
         // Generate Average Signal Levels per BSSID and store into Map
@@ -44,18 +45,17 @@ class NewAccessPointSlidingWindow(private val windowSize: Int,
                 ap = filter.filter(scannedAccessPoint)
             }
 
-            val computed = computations[ap.bssid]
-            if (computed != null) {
-                computed.add(ap.signalLevel.toDouble())
-            } else {
-                val metric = AverageMetric()
+            var metric = metrics[ap.bssid]
+            if (metric != null) {
                 metric.add(ap.signalLevel.toDouble())
-
-                computations[ap.bssid] = metric
+            } else {
+                metric = getMetricFromType()
+                metric.add(ap.signalLevel.toDouble())
+                metrics[ap.bssid] = metric
             }
         }
 
-        return computations
+        return metrics
     }
 
     private fun isValidBSSID(bssid: String): Boolean {
@@ -66,12 +66,19 @@ class NewAccessPointSlidingWindow(private val windowSize: Int,
         if(allowedAccessPoints == null) return
 
         allowedBSSIDs = when (mode) {
-            AccessPointIdentificationMode.SIX_BYTE_IDENTIFICATION -> allowedAccessPoints
+            AccessPointIdentificationMode.FullAddressIdentification -> allowedAccessPoints
                     .map { ap -> ap.bssid.toLowerCase() }
                     .toList()
-            AccessPointIdentificationMode.FIVE_BYTE_IDENTIFICATION -> allowedAccessPoints
+            AccessPointIdentificationMode.FiveBytePrefixIdentification -> allowedAccessPoints
                     .map { ap -> ap.fiveBytePrefix.toLowerCase() }
                     .toList()
+        }
+    }
+
+    private fun getMetricFromType(): Metric<Double, Double> {
+        return when(metricType) {
+            MetricType.ArithmeticMean -> ArithmeticMeanMetric()
+            MetricType.Median -> MedianMetric()
         }
     }
 

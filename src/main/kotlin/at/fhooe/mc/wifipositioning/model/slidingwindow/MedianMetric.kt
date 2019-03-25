@@ -1,6 +1,6 @@
 package at.fhooe.mc.wifipositioning.model.slidingwindow
 
-class MedianMetric: Metric {
+class MedianMetric: Metric<Double, Double> {
 
     private var values: MutableList<Double> = mutableListOf()
 

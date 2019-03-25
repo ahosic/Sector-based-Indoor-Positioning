@@ -148,7 +148,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     private fun addPlayerData(scannedAccessPointList: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
 
-        currentEstimation = positioning.calculatePosition(scannedAccessPointList)
+        currentEstimation = positioning.estimateSector(scannedAccessPointList)
 
         currentEstimation?.let { estimation ->
             floorManager?.let { floorManager ->
