@@ -11,7 +11,7 @@ import java.util.ArrayList
  * This class defines the visual representation of GeoObject types.
  */
 object DrawingContext {
-    fun drawVoronoi(polygon: Polygon, graphics: Graphics, matrix: Matrix, containsPerson: Boolean) {
+    fun drawVoronoi(polygon: Polygon, graphics: Graphics, matrix: Matrix, containsPerson: Boolean, isInTransition: Boolean, accuracy: Int) {
         val g2 = graphics as Graphics2D
         val poly = matrix.multiply(polygon)
         val thickness = 2f
@@ -19,10 +19,25 @@ object DrawingContext {
         g2.stroke = BasicStroke(thickness)
         g2.color = Color(0, 0, 0)
         g2.drawPolygon(poly)
+
         if (containsPerson) {
-            g2.color = Color(255, 255, 200, 80)
+            g2.color = when(accuracy) {
+                1 -> Color(0, 255, 0, 80)
+                2 -> Color(255, 255, 200, 80)
+                else -> Color(255, 0, 0, 80)
+            }
             g2.fillPolygon(poly)
         }
+
+        if (isInTransition) {
+            g2.color = when(accuracy) {
+                1 -> Color(0, 255, 0, 40)
+                2 -> Color(255, 255, 200, 40)
+                else -> Color(255, 0, 0, 40)
+            }
+            g2.fillPolygon(poly)
+        }
+
         g2.stroke = oldStroke
     }
 

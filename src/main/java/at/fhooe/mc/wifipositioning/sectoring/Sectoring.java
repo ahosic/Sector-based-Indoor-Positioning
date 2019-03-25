@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface Sectoring {
     void createSectors(FloorManager floorManager, Graphics g, Matrix m_tMatrix);
-    void addPositionsOfEstimatedSectors(List<Position> positions);
+    void addPositionsOfEstimatedSectors(List<Position> positions, List<Position> inTransition);
 }

@@ -59,6 +59,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     fun reloadConfiguration() {
+        // Reload
+
         config.loadBuilding()
         config.loadFloors()
 
@@ -83,13 +85,18 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
                 }
             })
 
+            player.stopPlayback = false
             playerThread?.start()
         }
     }
 
     fun resetSimulation() {
-        player.stopPlayback = true
+        if (player.isRunning) {
+            player.stopPlayback = true
+        }
+
         playerThread = null
+        accessPoints = ArrayList()
 
         person = Position(-1000, 1000)
         actualPosition = Position(-1000, 1000)
@@ -97,8 +104,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         wayPointNumber = 1
         interpolationStep = 0
 
-        config.resetPositioning()
-        config.resetSectoring()
+        currentEstimation = null
     }
 
     override fun generateFloorMap(floor: Floor) {
@@ -153,7 +159,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         currentEstimation?.let { estimation ->
             floorManager?.let { floorManager ->
                 val sectorPositions = estimation.sectors.map { sector -> floorManager.calculatePixelPositionFromMeter(sector.position.x, sector.position.y) }.toList()
-                sectoring.addPositionsOfEstimatedSectors(sectorPositions)
+                val transitionPositions = estimation.inTransition?.map { sector -> floorManager.calculatePixelPositionFromMeter(sector.position.x, sector.position.y) }?.toList()
+                sectoring.addPositionsOfEstimatedSectors(sectorPositions, transitionPositions)
             }
         }
 
@@ -238,7 +245,6 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     override fun update(o: Observable?, arg: Any?) {
         if(o != config) return
 
-        resetSimulation()
         reloadConfiguration()
 
         println("Reloaded settings.")

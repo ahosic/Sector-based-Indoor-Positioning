@@ -33,10 +33,10 @@ class EstimationLowPassFilter(val threshold: Long): Filtering<SectorEstimation> 
             if(currentEstimation != null) {
                 val sectors = currentEstimation!!.sectors.toMutableList()
                 sectors.addAll(inputEstimation.sectors)
-                return SectorEstimation(sectors.toSet().toList())
+                return SectorEstimation(currentEstimation!!.sectors, inputEstimation.sectors)
             }
 
-            return getInitialEstimation()
+            return currentEstimation ?: getInitialEstimation()
         }
     }
 

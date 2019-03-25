@@ -3,7 +3,7 @@ package at.fhooe.mc.wifipositioning.model.positioning
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import java.lang.StringBuilder
 
-data class SectorEstimation(val sectors: List<InstalledAccessPoint>) {
+data class SectorEstimation(val sectors: List<InstalledAccessPoint>, val inTransition: List<InstalledAccessPoint>?) {
     var accuracy: Int = 0
         get() = sectors.size
 
@@ -28,7 +28,14 @@ data class SectorEstimation(val sectors: List<InstalledAccessPoint>) {
 
         other as SectorEstimation
 
-        return sectors.containsAll(other.sectors) && this.accuracy == other.accuracy
+        if (inTransition != null && other.inTransition != null) {
+            if (!inTransition.containsAll(other.inTransition)) return false
+            return sectors.containsAll(other.sectors) && this.accuracy == other.accuracy
+        } else if (inTransition == null && other.inTransition == null) {
+            return sectors.containsAll(other.sectors) && this.accuracy == other.accuracy
+        }
+
+        return false
     }
 
     override fun hashCode(): Int {

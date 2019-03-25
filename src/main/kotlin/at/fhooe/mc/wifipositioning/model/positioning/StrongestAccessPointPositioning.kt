@@ -17,7 +17,7 @@ class StrongestAccessPointPositioning(val building: Building) : Positioning {
         for (scanned in scannedAccessPointList.sortedByDescending { it.signalLevel }) {
             val sector = findSector(scanned)
             sector?.let {
-                return SectorEstimation(listOf(it))
+                return SectorEstimation(listOf(it), null)
             }
         }
 

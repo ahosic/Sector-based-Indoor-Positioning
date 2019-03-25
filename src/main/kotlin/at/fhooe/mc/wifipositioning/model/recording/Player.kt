@@ -75,6 +75,7 @@ class Player(private var dataSnapshots: List<DataSnapshot>,
 
         isRunning = false
         pausePlayback = false
+        stopPlayback = false
         return
     }
 

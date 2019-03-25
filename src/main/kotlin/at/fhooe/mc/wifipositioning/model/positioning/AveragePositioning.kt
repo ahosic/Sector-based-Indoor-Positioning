@@ -38,7 +38,7 @@ class AveragePositioning(private val building: Building,
 
         val accessPoint = findSector(bssid)
         accessPoint?.let {
-            return SectorEstimation(listOf(it))
+            return SectorEstimation(listOf(it), null)
         }
         
         return null

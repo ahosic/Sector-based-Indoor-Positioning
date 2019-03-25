@@ -102,7 +102,7 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         reader.input = inputStream
 
         for (i in 0 until reader.getNumImages(true)) {
-            building!!.floors[i].floorImage = reader.read(i)
+            building.floors[i].floorImage = reader.read(i)
         }
 
         sectoring = VoronoiSectors()

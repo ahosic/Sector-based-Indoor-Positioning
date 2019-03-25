@@ -34,7 +34,7 @@ class FilteredPositioning(building: Building, metricType: MetricType) : Position
             if (it.sectors.isEmpty()) return null
 
             val filtered = filtering.filter(it.sectors.first())
-            return SectorEstimation(listOf(filtered))
+            return SectorEstimation(listOf(filtered), null)
         }
 
         return null

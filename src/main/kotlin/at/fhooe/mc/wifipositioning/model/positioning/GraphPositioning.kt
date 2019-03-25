@@ -26,7 +26,7 @@ class GraphPositioning(private val building: Building,
     private val tag = "Graph Positioning"
 
     init {
-        filtering = EstimationLowPassFilter(4)
+        filtering = EstimationLowPassFilter(7)
         slidingWindow = AccessPointSlidingWindow(
                 windowSize,
                 building.mode,
@@ -85,7 +85,7 @@ class GraphPositioning(private val building: Building,
         }
 
         // Generate estimation
-        return SectorEstimation(sectors.toSet().toList())
+        return SectorEstimation(sectors.toSet().toList(), null)
     }
 
     private fun getSectors(bssid: String, accessPoints: List<InstalledAccessPoint>): MutableList<InstalledAccessPoint>? {
