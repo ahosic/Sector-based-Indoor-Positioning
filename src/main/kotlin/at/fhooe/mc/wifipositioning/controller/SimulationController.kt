@@ -27,6 +27,7 @@ class SimulationController(val model: SimulationModel) : EventHandler<WindowEven
 
     fun onStop(event: ActionEvent) {
         model.resetSimulation()
+        model.reloadConfiguration()
         model.resetImage()
     }
 

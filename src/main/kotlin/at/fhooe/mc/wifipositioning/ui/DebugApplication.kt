@@ -145,8 +145,7 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
             synchronized(this) {
                 // Application State
                 val output = StringBuilder()
-                output.appendln("Sector ID: ${state.currentSector?.id}")
-                output.appendln("Description: ${state.currentSector?.description}")
+                output.appendln(state.currentEstimation)
                 output.appendln("Waypoint: ${state.wayPointNumber}")
                 output.appendln("Interpolation step: ${state.interpolationStep}")
 

@@ -15,7 +15,8 @@ import java.util.List;
 
 public class VoronoiSectors implements Sectoring {
 
-    Position position;
+    private List<Position> positions = new ArrayList<>();
+    private List<Position> inTransition = new ArrayList<>();
 
     public VoronoiSectors() {}
 
@@ -85,20 +86,30 @@ public class VoronoiSectors implements Sectoring {
             }
         }
         for (Polygon polygon : polygons) {
-            if (position != null && polygon.contains(new Point(position.getX(), position.getY()))) {
-                DrawingContext.INSTANCE.drawVoronoi(polygon, g, m_tMatrix, true);
-            } else {
-                DrawingContext.INSTANCE.drawVoronoi(polygon, g, m_tMatrix, false);
-            }
+            DrawingContext.INSTANCE.drawVoronoi(polygon, g, m_tMatrix, checkIfContainsPerson(polygon), checkIfInTransition(polygon), positions.size());
         }
+
         Rectangle bounds = new Rectangle(floorManager.getOffsetLeftInPixel(), floorManager.getOffsetTopInPixel(), floorManager.getOffsetRightInPixel() - floorManager.getOffsetLeftInPixel(), floorManager.getOffsetBottomInPixel() - floorManager.getOffsetTopInPixel());
 
         DrawingContext.INSTANCE.drawCells(bounds, g, m_tMatrix, false);
 
     }
 
+    private boolean checkIfContainsPerson(Polygon polygon) {
+        if (positions == null) return false;
+
+        return positions.stream().anyMatch(pos -> polygon.contains(new Point(pos.getX(), pos.getY())));
+    }
+
+    private boolean checkIfInTransition(Polygon polygon) {
+        if(inTransition == null) return false;
+
+        return inTransition.stream().anyMatch(pos -> polygon.contains(new Point(pos.getX(), pos.getY())));
+    }
+
     @Override
-    public void addCurrentPosition(Position position) {
-        this.position = position;
+    public void addPositionsOfEstimatedSectors(List<Position> positions, List<Position> inTransition) {
+        this.positions = positions;
+        this.inTransition = inTransition;
     }
 }

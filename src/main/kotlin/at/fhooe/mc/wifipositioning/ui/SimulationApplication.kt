@@ -101,6 +101,7 @@ class SimulationApplication : Application(), Observer {
                     togglePlayingState()
                 }
             }
+
             controller?.onStop(it)
 
             configModel?.let { configModel ->

@@ -11,6 +11,7 @@ import at.fhooe.mc.wifipositioning.model.graphics.DrawingContext
 import at.fhooe.mc.wifipositioning.model.building.Floor
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.building.Position
+import at.fhooe.mc.wifipositioning.model.positioning.SectorEstimation
 import at.fhooe.mc.wifipositioning.model.recording.Route
 import at.fhooe.mc.wifipositioning.model.recording.Waypoint
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
@@ -30,7 +31,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
 
-    private var currentSector: InstalledAccessPoint? = null
+    private var currentEstimation: SectorEstimation? = null
 
     private var wayPointCount: IntArray? = null
     private var wayPointNumber = 1
@@ -58,6 +59,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     }
 
     fun reloadConfiguration() {
+        // Reload
+
         config.loadBuilding()
         config.loadFloors()
 
@@ -82,13 +85,18 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
                 }
             })
 
+            player.stopPlayback = false
             playerThread?.start()
         }
     }
 
     fun resetSimulation() {
-        player.stopPlayback = true
+        if (player.isRunning) {
+            player.stopPlayback = true
+        }
+
         playerThread = null
+        accessPoints = ArrayList()
 
         person = Position(-1000, 1000)
         actualPosition = Position(-1000, 1000)
@@ -96,8 +104,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         wayPointNumber = 1
         interpolationStep = 0
 
-        config.resetPositioning()
-        config.resetSectoring()
+        currentEstimation = null
     }
 
     override fun generateFloorMap(floor: Floor) {
@@ -147,12 +154,13 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     private fun addPlayerData(scannedAccessPointList: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
 
-        currentSector = positioning.calculatePosition(scannedAccessPointList)
+        currentEstimation = positioning.estimateSector(scannedAccessPointList)
 
-        currentSector?.let { currentSector ->
-            val newPos = floorManager?.calculatePixelPositionFromMeter(currentSector.position.x, currentSector.position.y)
-            newPos?.let {
-                sectoring.addCurrentPosition(Position(Math.round(newPos.x.toFloat()), Math.round(newPos.y.toFloat())))
+        currentEstimation?.let { estimation ->
+            floorManager?.let { floorManager ->
+                val sectorPositions = estimation.sectors.map { sector -> floorManager.calculatePixelPositionFromMeter(sector.position.x, sector.position.y) }.toList()
+                val transitionPositions = estimation.inTransition?.map { sector -> floorManager.calculatePixelPositionFromMeter(sector.position.x, sector.position.y) }?.toList()
+                sectoring.addPositionsOfEstimatedSectors(sectorPositions, transitionPositions)
             }
         }
 
@@ -222,7 +230,7 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
 
     override fun allAccessPoints(scannedAccessPointList: List<ScannedAccessPoint>) {
         App.debugger.state = ApplicationState(scannedAccessPointList,
-                currentSector,
+                currentEstimation,
                 null,
                 wayPointNumber,
                 interpolationStep)
@@ -237,7 +245,6 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     override fun update(o: Observable?, arg: Any?) {
         if(o != config) return
 
-        resetSimulation()
         reloadConfiguration()
 
         println("Reloaded settings.")
