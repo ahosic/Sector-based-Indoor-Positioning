@@ -46,9 +46,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
 
     fun resetPositioning() {
         when(settings.positioningType) {
-            PositioningType.StrongestRSSI -> positioning = StrongestAccessPointPositioning(building)
-            PositioningType.SlidingWindow -> positioning = AveragePositioning(building, 5, MetricType.ArithmeticMean)
-            PositioningType.Filtered -> positioning = FilteredPositioning(building, MetricType.ArithmeticMean)
+            PositioningType.StrongestRSSI -> positioning = StrongestRSSIPositioning(building)
+            PositioningType.SlidingWindow -> positioning = SlidingWindowPositioning(building, 5, MetricType.ArithmeticMean)
+            PositioningType.Filtered -> positioning = FilteredSlidingWindowPositioning(building, MetricType.ArithmeticMean)
             PositioningType.Graphed -> positioning = GraphPositioning(building, graph, 5, MetricType.ArithmeticMean)
         }
     }
@@ -146,9 +146,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
 
     fun loadPositioningMethod() {
         when(settings.positioningType) {
-            PositioningType.StrongestRSSI -> positioning = StrongestAccessPointPositioning(building)
-            PositioningType.SlidingWindow -> positioning = AveragePositioning(building, 5, MetricType.ArithmeticMean)
-            PositioningType.Filtered -> positioning = FilteredPositioning(building, MetricType.ArithmeticMean)
+            PositioningType.StrongestRSSI -> positioning = StrongestRSSIPositioning(building)
+            PositioningType.SlidingWindow -> positioning = SlidingWindowPositioning(building, 5, MetricType.ArithmeticMean)
+            PositioningType.Filtered -> positioning = FilteredSlidingWindowPositioning(building, MetricType.ArithmeticMean)
             PositioningType.Graphed -> positioning = GraphPositioning(building, graph, 5, MetricType.ArithmeticMean)
         }
     }

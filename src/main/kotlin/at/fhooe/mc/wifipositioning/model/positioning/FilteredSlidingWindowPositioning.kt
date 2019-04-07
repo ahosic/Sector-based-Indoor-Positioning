@@ -8,20 +8,20 @@ import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType
 
 /**
- * A Positioning method that uses a combination of AveragePositioning and a low pass-filter for the position estimation.
+ * A Positioning method that uses a combination of SlidingWindowPositioning and a low pass-filter for the position estimation.
  *
  * @property allAccessPoints a list of all installed access points in the building.
- * @property positioning the method of positioning that is used before filtering (default AveragePositioning)
+ * @property positioning the method of positioning that is used before filtering (default SlidingWindowPositioning)
  * @property filtering the filter that that should be applied on the estimated position (default PositionLowPassFilter)
  *
  * @constructor Initializes a new Positioning Method
  */
-class FilteredPositioning(building: Building, metricType: MetricType) : Positioning {
+class FilteredSlidingWindowPositioning(building: Building, metricType: MetricType) : Positioning {
     private val positioning: Positioning
     private val filtering: Filtering<InstalledAccessPoint>
 
     init {
-        positioning = AveragePositioning(building, 5, metricType)
+        positioning = SlidingWindowPositioning(building, 5, metricType)
         filtering = SectorLowPassFilter(10)
     }
 

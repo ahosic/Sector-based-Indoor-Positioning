@@ -11,7 +11,7 @@ import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
  *
  * @constructor Initializes a new Positioning Method
  */
-class StrongestAccessPointPositioning(val building: Building) : Positioning {
+class StrongestRSSIPositioning(val building: Building) : Positioning {
 
     override fun estimateSector(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
         for (scanned in scannedAccessPointList.sortedByDescending { it.signalLevel }) {

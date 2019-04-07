@@ -15,9 +15,9 @@ import at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow
  *
  * @constructor Initializes a new Positioning Method.
  */
-class AveragePositioning(private val building: Building,
-                         private val windowSize: Int,
-                         metricType: MetricType) : Positioning {
+class SlidingWindowPositioning(private val building: Building,
+                               private val windowSize: Int,
+                               metricType: MetricType) : Positioning {
 
     private val slidingWindow: SlidingWindow<ScannedAccessPoint, InstalledAccessPoint, String>
 
