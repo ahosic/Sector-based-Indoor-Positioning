@@ -52,19 +52,6 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         settings = loadConfiguration()!!
     }
 
-    fun resetSectoring() {
-        sectoring = VoronoiSectors()
-    }
-
-    fun resetPositioning() {
-        when(settings.positioningType) {
-            PositioningType.StrongestRSSI -> positioning = StrongestRSSIPositioning(building)
-            PositioningType.SlidingWindow -> positioning = SlidingWindowPositioning(building, 5, MetricType.ArithmeticMean)
-            PositioningType.Filtered -> positioning = FilteredSlidingWindowPositioning(building, MetricType.ArithmeticMean)
-            PositioningType.Graphed -> positioning = GraphPositioning(building, graph, 5, MetricType.ArithmeticMean)
-        }
-    }
-
     /**
      * Loads the config file paths out of [settingsPath].
      *
