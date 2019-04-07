@@ -1,13 +1,25 @@
 package at.fhooe.mc.wifipositioning.model.slidingwindow
 
+/**
+ * A concrete implementation of a Metric interface based on the Median calculation.
+ * @property values list of added values
+ */
 class MedianMetric: Metric<Double, Double> {
 
     private var values: MutableList<Double> = mutableListOf()
 
+    /**
+     * Adds [value] to the metric.
+     */
     override fun add(value: Double) {
         values.add(value)
     }
 
+    /**
+     * Computes the result of the metric.
+     *
+     * @return the result of the metric.
+     */
     override fun compute(): Double {
         if (values.isEmpty()) return 0.0
 

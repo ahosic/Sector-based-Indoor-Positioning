@@ -20,7 +20,21 @@ import javafx.stage.FileChooser
 import javafx.stage.Stage
 
 
-
+/**
+ * The view of the settings
+ *
+ * @property controller the settings controller
+ * @property stage the stage of the JavaFX application
+ * @property floorPlanPathField the path field for the building plan
+ * @property buildingPathField the path field for the building file
+ * @property routePathField the path field for the route
+ * @property walkRecordingPathField the path field for the walk recording file
+ * @property buildingGraphPathField the path field for the graph file
+ * @property positioningCombobox the combobox for selecting the positioning method.
+ * @property applyButton the button for saving the settings
+ * @property cancelButton the button for cancelling the changes.
+ * @property stylePath the path to the styling of the view.
+ */
 class SettingsApplication(val configModel: ConfigurationModel) : Application() {
 
     private val controller: SettingsController
@@ -42,6 +56,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         stylePath = javaClass.classLoader.getResource("settingsStyle.css").toExternalForm()
     }
 
+    /**
+     * Starts the window and creates the layout.
+     */
     override fun start(stage: Stage) {
         this.stage = stage
         val layout = createLayout()
@@ -52,6 +69,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         stage.show()
     }
 
+    /**
+     * Creates the layout of the view.
+     */
     private fun createLayout(): Pane {
         val root = VBox()
         root.padding = Insets(8.0)
@@ -82,6 +102,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         return root
     }
 
+    /**
+     * Appends the building plan UI controls to the [layout].
+     */
     private fun initFloorPlanSettings(layout: GridPane) {
         val floorLabel = Label("Floor plan file: ")
         layout.add(floorLabel, 0, 0)
@@ -100,6 +123,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 0)
     }
 
+    /**
+     * Appends the building file UI controls to the [layout].
+     */
     private fun initBuildingSettings(layout: GridPane) {
         val buildingLabel = Label("Building file: ")
         layout.add(buildingLabel, 0, 1)
@@ -118,6 +144,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 1)
     }
 
+    /**
+     * Appends the route file UI controls to the [layout].
+     */
     private fun initRouteSettings(layout: GridPane) {
         val routeLabel = Label("Route file: ")
         layout.add(routeLabel, 0, 2)
@@ -136,6 +165,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 2)
     }
 
+    /**
+     * Appends the walk recording UI controls to the [layout].
+     */
     private fun initWalkRecordingSettings(layout: GridPane) {
         val floorLabel = Label("Walk recording file: ")
         layout.add(floorLabel, 0, 3)
@@ -154,6 +186,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 3)
     }
 
+    /**
+     * Appends the building graph UI controls to the [layout].
+     */
     private fun initBuildingGraphSettings(layout: GridPane) {
         val graphLabel = Label("Graph file: ")
         layout.add(graphLabel, 0, 4)
@@ -172,6 +207,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(selectPathButton, 3, 4)
     }
 
+    /**
+     * Appends the positioning method UI controls to the [layout].
+     */
     private fun initPositioningSelection(layout: GridPane) {
         val floorLabel = Label("Positioning Method: ")
         layout.add(floorLabel, 0, 5)
@@ -187,6 +225,9 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         layout.add(positioningCombobox, 1, 5)
     }
 
+    /**
+     * Appends the buttons to the layout.
+     */
     private fun initButtons() {
         applyButton.styleClass.add("applyButton")
         applyButton.setOnAction {
@@ -208,6 +249,11 @@ class SettingsApplication(val configModel: ConfigurationModel) : Application() {
         }
     }
 
+    /**
+     * Gets a file path from a chosen file.
+     *
+     * @return the file path of a chosen file.
+     */
     private fun getFilePathFromFileChooser(title: String): String? {
         stage?.let { stage ->
             val chooser = FileChooser()

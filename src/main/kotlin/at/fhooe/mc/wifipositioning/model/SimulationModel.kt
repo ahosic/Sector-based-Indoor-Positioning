@@ -23,7 +23,21 @@ import java.awt.image.BufferedImage
 import java.util.*
 
 /**
- * The Model of the MVC pattern. The new positions and polygons are drawn here.
+ * The simulation model, which manages the simulation and the drawing of the output image (building plan).
+ *
+ * @property accessPoints a list of installed, known access points
+ * @property person the position of the walking, simulated person
+ * @property actualPosition the actual position of the person on the building plan
+ * @property currentEstimation the last sector-based estimation
+ * @property wayPointCount the number of points for each waypoint (subdivision of waypoints)
+ * @property wayPointNumber the current waypoint number
+ * @property interpolationStep the current interpolation step
+ * @property playerThread the thread of the walking, simulated player
+ * @property route the simulated, walked route
+ * @property sectoring the sectoring applied on the building plan
+ * @property positioning the selected positioning method
+ * @property building the building object containing context-information about the building
+ * @property player the simulated player walking along the [route].
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
 
@@ -58,6 +72,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config.addObserver(this)
     }
 
+    /**
+     * Reloads the configuration from the file system.
+     */
     fun reloadConfiguration() {
         // Reload
 
@@ -72,6 +89,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config.loadWalkRecording(this)
     }
 
+    /**
+     * Toggles the simulation between started and paused state.
+     */
     fun toggleSimulation() {
         if (player.isRunning) {
             player.pausePlayback = !player.pausePlayback
@@ -90,6 +110,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         }
     }
 
+    /**
+     * Resets the simulation.
+     */
     fun resetSimulation() {
         if (player.isRunning) {
             player.stopPlayback = true
@@ -107,6 +130,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         currentEstimation = null
     }
 
+    /**
+     * Generates the floor map for a selected [floor] of the building.
+     */
     override fun generateFloorMap(floor: Floor) {
         accessPoints = floor.accessPoints
         if (floorManager == null) {
@@ -116,6 +142,10 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         }
     }
 
+
+    /**
+     * Interpolates the position of the simulated person.
+     */
     private fun checkForInitializedWaypoints() {
         if(!player.isRunning || player.stopPlayback) {
             return
@@ -140,6 +170,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         }
     }
 
+    /**
+     * Interpolates a position between two positions taking [steps] into account.
+     */
     private fun interpolate(start: Position, end: Position, steps: Int, iterationStep: Int): Position {
         if (steps < 2) {
             return Position(person.x, person.y)
@@ -151,6 +184,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         return Position(xPos, yPos)
     }
 
+    /**
+     * Estimates a sector-based position based on detected [scannedAccessPointList].
+     */
     private fun addPlayerData(scannedAccessPointList: List<ScannedAccessPoint>) {
         checkForInitializedWaypoints()
 
@@ -228,6 +264,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         return images
     }
 
+    /**
+     * Fired, when new access points are detected.
+     */
     override fun allAccessPoints(scannedAccessPointList: List<ScannedAccessPoint>) {
         App.debugger.state = ApplicationState(scannedAccessPointList,
                 currentEstimation,
@@ -238,10 +277,16 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         addPlayerData(scannedAccessPointList)
     }
 
+    /**
+     * Sets the waypoint count of the callback object.
+     */
     override fun wayPointCount(wayPointCount: IntArray) {
         this.wayPointCount = wayPointCount
     }
 
+    /**
+     * Reloads the configuration on configuration changes.
+     */
     override fun update(o: Observable?, arg: Any?) {
         if(o != config) return
 

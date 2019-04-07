@@ -2,6 +2,16 @@ package at.fhooe.mc.wifipositioning.model.building
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * Holds information about an installed access point, which also defines a sector (one installed access point per sector).
+ *
+ * @property id the ID of the sector
+ * @property description the description of the sector
+ * @property floorNumber the number of the floor, where the access point is installed.
+ * @property bssid the BSSID of the installed access point.
+ * @property position the position of the installed access point on the building plan.
+ * @property fiveBytePrefix the first five byte of the BSSID
+ */
 data class InstalledAccessPoint(@JsonProperty("id") val id: String,
                                 @JsonProperty("description") val description: String,
                                 @JsonProperty("floorNumber") val floorNumber: Int,

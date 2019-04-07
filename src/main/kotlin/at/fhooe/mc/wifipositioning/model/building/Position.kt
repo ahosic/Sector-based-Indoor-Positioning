@@ -2,6 +2,12 @@ package at.fhooe.mc.wifipositioning.model.building
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ * A Position object holding information for XY-coordinates.
+ *
+ * @property x the X-coordinate
+ * @property y the Y-coordinate
+ */
 class Position(@JsonProperty("x") var x: Int, @JsonProperty("y") var y: Int) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

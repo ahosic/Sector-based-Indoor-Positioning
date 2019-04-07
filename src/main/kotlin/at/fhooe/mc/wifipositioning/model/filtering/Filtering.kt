@@ -9,7 +9,7 @@ interface Filtering<T> {
      * Filters input data by smoothing the output.
      *
      * @param input data that should be filtered
-     * @return the smoothed data
+     * @return the filtered data
      */
     fun filter(input: T): T
 }

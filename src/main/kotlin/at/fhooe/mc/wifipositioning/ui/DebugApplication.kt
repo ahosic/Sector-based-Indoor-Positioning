@@ -15,6 +15,18 @@ import javafx.scene.layout.*
 import javafx.stage.Stage
 import java.lang.StringBuilder
 
+/**
+ * The debug view of a debugger.
+ *
+ * @property debugger the used debugger of the application.
+ * @property stage the stage of the JavaFX application
+ * @property stylePath the path to the style file of the view.
+ * @property statePane the pane of the application state
+ * @property scanningInputPane the pane of scanned access points
+ * @property outputPane the pane of positioning output
+ * @property resumeButton the resume button of the debugger
+ * @property skipToNextWaypointButton the button that makes the application to stop again at the next waypoint
+ */
 class DebugApplication(private val debugger: Debugging) : Application(), DebugReporting {
     private var stage: Stage? = null
     private val stylePath: String
@@ -34,6 +46,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         debugger.removeDebugReportObserver(this)
     }
 
+    /**
+     * Starts the application's window and creates the layout.
+     */
     override fun start(stage: Stage) {
         this.stage = stage
         val layout = createLayout()
@@ -44,6 +59,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         stage.show()
     }
 
+    /**
+     * Creates the layout of the view.
+     */
     private fun createLayout(): Pane {
         val root = BorderPane()
         root.padding = Insets(8.0)
@@ -69,6 +87,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         return root
     }
 
+    /**
+     * Adds the resume button to the [pane].
+     */
     private fun appendResumeButton(pane: HBox) {
         resumeButton.styleClass.add("resumeButton")
         resumeButton.setOnAction {
@@ -80,6 +101,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         pane.children.add(resumeButton)
     }
 
+    /**
+     * Adds the skip button to the [pane].
+     */
     private fun appendSkipToNextWaypointButton(pane: HBox) {
         skipToNextWaypointButton.styleClass.add("resumeButton")
         skipToNextWaypointButton.setOnAction {
@@ -91,6 +115,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         pane.children.add(skipToNextWaypointButton)
     }
 
+    /**
+     * Adds the state pane to the [pane].
+     */
     private fun appendStatePane(pane: HBox) {
         val box = BorderPane()
         val label = Label("Application State")
@@ -105,6 +132,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         pane.children.add(box)
     }
 
+    /**
+     * Adds the scanned access points pane to the [pane].
+     */
     private fun appendScanningPane(pane: HBox) {
         val box = BorderPane()
         val label = Label("Scanned Access Points")
@@ -119,6 +149,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         pane.children.add(box)
     }
 
+    /**
+     * Adds the output pane to the [pane].
+     */
     private fun appendOutputPane(pane: HBox) {
         val box = BorderPane()
         val label = Label("Positioning Output")
@@ -140,6 +173,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         pane.children.add(box)
     }
 
+    /**
+     * Event fired, when the application state changes.
+     */
     override fun stateChanged(debugger: Debugging, state: ApplicationState) {
         Platform.runLater {
             synchronized(this) {
@@ -164,6 +200,9 @@ class DebugApplication(private val debugger: Debugging) : Application(), DebugRe
         }
     }
 
+    /**
+     * Event fired, when a new log entry was added.
+     */
     override fun logged(debugger: Debugging, entry: DebugLogEntry) {
         Platform.runLater {
             synchronized(this) {

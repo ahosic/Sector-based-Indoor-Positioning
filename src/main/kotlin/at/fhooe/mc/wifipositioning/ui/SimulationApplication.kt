@@ -20,6 +20,19 @@ import java.util.*
 import javafx.application.Platform
 
 
+/**
+ * The view of the simulation tool.
+ *
+ * @property controller the controller of the simulation
+ * @property configModel the configuration model of the application
+ * @property stage the stage of the JavaFX application
+ * @property mapView the building plan view
+ * @property playButton the button for toggling the playing state of the simulation
+ * @property stopButton the button for stopping the simulation
+ * @property settingsButton the button for opening the settings.
+ * @property stylePath the path to the styling of the view.
+ * @property isPlaying the current status of the simulation.
+ */
 class SimulationApplication : Application(), Observer {
     private var controller: SimulationController? = null
     private var configModel: ConfigurationModel? = null
@@ -37,6 +50,9 @@ class SimulationApplication : Application(), Observer {
         initializeApplication()
     }
 
+    /**
+     * Starts the application's window and creates the layout.
+     */
     override fun start(stage: Stage) {
         this.stage = stage
         val layout = createLayout()
@@ -60,6 +76,9 @@ class SimulationApplication : Application(), Observer {
         }
     }
 
+    /**
+     * Creates the layout.
+     */
     private fun createLayout(): Pane {
         val root = VBox()
         root.styleClass.add("mainLayout")
@@ -78,6 +97,9 @@ class SimulationApplication : Application(), Observer {
         return root
     }
 
+    /**
+     * Initializes the map view of the building plan.
+     */
     private fun initMapView() {
         mapView.styleClass.add("mapView")
         mapView.prefWidth = 800.0
@@ -85,6 +107,9 @@ class SimulationApplication : Application(), Observer {
         controller?.dimensions = Dimension(800, 500)
     }
 
+    /**
+     * Initializes the buttons of the view.
+     */
     private fun initButtons() {
         playButton.styleClass.addAll("playButton", "play")
         playButton.setOnAction {
@@ -128,6 +153,9 @@ class SimulationApplication : Application(), Observer {
         }
     }
 
+    /**
+     * Initializes the application and loads all models and configurations.
+     */
     private fun initializeApplication() {
         println("Loading settings.")
         configModel = ConfigurationModel(javaClass.classLoader.getResource("settings.json").toURI().path)
@@ -154,6 +182,9 @@ class SimulationApplication : Application(), Observer {
         }
     }
 
+    /**
+     * Toggles the playing state of the simulation.
+     */
     private fun togglePlayingState() {
         isPlaying = !isPlaying
 
@@ -166,6 +197,9 @@ class SimulationApplication : Application(), Observer {
         }
     }
 
+    /**
+     * Updates the image of the map view.
+     */
     override fun update(o: Observable?, arg: Any?) {
         if (arg is BufferedImage) {
             mapView.mapImage = arg

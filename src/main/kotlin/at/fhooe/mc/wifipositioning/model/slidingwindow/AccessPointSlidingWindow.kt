@@ -6,6 +6,16 @@ import at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMo
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import java.util.HashMap
 
+/**
+ * A concrete implementation of a sliding window for access points.
+ *
+ * @property windowSize the size of the window.
+ * @property mode the identification mode, which is used when two BSSIDs are compared.
+ * @property filter a filter for filtering scanned access points.
+ * @property metricType the type of metric that should be used.
+ * @property accessPointLists the addedd access points to the sliding window.
+ * @property allowedBSSIDs the allowed BSSIDs that the sliding window is allowed to pick out of the window.
+ */
 class AccessPointSlidingWindow(private val windowSize: Int,
                                private val mode: AccessPointIdentificationMode = AccessPointIdentificationMode.FullAddressIdentification,
                                private val filter: Filtering<ScannedAccessPoint>? = null,
@@ -14,6 +24,9 @@ class AccessPointSlidingWindow(private val windowSize: Int,
     private var accessPointLists: MutableList<List<ScannedAccessPoint>> = mutableListOf()
     private var allowedBSSIDs: List<String>? = null
 
+    /**
+     * Adds [items] to the sliding window
+     */
     override fun add(items: List<ScannedAccessPoint>) {
         if (accessPointLists.size > windowSize) {
             accessPointLists.removeAt(0)
@@ -22,6 +35,11 @@ class AccessPointSlidingWindow(private val windowSize: Int,
         accessPointLists.add(items)
     }
 
+    /**
+     * Gets the item with the best metric out of the sliding window taking [restriction] into account.
+     *
+     * @return the item with the best metric
+     */
     override fun getBestItem(restriction: List<InstalledAccessPoint>?): String? {
         val computations = computeMetric()
         setAllowedBSSIDs(restriction)
@@ -34,6 +52,11 @@ class AccessPointSlidingWindow(private val windowSize: Int,
         return bestEntry?.key
     }
 
+    /**
+     * Computes the mterics for each BSSID of the addess scanned access points
+     *
+     * @return a map containing of BSSIDs as keys and their calculated metric.
+     */
     private fun computeMetric(): Map<String, Metric<Double, Double>> {
         val metrics = HashMap<String, Metric<Double, Double>>()
         val allScannedAccessPoints = accessPointLists.flatten()
@@ -58,10 +81,16 @@ class AccessPointSlidingWindow(private val windowSize: Int,
         return metrics
     }
 
+    /**
+     * Checks, if the BSSID is allowed to be selected.
+     */
     private fun isValidBSSID(bssid: String): Boolean {
         return allowedBSSIDs?.any { bssid.startsWith(it) } ?: true
     }
 
+    /**
+     * Sets the allowed BSSIDs based on [allowedAccessPoints].
+     */
     private fun setAllowedBSSIDs(allowedAccessPoints: List<InstalledAccessPoint>?) {
         if(allowedAccessPoints == null) return
 
@@ -75,6 +104,11 @@ class AccessPointSlidingWindow(private val windowSize: Int,
         }
     }
 
+    /**
+     * Gets a Metric object based on [metricType].
+     *
+     * @return a Metric object.
+     */
     private fun getMetricFromType(): Metric<Double, Double> {
         return when(metricType) {
             MetricType.ArithmeticMean -> ArithmeticMeanMetric()

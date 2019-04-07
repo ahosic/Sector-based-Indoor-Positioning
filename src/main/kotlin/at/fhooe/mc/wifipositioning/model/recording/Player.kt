@@ -81,10 +81,16 @@ class Player(private var dataSnapshots: List<DataSnapshot>,
 
     // Debugging
 
+    /**
+     * Event, when the debuggable needs to enter into paused state.
+     */
     override fun onDebugPause(debugger: DebugController, state: ApplicationState) {
         debugPause = true
     }
 
+    /**
+     * Event, when the debuggable should resume with its execution.
+     */
     override fun onDebugResume(debugger: DebugController, state: ApplicationState) {
         debugPause = false
     }
