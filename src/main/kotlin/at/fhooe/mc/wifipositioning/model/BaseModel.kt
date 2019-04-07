@@ -9,6 +9,15 @@ import java.awt.image.BufferedImage
 import java.awt.image.ColorModel
 import java.util.Observable
 
+/**
+ * An abstract version of a simulation model, which contains methods for drawing and transforming the building plan.
+ *
+ * @property matrix the Transformation Matrix
+ * @property floorManager the floor manager used for calculations of the floor and its bounds.
+ * @property panelWidth the width of the panel
+ * @property panelHeight the height of the panel
+ * @property zoomRect the current zoom rectangle
+ */
 abstract class BaseModel : Observable() {
     var matrix: Matrix
         protected set
@@ -59,6 +68,9 @@ abstract class BaseModel : Observable() {
         }
     }
 
+    /**
+     * Applies the Transformation Matrix on an image.
+     */
     protected fun applyMatrixToBufferedImage(originalImage: BufferedImage): BufferedImage {
         val colorModel = ColorModel.getRGBdefault()
         val raster = colorModel.createCompatibleWritableRaster(panelWidth, panelHeight)
@@ -89,8 +101,14 @@ abstract class BaseModel : Observable() {
         notifyObservers(_data)
     }
 
+    /**
+     * An abstract method for drawing buffered images of the building plan.
+     */
     abstract fun createBufferedImage(): BufferedImage?
 
+    /**
+     * Resets the image.
+     */
     fun resetImage() {
         callObserver(createBufferedImage() ?: return)
     }

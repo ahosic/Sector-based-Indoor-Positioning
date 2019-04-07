@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PlaybackCallbackInterface - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.interfaces</a>&nbsp;/&nbsp;<a href="./index.html">PlaybackCallbackInterface</a><br/>
+<br/>
+<h1>PlaybackCallbackInterface</h1>
+<code><span class="keyword">interface </span><span class="identifier">PlaybackCallbackInterface</span></code>
+<p>A callback interface used by a player to simulate a detection of new access points.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="all-access-points.html">allAccessPoints</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">allAccessPoints</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface$allAccessPoints(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/scannedAccessPointList">scannedAccessPointList</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Fired, when new access points are detected.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="way-point-count.html">wayPointCount</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">wayPointCount</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface$wayPointCount(kotlin.IntArray)/wayPointCount">wayPointCount</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html"><span class="identifier">IntArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Sets the waypoint count of the callback object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../at.fhooe.mc.wifipositioning.model/-simulation-model/index.html">SimulationModel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SimulationModel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model/-base-model/index.html"><span class="identifier">BaseModel</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">PlaybackCallbackInterface</span></a><span class="symbol">, </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Observer.html"><span class="identifier">Observer</span></a></code>
+<p>The simulation model, which manages the simulation and the drawing of the output image (building plan).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

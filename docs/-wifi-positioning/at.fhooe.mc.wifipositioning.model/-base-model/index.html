@@ -1,0 +1,158 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>BaseModel - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model</a>&nbsp;/&nbsp;<a href="./index.html">BaseModel</a><br/>
+<br/>
+<h1>BaseModel</h1>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">BaseModel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Observable.html"><span class="identifier">Observable</span></a></code>
+<p>An abstract version of a simulation model, which contains methods for drawing and transforming the building plan.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">BaseModel</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>An abstract version of a simulation model, which contains methods for drawing and transforming the building plan.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="floor-manager.html">floorManager</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">floorManager</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.graphics/-floor-manager/index.html"><span class="identifier">FloorManager</span></a><span class="symbol">?</span></code>
+<p>the floor manager used for calculations of the floor and its bounds.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="matrix.html">matrix</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">matrix</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.graphics/-matrix/index.html"><span class="identifier">Matrix</span></a></code>
+<p>the Transformation Matrix</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="panel-height.html">panelHeight</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">panelHeight</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the height of the panel</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="panel-width.html">panelWidth</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">panelWidth</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the width of the panel</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="zoom-rect.html">zoomRect</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">zoomRect</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/awt/Rectangle.html"><span class="identifier">Rectangle</span></a><span class="symbol">?</span></code>
+<p>the current zoom rectangle</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="apply-matrix-to-buffered-image.html">applyMatrixToBufferedImage</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">applyMatrixToBufferedImage</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.BaseModel$applyMatrixToBufferedImage(java.awt.image.BufferedImage)/originalImage">originalImage</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html"><span class="identifier">BufferedImage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html"><span class="identifier">BufferedImage</span></a></code>
+<p>Applies the Transformation Matrix on an image.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="call-observer.html">callObserver</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">callObserver</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.BaseModel$callObserver(java.awt.image.BufferedImage)/_data">_data</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html"><span class="identifier">BufferedImage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Calls the observer if the buffered image changed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="create-buffered-image.html">createBufferedImage</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">createBufferedImage</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html"><span class="identifier">BufferedImage</span></a><span class="symbol">?</span></code>
+<p>An abstract method for drawing buffered images of the building plan.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="generate-floor-map.html">generateFloorMap</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">generateFloorMap</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.BaseModel$generateFloorMap(at.fhooe.mc.wifipositioning.model.building.Floor)/floor">floor</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.building/-floor/index.html"><span class="identifier">Floor</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="reset-image.html">resetImage</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">resetImage</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Resets the image.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-panel-size.html">setPanelSize</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setPanelSize</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.BaseModel$setPanelSize(kotlin.Int, kotlin.Int)/width">width</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.BaseModel$setPanelSize(kotlin.Int, kotlin.Int)/height">height</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Sets the panel size in case the window is resized.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="zoom-to-fit.html">zoomToFit</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">zoomToFit</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.BaseModel$zoomToFit(kotlin.Boolean)/wholeWorld">wholeWorld</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Zooms the entire world or the zooming rectangle to the screen size.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-simulation-model/index.html">SimulationModel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SimulationModel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">BaseModel</span></a><span class="symbol">, </span><a href="../../at.fhooe.mc.wifipositioning.interfaces/-playback-callback-interface/index.html"><span class="identifier">PlaybackCallbackInterface</span></a><span class="symbol">, </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Observer.html"><span class="identifier">Observer</span></a></code>
+<p>The simulation model, which manages the simulation and the drawing of the output image (building plan).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

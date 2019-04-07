@@ -20,6 +20,18 @@ import java.util.*
 import javax.imageio.ImageIO
 import javax.imageio.ImageReader
 
+/**
+ * An object, which holds the current valid configuration and that is responsible for loading and saving the configuration.
+ *
+ * @property settingsPath the path to the settings file (contains the paths to the config files and the positioning method)
+ * @property settings the currently valid settings of the application
+ * @property building the building object, containing context-information about the building
+ * @property sectoring the type of sectoring that should be applied on the building plan
+ * @property positioning the currently selected positioning method.
+ * @property graph the graph of the building
+ * @property route the simulated walk route
+ * @property player the simulated person that walks along the [route]
+ */
 class ConfigurationModel(private val settingsPath: String): Observable() {
     var settings: Settings
         private set
@@ -40,19 +52,11 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         settings = loadConfiguration()!!
     }
 
-    fun resetSectoring() {
-        sectoring = VoronoiSectors()
-    }
-
-    fun resetPositioning() {
-        when(settings.positioningType) {
-            PositioningType.StrongestRSSI -> positioning = StrongestAccessPointPositioning(building)
-            PositioningType.SlidingWindow -> positioning = AveragePositioning(building, 5, MetricType.ArithmeticMean)
-            PositioningType.Filtered -> positioning = FilteredPositioning(building, MetricType.ArithmeticMean)
-            PositioningType.Graphed -> positioning = GraphPositioning(building, graph, 5, MetricType.ArithmeticMean)
-        }
-    }
-
+    /**
+     * Loads the config file paths out of [settingsPath].
+     *
+     * @return a Settings object containing the config file paths and the positioning method.
+     */
     private fun loadConfiguration(): Settings? {
         var settings: Settings? = null
         try {
@@ -66,6 +70,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         return settings
     }
 
+    /**
+     * Saves the [settings] to [settingsPath].
+     */
     fun saveConfiguration(settings: Settings) {
         this.settings = settings
 
@@ -81,6 +88,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         notifyObservers()
     }
 
+    /**
+     * Loads the building file.
+     */
     fun loadBuilding() {
         try {
             val mapper = ObjectMapper().registerKotlinModule()
@@ -91,6 +101,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         }
     }
 
+    /**
+     * Loads the building plan.
+     */
     fun loadFloors() {
         val floorFile = File(settings.floorsPath)
         val inputStream = ImageIO.createImageInputStream(floorFile)
@@ -108,6 +121,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         sectoring = VoronoiSectors()
     }
 
+    /**
+     * Loads the walk route.
+     */
     fun loadWaypoints() {
         try {
             val mapper = ObjectMapper().registerKotlinModule()
@@ -119,6 +135,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         }
     }
 
+    /**
+     * Loads the walk recording file.
+     */
     fun loadWalkRecording(playbackCallback: PlaybackCallbackInterface) {
         try {
             val mapper = ObjectMapper()
@@ -130,6 +149,9 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         }
     }
 
+    /**
+     * Loads the building's graph.
+     */
     fun loadBuildingGraph() {
         println("Load building graph.")
 
@@ -144,11 +166,14 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         print("Loaded " + graph.nodes.size + " graph nodes.")
     }
 
+    /**
+     * Loads the positioning method.
+     */
     fun loadPositioningMethod() {
         when(settings.positioningType) {
-            PositioningType.StrongestRSSI -> positioning = StrongestAccessPointPositioning(building)
-            PositioningType.SlidingWindow -> positioning = AveragePositioning(building, 5, MetricType.ArithmeticMean)
-            PositioningType.Filtered -> positioning = FilteredPositioning(building, MetricType.ArithmeticMean)
+            PositioningType.StrongestRSSI -> positioning = StrongestRSSIPositioning(building)
+            PositioningType.SlidingWindow -> positioning = SlidingWindowPositioning(building, 5, MetricType.ArithmeticMean)
+            PositioningType.Filtered -> positioning = FilteredSlidingWindowPositioning(building, MetricType.ArithmeticMean)
             PositioningType.Graphed -> positioning = GraphPositioning(building, graph, 5, MetricType.ArithmeticMean)
         }
     }

@@ -2,6 +2,17 @@ package at.fhooe.mc.wifipositioning.debug
 
 import at.fhooe.mc.wifipositioning.App
 
+/**
+ * A concrete implementation of [Debugging], which notifies debugging views on changes.
+ *
+ * @property paused indicates whether the debugger is in paused state (simulation does not proceed until paused == false)
+ * @property state the current application state (pauses the debugger and application, when a new state is set)
+ * @property allLogEntries contains all log entries during the lifecycle of the application
+ * @property entries private list holding all log entries.
+ * @property debuggables a list of objects that can be debugged
+ * @property debugObservers a list of objects that observe the debugger on state changes (views of the debugger)
+ * @property nextWaypointNumber the next waypoint number of the simulation
+ */
 class DebugController : Debugging {
 
     private var paused = false
@@ -37,10 +48,18 @@ class DebugController : Debugging {
 
     private var nextWaypointNumber: Int? = null
 
+    /**
+     * Gets the current paused state of the application.
+     *
+     * @return true if the application is paused, false if not.
+     */
     override fun isPaused(): Boolean {
         return if (App.isDebugMode) paused else false
     }
 
+    /**
+     * Resumes the application after the debugger has paused it and pauses again on the next interpolation step.
+     */
     override fun resume() {
         paused = false
         state?.let { state ->
@@ -50,6 +69,9 @@ class DebugController : Debugging {
         }
     }
 
+    /**
+     * Resumes the application and pauses again on the next waypoint.
+     */
     override fun skipToNextWayPoint() {
         paused = false
         state?.let { state ->
@@ -61,6 +83,9 @@ class DebugController : Debugging {
         }
     }
 
+    /**
+     * Logs an [entry].
+     */
     override fun log(entry: DebugLogEntry) {
         entries.add(entry)
 
@@ -71,14 +96,23 @@ class DebugController : Debugging {
 
     // Debuggable Observers
 
+    /**
+     * Adds a [debuggable] object.
+     */
     override fun addDebuggable(debuggable: Debuggable) {
         debuggables.add(debuggable)
     }
 
+    /**
+     * Removes a [debuggable] object.
+     */
     override fun removeDebuggable(debuggable: Debuggable) {
         debuggables.remove(debuggable)
     }
 
+    /**
+     * Notifies all [debuggables] on debugger state changes.
+     */
     private fun notify(executionBlock: (Debuggable) -> Unit) {
         if (!App.isDebugMode) return
 
@@ -89,6 +123,9 @@ class DebugController : Debugging {
 
     // Debug Reporting
 
+    /**
+     * Notify views on debugger changes.
+     */
     private fun report(executionBlock: (DebugReporting) -> Unit) {
         if (!App.isDebugMode) return
 
@@ -97,10 +134,16 @@ class DebugController : Debugging {
         }
     }
 
+    /**
+     * Adds a debug observer.
+     */
     override fun addDebugReportObserver(observer: DebugReporting) {
         debugObservers.add(observer)
     }
 
+    /**
+     * Removes a debug observer.
+     */
     override fun removeDebugReportObserver(observer: DebugReporting) {
         debugObservers.remove(observer)
     }

@@ -3,6 +3,16 @@ package at.fhooe.mc.wifipositioning.model.graphics
 import at.fhooe.mc.wifipositioning.model.building.Floor
 import at.fhooe.mc.wifipositioning.model.building.Position
 
+/**
+ * Manages a floor with its bounds and provides means for calculating pixel positions on the building plan.
+ *
+ * @property widthMultiplier the multiplier for the width of the floor
+ * @property heightMultiplier the multiplier for the height of the floor
+ * @property offsetTopInPixel the top offset in pixels
+ * @property offsetBottomInPixel the bottom offset in pixels
+ * @property offsetLeftInPixel the left offset in pixels
+ * @property offsetRightInPixel the right offset in pixels
+ */
 class FloorManager(var floor: Floor) {
     private var widthMultiplier: Double = 0.0
     private var heightMultiplier: Double = 0.0
@@ -23,6 +33,9 @@ class FloorManager(var floor: Floor) {
         calculateMultipliers()
     }
 
+    /**
+     * Calculates the width and height multipliers.
+     */
     private fun calculateMultipliers() {
         floor.floorImage?.let { floorImage ->
             widthMultiplier = floorImage.width / (floor.bounds.width + floor.bounds.right + floor.bounds.left)
@@ -30,6 +43,11 @@ class FloorManager(var floor: Floor) {
         }
     }
 
+    /**
+     * Calculates a pixel position from meters.
+     *
+     * @return a pixel-based position of a meter-based position
+     */
     fun calculatePixelPositionFromMeter(x: Int, y: Int): Position {
         val xPos = (x * widthMultiplier + floor.bounds.left * widthMultiplier).toInt()
         val yPos = (y * heightMultiplier + floor.bounds.top * heightMultiplier).toInt()
@@ -37,6 +55,9 @@ class FloorManager(var floor: Floor) {
         return Position(xPos, yPos)
     }
 
+    /**
+     * Changes the current floor and recalculates the width and height multipliers.
+     */
     fun changeFloor(floor: Floor) {
         this.floor = floor
         calculateMultipliers()

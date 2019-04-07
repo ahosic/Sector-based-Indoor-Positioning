@@ -14,6 +14,17 @@ import at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow
 import at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType
 import at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow
 
+/**
+ * A Positioning Method that uses a combination of a sliding window, low pass-filters, a history and a graph for estimating a sector within a building.
+ *
+ * @property building the building object containing all needed context information
+ * @property graph a graph of sector IDs, which define the allowed walking paths through a building
+ * @property history a list of previous visited sectors
+ * @property filtering the filter that that should be applied on the estimated sector (default EstimationLowPassFilter)
+ * @property slidingWindow a sliding window, which computes the best access point with the best metric
+ *
+ * @constructor Initializes a new Positioning Method
+ */
 class GraphPositioning(private val building: Building,
                        private val graph: Graph,
                        windowSize: Int,
@@ -34,6 +45,11 @@ class GraphPositioning(private val building: Building,
                 metricType)
     }
 
+    /**
+     * Calculates a sector estimation using [scannedAccessPointList].
+     *
+     * @return an estimation of a sector
+     */
     override fun estimateSector(scannedAccessPointList: List<ScannedAccessPoint>): SectorEstimation? {
         slidingWindow.add(scannedAccessPointList)
 
@@ -67,6 +83,11 @@ class GraphPositioning(private val building: Building,
         return filteredEstimation
     }
 
+    /**
+     * Creates an estimation out of [sectors].
+     *
+     * @return a sector estimation made out of [sectors].
+     */
     private fun getEstimationFor(sectors: MutableList<InstalledAccessPoint>): SectorEstimation {
         // If more paths are possible, then add the current sector to the possible sectors
         if(sectors.size > 1) {
@@ -88,6 +109,11 @@ class GraphPositioning(private val building: Building,
         return SectorEstimation(sectors.toSet().toList(), null)
     }
 
+    /**
+     * Gets a list of sectors based on [bssid] out of [accessPoints].
+     *
+     * @return a list of installed access points (sectors)
+     */
     private fun getSectors(bssid: String, accessPoints: List<InstalledAccessPoint>): MutableList<InstalledAccessPoint>? {
         bssid.trim().ifEmpty {
             return null
@@ -101,6 +127,11 @@ class GraphPositioning(private val building: Building,
         return accessPoints.filter { ap -> ap.bssid.toLowerCase().startsWith(searchedBSSID)}.toMutableList()
     }
 
+    /**
+     * Gets the currently allowed sectors based on the history of visited sectors.
+     *
+     * @return a list of installed access points (sectors)
+     */
     private fun getAllowedSectors(): List<InstalledAccessPoint> {
         if(history.size == 0) {
             return building.accessPoints
@@ -118,6 +149,11 @@ class GraphPositioning(private val building: Building,
         }
     }
 
+    /**
+     * Gets the allowed sectors that can be visited from [sector].
+     *
+     * @return a list of installed access points (sectors)
+     */
     private fun getAllowedSectorsFor(sector: InstalledAccessPoint): List<InstalledAccessPoint> {
         val nodes = graph.nodes
                 .filter { node -> sector.id == node.id }
@@ -126,6 +162,9 @@ class GraphPositioning(private val building: Building,
                 .filter { ap -> nodes.any { node -> node.neighbors.contains(ap.id) } }
     }
 
+    /**
+     * Prints a list of access points out to the app debugger.
+     */
     private fun printAccessPoints(accessPoints: List<InstalledAccessPoint>) {
         accessPoints.forEach {
             App.debugger.log(DebugLogEntry(tag, it.toString(), DebugLogEntryCategory.Positioning))

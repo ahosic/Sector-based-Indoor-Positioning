@@ -1,0 +1,191 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>DebugController - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.debug</a>&nbsp;/&nbsp;<a href="./index.html">DebugController</a><br/>
+<br/>
+<h1>DebugController</h1>
+<code><span class="keyword">class </span><span class="identifier">DebugController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-debugging/index.html"><span class="identifier">Debugging</span></a></code>
+<p>A concrete implementation of <a href="../-debugging/index.html">Debugging</a>, which notifies debugging views on changes.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">DebugController</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>A concrete implementation of <a href="../-debugging/index.html">Debugging</a>, which notifies debugging views on changes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="all-log-entries.html">allLogEntries</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">allLogEntries</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-debug-log-entry/index.html"><span class="identifier">DebugLogEntry</span></a><span class="symbol">&gt;</span></code>
+<p>contains all log entries during the lifecycle of the application</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="debuggables.html">debuggables</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">debuggables</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../-debuggable/index.html"><span class="identifier">Debuggable</span></a><span class="symbol">&gt;</span></code>
+<p>a list of objects that can be debugged</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="debug-observers.html">debugObservers</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">debugObservers</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../-debug-reporting/index.html"><span class="identifier">DebugReporting</span></a><span class="symbol">&gt;</span></code>
+<p>a list of objects that observe the debugger on state changes (views of the debugger)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="entries.html">entries</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">entries</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../-debug-log-entry/index.html"><span class="identifier">DebugLogEntry</span></a><span class="symbol">&gt;</span></code>
+<p>private list holding all log entries.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="next-waypoint-number.html">nextWaypointNumber</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">nextWaypointNumber</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code>
+<p>the next waypoint number of the simulation</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="paused.html">paused</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">paused</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>indicates whether the debugger is in paused state (simulation does not proceed until paused == false)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="state.html">state</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">state</span><span class="symbol">: </span><a href="../-application-state/index.html"><span class="identifier">ApplicationState</span></a><span class="symbol">?</span></code>
+<p>the current application state (pauses the debugger and application, when a new state is set)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-debuggable.html">addDebuggable</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addDebuggable</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$addDebuggable(at.fhooe.mc.wifipositioning.debug.Debuggable)/debuggable">debuggable</span><span class="symbol">:</span>&nbsp;<a href="../-debuggable/index.html"><span class="identifier">Debuggable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a <a href="add-debuggable.html#at.fhooe.mc.wifipositioning.debug.DebugController$addDebuggable(at.fhooe.mc.wifipositioning.debug.Debuggable)/debuggable">debuggable</a> object.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-debug-report-observer.html">addDebugReportObserver</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addDebugReportObserver</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$addDebugReportObserver(at.fhooe.mc.wifipositioning.debug.DebugReporting)/observer">observer</span><span class="symbol">:</span>&nbsp;<a href="../-debug-reporting/index.html"><span class="identifier">DebugReporting</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a debug observer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-paused.html">isPaused</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isPaused</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Gets the current paused state of the application.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="log.html">log</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">log</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$log(at.fhooe.mc.wifipositioning.debug.DebugLogEntry)/entry">entry</span><span class="symbol">:</span>&nbsp;<a href="../-debug-log-entry/index.html"><span class="identifier">DebugLogEntry</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Logs an <a href="log.html#at.fhooe.mc.wifipositioning.debug.DebugController$log(at.fhooe.mc.wifipositioning.debug.DebugLogEntry)/entry">entry</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="notify.html">notify</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">notify</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$notify(kotlin.Function1((at.fhooe.mc.wifipositioning.debug.Debuggable, kotlin.Unit)))/executionBlock">executionBlock</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-debuggable/index.html"><span class="identifier">Debuggable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Notifies all <a href="debuggables.html">debuggables</a> on debugger state changes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="remove-debuggable.html">removeDebuggable</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">removeDebuggable</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$removeDebuggable(at.fhooe.mc.wifipositioning.debug.Debuggable)/debuggable">debuggable</span><span class="symbol">:</span>&nbsp;<a href="../-debuggable/index.html"><span class="identifier">Debuggable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Removes a <a href="remove-debuggable.html#at.fhooe.mc.wifipositioning.debug.DebugController$removeDebuggable(at.fhooe.mc.wifipositioning.debug.Debuggable)/debuggable">debuggable</a> object.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="remove-debug-report-observer.html">removeDebugReportObserver</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">removeDebugReportObserver</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$removeDebugReportObserver(at.fhooe.mc.wifipositioning.debug.DebugReporting)/observer">observer</span><span class="symbol">:</span>&nbsp;<a href="../-debug-reporting/index.html"><span class="identifier">DebugReporting</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Removes a debug observer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="report.html">report</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">report</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.debug.DebugController$report(kotlin.Function1((at.fhooe.mc.wifipositioning.debug.DebugReporting, kotlin.Unit)))/executionBlock">executionBlock</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-debug-reporting/index.html"><span class="identifier">DebugReporting</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Notify views on debugger changes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="resume.html">resume</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">resume</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Resumes the application after the debugger has paused it and pauses again on the next interpolation step.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="skip-to-next-way-point.html">skipToNextWayPoint</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">skipToNextWayPoint</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Resumes the application and pauses again on the next waypoint.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

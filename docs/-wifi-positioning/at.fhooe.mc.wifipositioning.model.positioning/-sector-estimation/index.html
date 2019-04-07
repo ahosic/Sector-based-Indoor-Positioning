@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SectorEstimation - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.positioning</a>&nbsp;/&nbsp;<a href="./index.html">SectorEstimation</a><br/>
+<br/>
+<h1>SectorEstimation</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SectorEstimation</span></code>
+<p>A sector-based estimation, which is used by the positioning methods as an output.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SectorEstimation</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.SectorEstimation$<init>(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)), kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)))/sectors">sectors</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.SectorEstimation$<init>(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)), kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)))/inTransition">inTransition</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span></code>
+<p>A sector-based estimation, which is used by the positioning methods as an output.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="accuracy.html">accuracy</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">accuracy</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>indicates the accuracy of the estimation (min == 1 == best accuracy)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="in-transition.html">inTransition</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">inTransition</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>the sectors that might become stable in the future.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sectors.html">sectors</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">sectors</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span></code>
+<p>the estimated, stable sectors</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.SectorEstimation$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

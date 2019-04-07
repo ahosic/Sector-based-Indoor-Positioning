@@ -1,0 +1,137 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Player - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.recording</a>&nbsp;/&nbsp;<a href="./index.html">Player</a><br/>
+<br/>
+<h1>Player</h1>
+<code><span class="keyword">class </span><span class="identifier">Player</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.debug/-debuggable/index.html"><span class="identifier">Debuggable</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Player</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$<init>(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.DataSnapshot)), at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface, at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel)/dataSnapshots">dataSnapshots</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-data-snapshot/index.html"><span class="identifier">DataSnapshot</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$<init>(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.DataSnapshot)), at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface, at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel)/callback">callback</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.interfaces/-playback-callback-interface/index.html"><span class="identifier">PlaybackCallbackInterface</span></a><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$<init>(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.DataSnapshot)), at.fhooe.mc.wifipositioning.interfaces.PlaybackCallbackInterface, at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel)/config">config</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.configuration/-configuration-model/index.html"><span class="identifier">ConfigurationModel</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="callback.html">callback</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">callback</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.interfaces/-playback-callback-interface/index.html"><span class="identifier">PlaybackCallbackInterface</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="config.html">config</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">config</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.configuration/-configuration-model/index.html"><span class="identifier">ConfigurationModel</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="data-snapshots.html">dataSnapshots</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">dataSnapshots</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-data-snapshot/index.html"><span class="identifier">DataSnapshot</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="debug-pause.html">debugPause</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">debugPause</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-running.html">isRunning</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">isRunning</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="pause-playback.html">pausePlayback</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">pausePlayback</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="play-back-speed.html">playBackSpeed</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">playBackSpeed</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="stop-playback.html">stopPlayback</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">stopPlayback</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="way-point-count.html">wayPointCount</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">wayPointCount</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html"><span class="identifier">IntArray</span></a><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="finalize.html">finalize</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">finalize</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="on-debug-pause.html">onDebugPause</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onDebugPause</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$onDebugPause(at.fhooe.mc.wifipositioning.debug.DebugController, at.fhooe.mc.wifipositioning.debug.ApplicationState)/debugger">debugger</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.debug/-debug-controller/index.html"><span class="identifier">DebugController</span></a><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$onDebugPause(at.fhooe.mc.wifipositioning.debug.DebugController, at.fhooe.mc.wifipositioning.debug.ApplicationState)/state">state</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.debug/-application-state/index.html"><span class="identifier">ApplicationState</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Event, when the debuggable needs to enter into paused state.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="on-debug-resume.html">onDebugResume</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onDebugResume</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$onDebugResume(at.fhooe.mc.wifipositioning.debug.DebugController, at.fhooe.mc.wifipositioning.debug.ApplicationState)/debugger">debugger</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.debug/-debug-controller/index.html"><span class="identifier">DebugController</span></a><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.recording.Player$onDebugResume(at.fhooe.mc.wifipositioning.debug.DebugController, at.fhooe.mc.wifipositioning.debug.ApplicationState)/state">state</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.debug/-application-state/index.html"><span class="identifier">ApplicationState</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Event, when the debuggable should resume with its execution.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-number-of-a-p-steps.html">setNumberOfAPSteps</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setNumberOfAPSteps</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="start-playback.html">startPlayback</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">startPlayback</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

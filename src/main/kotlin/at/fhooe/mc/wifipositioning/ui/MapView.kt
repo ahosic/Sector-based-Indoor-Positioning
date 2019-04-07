@@ -5,6 +5,12 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import java.awt.image.BufferedImage
 
+/**
+ * A view for the building plan image.
+ *
+ * @property imageView the image view of the building plan.
+ * @property mapImage the image of the building plan.
+ */
 class MapView : BorderPane() {
     private val imageView = ImageView()
     var mapImage: BufferedImage? = null

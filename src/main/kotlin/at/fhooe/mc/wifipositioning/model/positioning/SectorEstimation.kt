@@ -3,6 +3,13 @@ package at.fhooe.mc.wifipositioning.model.positioning
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import java.lang.StringBuilder
 
+/**
+ * A sector-based estimation, which is used by the positioning methods as an output.
+ *
+ * @property sectors the estimated, stable sectors
+ * @property inTransition the sectors that might become stable in the future.
+ * @property accuracy indicates the accuracy of the estimation (min == 1 == best accuracy)
+ */
 data class SectorEstimation(val sectors: List<InstalledAccessPoint>, val inTransition: List<InstalledAccessPoint>?) {
     var accuracy: Int = 0
         get() = sectors.size

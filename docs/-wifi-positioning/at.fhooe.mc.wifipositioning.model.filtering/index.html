@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>at.fhooe.mc.wifipositioning.model.filtering - WifiPositioning</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="./index.html">at.fhooe.mc.wifipositioning.model.filtering</a><br/>
+<br/>
+<h2>Package at.fhooe.mc.wifipositioning.model.filtering</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-estimation-low-pass-filter/index.html">EstimationLowPassFilter</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EstimationLowPassFilter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-filtering/index.html"><span class="identifier">Filtering</span></a><span class="symbol">&lt;</span><a href="../at.fhooe.mc.wifipositioning.model.positioning/-sector-estimation/index.html"><span class="identifier">SectorEstimation</span></a><span class="symbol">&gt;</span></code>
+<p>A concrete implementation of the Filtering interface, which filters sector-based estimations.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-filtering/index.html">Filtering</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Filtering</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
+<p>An interface for filtering data.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-s-s-i-low-pass-filter/index.html">RSSILowPassFilter</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RSSILowPassFilter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-filtering/index.html"><span class="identifier">Filtering</span></a><span class="symbol">&lt;</span><a href="../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span></code>
+<p>A concrete implementation of the Filtering interface, which filters the RSSI of a scanned access point.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-sector-low-pass-filter/index.html">SectorLowPassFilter</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SectorLowPassFilter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-filtering/index.html"><span class="identifier">Filtering</span></a><span class="symbol">&lt;</span><a href="../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span></code>
+<p>A concrete implementation of the Filtering interface, which filters sectors/installed access points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
