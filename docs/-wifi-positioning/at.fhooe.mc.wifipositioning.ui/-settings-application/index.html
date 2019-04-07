@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SettingsApplication - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.ui</a>&nbsp;/&nbsp;<a href="./index.html">SettingsApplication</a><br/>
+<br/>
+<h1>SettingsApplication</h1>
+<code><span class="keyword">class </span><span class="identifier">SettingsApplication</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Application</span></code>
+<p>The view of the settings</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SettingsApplication</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$<init>(at.fhooe.mc.wifipositioning.model.configuration.ConfigurationModel)/configModel">configModel</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.configuration/-configuration-model/index.html"><span class="identifier">ConfigurationModel</span></a><span class="symbol">)</span></code>
+<p>The view of the settings</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="apply-button.html">applyButton</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">applyButton</span><span class="symbol">: </span><span class="identifier">JFXButton</span></code>
+<p>the button for saving the settings</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="building-graph-path-field.html">buildingGraphPathField</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">buildingGraphPathField</span><span class="symbol">: </span><span class="identifier">JFXTextField</span></code>
+<p>the path field for the graph file</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="building-path-field.html">buildingPathField</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">buildingPathField</span><span class="symbol">: </span><span class="identifier">JFXTextField</span></code>
+<p>the path field for the building file</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="cancel-button.html">cancelButton</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">cancelButton</span><span class="symbol">: </span><span class="identifier">JFXButton</span></code>
+<p>the button for cancelling the changes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="config-model.html">configModel</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">configModel</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.configuration/-configuration-model/index.html"><span class="identifier">ConfigurationModel</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="controller.html">controller</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">controller</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.controller/-settings-controller/index.html"><span class="identifier">SettingsController</span></a></code>
+<p>the settings controller</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="floor-plan-path-field.html">floorPlanPathField</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">floorPlanPathField</span><span class="symbol">: </span><span class="identifier">JFXTextField</span></code>
+<p>the path field for the building plan</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="positioning-combobox.html">positioningCombobox</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">positioningCombobox</span><span class="symbol">: </span><span class="identifier">JFXComboBox</span><span class="symbol">&lt;</span><span class="identifier">Label</span><span class="symbol">&gt;</span></code>
+<p>the combobox for selecting the positioning method.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="route-path-field.html">routePathField</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">routePathField</span><span class="symbol">: </span><span class="identifier">JFXTextField</span></code>
+<p>the path field for the route</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="stage.html">stage</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">stage</span><span class="symbol">: </span><span class="identifier">Stage</span><span class="symbol">?</span></code>
+<p>the stage of the JavaFX application</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="style-path.html">stylePath</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">stylePath</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the path to the styling of the view.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="walk-recording-path-field.html">walkRecordingPathField</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">walkRecordingPathField</span><span class="symbol">: </span><span class="identifier">JFXTextField</span></code>
+<p>the path field for the walk recording file</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="create-layout.html">createLayout</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">createLayout</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Pane</span></code>
+<p>Creates the layout of the view.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-file-path-from-file-chooser.html">getFilePathFromFileChooser</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getFilePathFromFileChooser</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$getFilePathFromFileChooser(kotlin.String)/title">title</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code>
+<p>Gets a file path from a chosen file.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-building-graph-settings.html">initBuildingGraphSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initBuildingGraphSettings</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$initBuildingGraphSettings(javafx.scene.layout.GridPane)/layout">layout</span><span class="symbol">:</span>&nbsp;<span class="identifier">GridPane</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the building graph UI controls to the <a href="init-building-graph-settings.html#at.fhooe.mc.wifipositioning.ui.SettingsApplication$initBuildingGraphSettings(javafx.scene.layout.GridPane)/layout">layout</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-building-settings.html">initBuildingSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initBuildingSettings</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$initBuildingSettings(javafx.scene.layout.GridPane)/layout">layout</span><span class="symbol">:</span>&nbsp;<span class="identifier">GridPane</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the building file UI controls to the <a href="init-building-settings.html#at.fhooe.mc.wifipositioning.ui.SettingsApplication$initBuildingSettings(javafx.scene.layout.GridPane)/layout">layout</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-buttons.html">initButtons</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initButtons</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the buttons to the layout.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-floor-plan-settings.html">initFloorPlanSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initFloorPlanSettings</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$initFloorPlanSettings(javafx.scene.layout.GridPane)/layout">layout</span><span class="symbol">:</span>&nbsp;<span class="identifier">GridPane</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the building plan UI controls to the <a href="init-floor-plan-settings.html#at.fhooe.mc.wifipositioning.ui.SettingsApplication$initFloorPlanSettings(javafx.scene.layout.GridPane)/layout">layout</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-positioning-selection.html">initPositioningSelection</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initPositioningSelection</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$initPositioningSelection(javafx.scene.layout.GridPane)/layout">layout</span><span class="symbol">:</span>&nbsp;<span class="identifier">GridPane</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the positioning method UI controls to the <a href="init-positioning-selection.html#at.fhooe.mc.wifipositioning.ui.SettingsApplication$initPositioningSelection(javafx.scene.layout.GridPane)/layout">layout</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-route-settings.html">initRouteSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initRouteSettings</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$initRouteSettings(javafx.scene.layout.GridPane)/layout">layout</span><span class="symbol">:</span>&nbsp;<span class="identifier">GridPane</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the route file UI controls to the <a href="init-route-settings.html#at.fhooe.mc.wifipositioning.ui.SettingsApplication$initRouteSettings(javafx.scene.layout.GridPane)/layout">layout</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="init-walk-recording-settings.html">initWalkRecordingSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initWalkRecordingSettings</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$initWalkRecordingSettings(javafx.scene.layout.GridPane)/layout">layout</span><span class="symbol">:</span>&nbsp;<span class="identifier">GridPane</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Appends the walk recording UI controls to the <a href="init-walk-recording-settings.html#at.fhooe.mc.wifipositioning.ui.SettingsApplication$initWalkRecordingSettings(javafx.scene.layout.GridPane)/layout">layout</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="start.html">start</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">start</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.ui.SettingsApplication$start(javafx.stage.Stage)/stage">stage</span><span class="symbol">:</span>&nbsp;<span class="identifier">Stage</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Starts the window and creates the layout.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

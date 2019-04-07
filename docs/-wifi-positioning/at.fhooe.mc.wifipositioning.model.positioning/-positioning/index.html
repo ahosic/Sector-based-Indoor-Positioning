@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Positioning - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.positioning</a>&nbsp;/&nbsp;<a href="./index.html">Positioning</a><br/>
+<br/>
+<h1>Positioning</h1>
+<code><span class="keyword">interface </span><span class="identifier">Positioning</span></code>
+<p>An interface for a positioning method</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="estimate-sector.html">estimateSector</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">estimateSector</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.Positioning$estimateSector(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/scannedAccessPointList">scannedAccessPointList</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-sector-estimation/index.html"><span class="identifier">SectorEstimation</span></a><span class="symbol">?</span></code>
+<p>Calculates a sector estimation using <a href="estimate-sector.html#at.fhooe.mc.wifipositioning.model.positioning.Positioning$estimateSector(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/scannedAccessPointList">scannedAccessPointList</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-filtered-sliding-window-positioning/index.html">FilteredSlidingWindowPositioning</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">FilteredSlidingWindowPositioning</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Positioning</span></a></code>
+<p>A Positioning method that uses a combination of SlidingWindowPositioning and a low pass-filter for the position estimation.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-graph-positioning/index.html">GraphPositioning</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">GraphPositioning</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Positioning</span></a></code>
+<p>A Positioning Method that uses a combination of a sliding window, low pass-filters, a history and a graph for estimating a sector within a building.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-sliding-window-positioning/index.html">SlidingWindowPositioning</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SlidingWindowPositioning</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Positioning</span></a></code>
+<p>A Positioning method that uses the access point with the best metric at a specific point in time.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-strongest-r-s-s-i-positioning/index.html">StrongestRSSIPositioning</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">StrongestRSSIPositioning</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Positioning</span></a></code>
+<p>A Positioning method that uses the strongest access point (highest signal strength) for the position estimation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

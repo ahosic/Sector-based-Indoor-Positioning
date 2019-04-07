@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SectorLowPassFilter - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.filtering</a>&nbsp;/&nbsp;<a href="./index.html">SectorLowPassFilter</a><br/>
+<br/>
+<h1>SectorLowPassFilter</h1>
+<code><span class="keyword">class </span><span class="identifier">SectorLowPassFilter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-filtering/index.html"><span class="identifier">Filtering</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span></code>
+<p>A concrete implementation of the Filtering interface, which filters sectors/installed access points.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SectorLowPassFilter</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter$<init>(kotlin.Long)/threshold">threshold</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span></code>
+<p>A concrete implementation of the Filtering interface, which filters sectors/installed access points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="current-sector.html">currentSector</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">currentSector</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">?</span></code>
+<p>the currently stable sector.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="filtered-sectors.html">filteredSectors</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">filteredSectors</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span></code>
+<p>the previously filtered sectors.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="threshold.html">threshold</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">threshold</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>a value that indicates, how often a sector needs to occur in a row to become the next stable sector.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="filter.html">filter</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">filter</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter$filter(at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a></code>
+<p>Filters input data by smoothing the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-initial-sector.html">getInitialSector</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getInitialSector</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a></code>
+<p>Gets the initial (last filtered) sector of the filter out of <a href="filtered-sectors.html">filteredSectors</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="next-sector.html">nextSector</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">nextSector</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter$nextSector(at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)/inputSector">inputSector</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a></code>
+<p>Gets the next sector based on <a href="next-sector.html#at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter$nextSector(at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)/inputSector">inputSector</a> and <a href="filtered-sectors.html">filteredSectors</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

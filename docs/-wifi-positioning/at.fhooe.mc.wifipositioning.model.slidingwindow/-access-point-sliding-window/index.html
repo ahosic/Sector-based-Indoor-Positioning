@@ -1,0 +1,146 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AccessPointSlidingWindow - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.slidingwindow</a>&nbsp;/&nbsp;<a href="./index.html">AccessPointSlidingWindow</a><br/>
+<br/>
+<h1>AccessPointSlidingWindow</h1>
+<code><span class="keyword">class </span><span class="identifier">AccessPointSlidingWindow</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-sliding-window/index.html"><span class="identifier">SlidingWindow</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">,</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>A concrete implementation of a sliding window for access points.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">AccessPointSlidingWindow</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$<init>(kotlin.Int, at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMode, at.fhooe.mc.wifipositioning.model.filtering.Filtering((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)), at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType)/windowSize">windowSize</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$<init>(kotlin.Int, at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMode, at.fhooe.mc.wifipositioning.model.filtering.Filtering((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)), at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType)/mode">mode</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.positioning/-access-point-identification-mode/index.html"><span class="identifier">AccessPointIdentificationMode</span></a>&nbsp;<span class="symbol">=</span>&nbsp;AccessPointIdentificationMode.FullAddressIdentification<span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$<init>(kotlin.Int, at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMode, at.fhooe.mc.wifipositioning.model.filtering.Filtering((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)), at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType)/filter">filter</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.filtering/-filtering/index.html"><span class="identifier">Filtering</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$<init>(kotlin.Int, at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMode, at.fhooe.mc.wifipositioning.model.filtering.Filtering((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)), at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType)/metricType">metricType</span><span class="symbol">:</span>&nbsp;<a href="../-metric-type/index.html"><span class="identifier">MetricType</span></a><span class="symbol">)</span></code>
+<p>A concrete implementation of a sliding window for access points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="access-point-lists.html">accessPointLists</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">accessPointLists</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>the addedd access points to the sliding window.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="allowed-b-s-s-i-ds.html">allowedBSSIDs</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">allowedBSSIDs</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>the allowed BSSIDs that the sliding window is allowed to pick out of the window.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="filter.html">filter</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">filter</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.filtering/-filtering/index.html"><span class="identifier">Filtering</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>a filter for filtering scanned access points.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="metric-type.html">metricType</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">metricType</span><span class="symbol">: </span><a href="../-metric-type/index.html"><span class="identifier">MetricType</span></a></code>
+<p>the type of metric that should be used.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="mode.html">mode</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">mode</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.positioning/-access-point-identification-mode/index.html"><span class="identifier">AccessPointIdentificationMode</span></a></code>
+<p>the identification mode, which is used when two BSSIDs are compared.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="window-size.html">windowSize</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">windowSize</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the size of the window.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$add(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/items">items</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds <a href="add.html#at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$add(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/items">items</a> to the sliding window</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="compute-metric.html">computeMetric</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">computeMetric</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-metric/index.html"><span class="identifier">Metric</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Computes the mterics for each BSSID of the addess scanned access points</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-best-item.html">getBestItem</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getBestItem</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$getBestItem(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)))/restriction">restriction</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code>
+<p>Gets the item with the best metric out of the sliding window taking <a href="get-best-item.html#at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$getBestItem(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)))/restriction">restriction</a> into account.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-metric-from-type.html">getMetricFromType</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getMetricFromType</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-metric/index.html"><span class="identifier">Metric</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code>
+<p>Gets a Metric object based on <a href="metric-type.html">metricType</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-valid-b-s-s-i-d.html">isValidBSSID</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isValidBSSID</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$isValidBSSID(kotlin.String)/bssid">bssid</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Checks, if the BSSID is allowed to be selected.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-allowed-b-s-s-i-ds.html">setAllowedBSSIDs</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">setAllowedBSSIDs</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$setAllowedBSSIDs(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)))/allowedAccessPoints">allowedAccessPoints</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Sets the allowed BSSIDs based on <a href="set-allowed-b-s-s-i-ds.html#at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow$setAllowedBSSIDs(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint)))/allowedAccessPoints">allowedAccessPoints</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

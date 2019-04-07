@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SimulationController - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.controller</a>&nbsp;/&nbsp;<a href="./index.html">SimulationController</a><br/>
+<br/>
+<h1>SimulationController</h1>
+<code><span class="keyword">class </span><span class="identifier">SimulationController</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">EventHandler</span><span class="symbol">&lt;</span><span class="identifier">WindowEvent</span><span class="symbol">&gt;</span></code>
+<p>The controller of the simulation view.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SimulationController</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.controller.SimulationController$<init>(at.fhooe.mc.wifipositioning.model.SimulationModel)/model">model</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model/-simulation-model/index.html"><span class="identifier">SimulationModel</span></a><span class="symbol">)</span></code>
+<p>The controller of the simulation view.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="dimensions.html">dimensions</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">dimensions</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/awt/Dimension.html"><span class="identifier">Dimension</span></a><span class="symbol">?</span></code>
+<p>the dimensions of the viewport.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="model.html">model</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">model</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model/-simulation-model/index.html"><span class="identifier">SimulationModel</span></a></code>
+<p>the simulation model, which manages the simulation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="handle.html">handle</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">handle</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.controller.SimulationController$handle(javafx.stage.WindowEvent)/event">event</span><span class="symbol">:</span>&nbsp;<span class="identifier">WindowEvent</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Terminates the application, when the application's window gets closed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="on-play.html">onPlay</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onPlay</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.controller.SimulationController$onPlay(javafx.event.ActionEvent)/event">event</span><span class="symbol">:</span>&nbsp;<span class="identifier">ActionEvent</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Toggles the simulation between start and pause.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="on-stop.html">onStop</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onStop</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.controller.SimulationController$onStop(javafx.event.ActionEvent)/event">event</span><span class="symbol">:</span>&nbsp;<span class="identifier">ActionEvent</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Stops the simulation, resets the building plan and reloads the configuration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

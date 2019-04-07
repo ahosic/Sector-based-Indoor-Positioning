@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SlidingWindow - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.slidingwindow</a>&nbsp;/&nbsp;<a href="./index.html">SlidingWindow</a><br/>
+<br/>
+<h1>SlidingWindow</h1>
+<code><span class="keyword">interface </span><span class="identifier">SlidingWindow</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">Item</span><span class="symbol">, </span><span class="keyword">in</span>&nbsp;<span class="identifier">Restriction</span><span class="symbol">, </span><span class="keyword">out</span>&nbsp;<span class="identifier">Result</span><span class="symbol">&gt;</span></code>
+<p>An interface for a sliding window, which can also take selection restrictions into account.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow$add(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow.Item)))/items">items</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="index.html#Item"><span class="identifier">Item</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds <a href="add.html#at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow$add(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow.Item)))/items">items</a> to the sliding window</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-best-item.html">getBestItem</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getBestItem</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow$getBestItem(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow.Restriction)))/restriction">restriction</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="index.html#Restriction"><span class="identifier">Restriction</span></a><span class="symbol">&gt;</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="index.html#Result"><span class="identifier">Result</span></a><span class="symbol">?</span></code>
+<p>Gets the item with the best metric out of the sliding window taking <a href="get-best-item.html#at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow$getBestItem(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow.Restriction)))/restriction">restriction</a> into account.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-access-point-sliding-window/index.html">AccessPointSlidingWindow</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AccessPointSlidingWindow</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SlidingWindow</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">,</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>A concrete implementation of a sliding window for access points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

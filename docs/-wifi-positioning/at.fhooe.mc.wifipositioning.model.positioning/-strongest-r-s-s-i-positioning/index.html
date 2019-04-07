@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>StrongestRSSIPositioning - WifiPositioning</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">WifiPositioning</a>&nbsp;/&nbsp;<a href="../index.html">at.fhooe.mc.wifipositioning.model.positioning</a>&nbsp;/&nbsp;<a href="./index.html">StrongestRSSIPositioning</a><br/>
+<br/>
+<h1>StrongestRSSIPositioning</h1>
+<code><span class="keyword">class </span><span class="identifier">StrongestRSSIPositioning</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-positioning/index.html"><span class="identifier">Positioning</span></a></code>
+<p>A Positioning method that uses the strongest access point (highest signal strength) for the position estimation.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">StrongestRSSIPositioning</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.StrongestRSSIPositioning$<init>(at.fhooe.mc.wifipositioning.model.building.Building)/building">building</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.building/-building/index.html"><span class="identifier">Building</span></a><span class="symbol">)</span></code>
+<p>Initializes a new Positioning Method</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="building.html">building</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">building</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.building/-building/index.html"><span class="identifier">Building</span></a></code>
+<p>the building object containing all needed context information</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="estimate-sector.html">estimateSector</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">estimateSector</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.StrongestRSSIPositioning$estimateSector(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/scannedAccessPointList">scannedAccessPointList</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-sector-estimation/index.html"><span class="identifier">SectorEstimation</span></a><span class="symbol">?</span></code>
+<p>Calculates a sector estimation using <a href="estimate-sector.html#at.fhooe.mc.wifipositioning.model.positioning.StrongestRSSIPositioning$estimateSector(kotlin.collections.List((at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)))/scannedAccessPointList">scannedAccessPointList</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="find-sector.html">findSector</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">findSector</span><span class="symbol">(</span><span class="identifier" id="at.fhooe.mc.wifipositioning.model.positioning.StrongestRSSIPositioning$findSector(at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)/scannedAccessPoint">scannedAccessPoint</span><span class="symbol">:</span>&nbsp;<a href="../../at.fhooe.mc.wifipositioning.model.recording/-scanned-access-point/index.html"><span class="identifier">ScannedAccessPoint</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../at.fhooe.mc.wifipositioning.model.building/-installed-access-point/index.html"><span class="identifier">InstalledAccessPoint</span></a><span class="symbol">?</span></code>
+<p>Finds a sector/installed access point based on the BSSID of <a href="find-sector.html#at.fhooe.mc.wifipositioning.model.positioning.StrongestRSSIPositioning$findSector(at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint)/scannedAccessPoint">scannedAccessPoint</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
