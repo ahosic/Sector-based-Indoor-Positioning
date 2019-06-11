@@ -11,7 +11,7 @@ import at.fhooe.mc.wifipositioning.model.filtering.Filtering
 import at.fhooe.mc.wifipositioning.model.filtering.RSSILowPassFilter
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import at.fhooe.mc.wifipositioning.model.slidingwindow.AccessPointSlidingWindow
-import at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType
+import at.fhooe.mc.wifipositioning.model.metrics.MetricType
 import at.fhooe.mc.wifipositioning.model.slidingwindow.SlidingWindow
 
 /**

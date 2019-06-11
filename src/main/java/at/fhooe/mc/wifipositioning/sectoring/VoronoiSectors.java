@@ -1,5 +1,6 @@
 package at.fhooe.mc.wifipositioning.sectoring;
 
+import at.fhooe.mc.wifipositioning.model.Evaluator;
 import at.fhooe.mc.wifipositioning.model.building.Floor;
 import at.fhooe.mc.wifipositioning.model.graphics.FloorManager;
 import at.fhooe.mc.wifipositioning.model.graphics.Matrix;
@@ -15,6 +16,10 @@ import java.util.List;
 
 public class VoronoiSectors implements Sectoring {
 
+    private Evaluator evaluator;
+    private FloorManager floorManager;
+
+    private Position currentActualPosition;
     private List<Position> positions = new ArrayList<>();
     private List<Position> inTransition = new ArrayList<>();
 
@@ -85,20 +90,41 @@ public class VoronoiSectors implements Sectoring {
                 polygon.addPoint((int) p.getX(), (int) p.getY());
             }
         }
+
+        boolean hasMatchedAny = false;
         for (Polygon polygon : polygons) {
-            DrawingContext.INSTANCE.drawVoronoi(polygon, g, m_tMatrix, checkIfContainsPerson(polygon), checkIfInTransition(polygon), positions.size());
+            if (checkIfEstimatedSector(polygon) && containsActualPosition(polygon)) {
+                evaluator.incrementMatchedStableEstimations();
+                hasMatchedAny = true;
+            } else if (checkIfInTransition(polygon) && containsActualPosition(polygon)) {
+                evaluator.incrementMatchedInTransitioningEstimations();
+                hasMatchedAny = true;
+            }
+
+            DrawingContext.INSTANCE.drawVoronoi(polygon, g, m_tMatrix, checkIfEstimatedSector(polygon), checkIfInTransition(polygon), positions.size());
+        }
+
+        // Calculate euclidean distance, if outside of estimation
+        if (!hasMatchedAny) {
+           Optional<Double> distance = positions.stream()
+                   .map(pos -> Evaluator.Companion.euclideanDistanceBetween(floorManager.calculateMeterPositionFromPixels(pos), floorManager.calculateMeterPositionFromPixels(currentActualPosition)))
+                   .min(Double::compareTo);
+            distance.ifPresent(val -> evaluator.getDistances().add(val));
         }
 
         Rectangle bounds = new Rectangle(floorManager.getOffsetLeftInPixel(), floorManager.getOffsetTopInPixel(), floorManager.getOffsetRightInPixel() - floorManager.getOffsetLeftInPixel(), floorManager.getOffsetBottomInPixel() - floorManager.getOffsetTopInPixel());
 
         DrawingContext.INSTANCE.drawCells(bounds, g, m_tMatrix, false);
-
     }
 
-    private boolean checkIfContainsPerson(Polygon polygon) {
+    private boolean checkIfEstimatedSector(Polygon polygon) {
         if (positions == null) return false;
 
         return positions.stream().anyMatch(pos -> polygon.contains(new Point(pos.getX(), pos.getY())));
+    }
+
+    private boolean containsActualPosition(Polygon polygon) {
+        return polygon.contains(new Point(currentActualPosition.getX(), currentActualPosition.getY()));
     }
 
     private boolean checkIfInTransition(Polygon polygon) {
@@ -111,5 +137,20 @@ public class VoronoiSectors implements Sectoring {
     public void addPositionsOfEstimatedSectors(List<Position> positions, List<Position> inTransition) {
         this.positions = positions;
         this.inTransition = inTransition;
+    }
+
+    @Override
+    public void setCurrentActualPosition(Position actualPosition) {
+        currentActualPosition = actualPosition;
+    }
+
+    @Override
+    public void setEvaluator(Evaluator evaluator) {
+        this.evaluator = evaluator;
+    }
+
+    @Override
+    public void setFloorManager(FloorManager floorManager) {
+        this.floorManager = floorManager;
     }
 }

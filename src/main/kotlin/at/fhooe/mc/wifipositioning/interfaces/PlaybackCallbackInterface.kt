@@ -15,4 +15,9 @@ interface PlaybackCallbackInterface {
      * Sets the waypoint count of the callback object.
      */
     fun wayPointCount(wayPointCount: IntArray)
+
+    /**
+     * Called, when the route has been finished.
+     */
+    fun finishedRoute()
 }

@@ -8,7 +8,7 @@ import at.fhooe.mc.wifipositioning.model.positioning.*
 import at.fhooe.mc.wifipositioning.sectoring.VoronoiSectors
 import at.fhooe.mc.wifipositioning.model.recording.DataSnapshot
 import at.fhooe.mc.wifipositioning.model.recording.Player
-import at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType
+import at.fhooe.mc.wifipositioning.model.metrics.MetricType
 import at.fhooe.mc.wifipositioning.sectoring.Sectoring
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -67,6 +67,11 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
             e.printStackTrace()
         }
 
+        // Print configuration
+        println("**** Settings ****")
+        println(settings)
+        println("******************")
+
         return settings
     }
 
@@ -83,6 +88,8 @@ class ConfigurationModel(private val settingsPath: String): Observable() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
+        println("Configuration saved.")
 
         setChanged()
         notifyObservers()
