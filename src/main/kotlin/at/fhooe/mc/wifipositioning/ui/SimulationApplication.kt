@@ -102,9 +102,9 @@ class SimulationApplication : Application(), Observer {
      */
     private fun initMapView() {
         mapView.styleClass.add("mapView")
-        mapView.prefWidth = 800.0
-        mapView.prefHeight = 500.0
-        controller?.dimensions = Dimension(800, 500)
+        mapView.prefWidth = 1000.0
+        mapView.prefHeight = 625.0
+        controller?.dimensions = Dimension(mapView.prefWidth.toInt(), mapView.prefHeight.toInt())
     }
 
     /**

@@ -18,4 +18,18 @@ data class Settings(@JsonProperty("floorsPath") val floorsPath: String,
                     @JsonProperty("walkRecordingPath") val walkRecordingPath: String,
                     @JsonProperty("routePath") val routePath: String,
                     @JsonProperty("buildingGraphPath") val buildingGraphPath: String,
-                    @JsonProperty("positioningType") val positioningType: PositioningType)
+                    @JsonProperty("positioningType") val positioningType: PositioningType) {
+
+    override fun toString(): String {
+        val builder = StringBuilder()
+
+        builder.appendln("Plan: $floorsPath")
+        builder.appendln("Building: $buildingPath")
+        builder.appendln("Recording: $walkRecordingPath")
+        builder.appendln("Route: $routePath")
+        builder.appendln("Graph: $buildingGraphPath")
+        builder.appendln("Positioning: $positioningType")
+
+        return builder.toString()
+    }
+}

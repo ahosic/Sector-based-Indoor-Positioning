@@ -5,7 +5,7 @@ import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.filtering.Filtering
 import at.fhooe.mc.wifipositioning.model.filtering.SectorLowPassFilter
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
-import at.fhooe.mc.wifipositioning.model.slidingwindow.MetricType
+import at.fhooe.mc.wifipositioning.model.metrics.MetricType
 
 /**
  * A Positioning method that uses a combination of SlidingWindowPositioning and a low pass-filter for the position estimation.
@@ -21,7 +21,7 @@ class FilteredSlidingWindowPositioning(building: Building, metricType: MetricTyp
 
     init {
         positioning = SlidingWindowPositioning(building, 5, metricType)
-        filtering = SectorLowPassFilter(10)
+        filtering = SectorLowPassFilter(3)
     }
 
     /**

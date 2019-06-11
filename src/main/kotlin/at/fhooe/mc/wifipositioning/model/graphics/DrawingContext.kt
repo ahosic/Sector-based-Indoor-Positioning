@@ -44,31 +44,39 @@ object DrawingContext {
     fun drawAccessPoint(accessPoint: InstalledAccessPoint, x: Int, y: Int, graphics: Graphics, matrix: Matrix) {
         val p = Point(x, y)
         val p2 = matrix.multiply(p)
-        graphics.color = Color(0, 0, 255)
 
         graphics.font = graphics.font.deriveFont(12f)
-        graphics.drawString(accessPoint.id, p2.x, p2.y - 5)
+        val fontMetrics = graphics.getFontMetrics(graphics.font)
+        val idWidth = fontMetrics.stringWidth(accessPoint.id)
+
+        val textPosY = p2.y - 2 - (fontMetrics.height / 2)
+
+        graphics.color = Color.white
+        graphics.fillRect(p2.x - 1, textPosY - fontMetrics.height + 2, idWidth + 2, fontMetrics.height)
+
+        graphics.color = Color(0x00E676)
+        graphics.drawString(accessPoint.id, p2.x, textPosY)
         graphics.fillOval(p2.getX().toInt() - 5, p2.getY().toInt() - 5, 10, 10)
     }
 
     fun drawPerson(person: Person, graphics: Graphics, matrix: Matrix) {
         val p = Point(person.x, person.y)
         val p2 = matrix.multiply(p)
-        graphics.color = Color(255, 0, 0)
+        graphics.color = Color(255, 0, 255)
         graphics.fillOval(p2.getX().toInt() - 10, p2.getY().toInt() - 10, 20, 20)
     }
 
     fun drawActualPosition(person: Person, graphics: Graphics, matrix: Matrix) {
         val p = Point(person.x, person.y)
         val p2 = matrix.multiply(p)
-        graphics.color = Color(139, 69, 19)
+        graphics.color = Color(0xFF1744)
         graphics.fillOval(p2.getX().toInt() - 10, p2.getY().toInt() - 10, 20, 20)
     }
 
     fun drawWayPointPosition(waypointPosition: Waypoint, graphics: Graphics, matrix: Matrix) {
         val p = Point(waypointPosition.position.x, waypointPosition.position.y)
         val p2 = matrix.multiply(p)
-        graphics.color = Color(0, 102, 0)
+        graphics.color = Color(0x00B0FF)
         graphics.fillOval(p2.getX().toInt() - 5, p2.getY().toInt() - 5, 10, 10)
     }
 
@@ -110,7 +118,7 @@ object DrawingContext {
             i++
         }
 
-        graphics.color = Color(0, 102, 0)
+        graphics.color = Color(0x00B0FF)
         graphics.drawPolyline(xPoints, yPoints, nPoints)
     }
 

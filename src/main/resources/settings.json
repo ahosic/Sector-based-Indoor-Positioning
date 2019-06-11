@@ -1,7 +1,7 @@
 {
   "floorsPath": "app-resources/building_plan.tiff",
   "buildingPath": "app-resources/building.json",
-  "walkRecordingPath": "app-resources/recordings/FH2_Floor4_2019-03-11.json",
+  "walkRecordingPath": "app-resources/recordings/recording_FH2E4_best.json",
   "routePath": "app-resources/waypoints/FH2-Floor-4-Waypoints.json",
   "buildingGraphPath": "app-resources/graph.json",
   "positioningType": "Graphed"

@@ -20,6 +20,7 @@ import at.fhooe.mc.wifipositioning.sectoring.Sectoring
 
 import java.awt.*
 import java.awt.image.BufferedImage
+import java.io.File
 import java.util.*
 
 /**
@@ -40,7 +41,6 @@ import java.util.*
  * @property player the simulated player walking along the [route].
  */
 class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCallbackInterface, Observer {
-
     private var accessPoints: List<InstalledAccessPoint>? = ArrayList()
     private var person = Position(-1000, 1000)
     private var actualPosition = Position(-1000, 1000)
@@ -50,6 +50,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
     private var wayPointCount: IntArray? = null
     private var wayPointNumber = 1
     private var interpolationStep = 0
+
+    private val evaluator: Evaluator
 
     private var playerThread: Thread? = null
 
@@ -70,6 +72,11 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
 
     init {
         config.addObserver(this)
+        val fileName = config.settings.walkRecordingPath.substringAfterLast("/")
+
+        evaluator = Evaluator()
+        evaluator.distanceFileName = "${fileName}_${config.settings.positioningType}.csv"
+        print("x")
     }
 
     /**
@@ -87,6 +94,12 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         config.loadPositioningMethod()
         config.loadWaypoints()
         config.loadWalkRecording(this)
+
+        evaluator.reset()
+        val fileName = config.settings.walkRecordingPath.substringAfterLast("/")
+        evaluator.distanceFileName = "${fileName}_${config.settings.positioningType}.csv"
+
+        sectoring.setEvaluator(evaluator)
     }
 
     /**
@@ -128,6 +141,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         interpolationStep = 0
 
         currentEstimation = null
+
+        evaluator.reset()
     }
 
     /**
@@ -196,7 +211,9 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             floorManager?.let { floorManager ->
                 val sectorPositions = estimation.sectors.map { sector -> floorManager.calculatePixelPositionFromMeter(sector.position.x, sector.position.y) }.toList()
                 val transitionPositions = estimation.inTransition?.map { sector -> floorManager.calculatePixelPositionFromMeter(sector.position.x, sector.position.y) }?.toList()
+                sectoring.setCurrentActualPosition(floorManager.calculatePixelPositionFromMeter(actualPosition.x, actualPosition.y))
                 sectoring.addPositionsOfEstimatedSectors(sectorPositions, transitionPositions)
+                evaluator.incrementTotalEstimations()
             }
         }
 
@@ -215,6 +232,11 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         val images = applyMatrixToBufferedImage(floorManager.floor.floorImage ?: return null)
 
         val g = images.createGraphics()
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
         val clipRect = Rectangle(floorManager.offsetLeftInPixel - 10, floorManager.offsetTopInPixel - 10, floorManager.offsetRightInPixel - floorManager.offsetLeftInPixel + 15, floorManager.offsetBottomInPixel - floorManager.offsetTopInPixel + 15)
         g.clip = Rectangle(matrix.multiply(clipRect))
         g.color = Color(0, 0, 0)
@@ -223,6 +245,8 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
         var i = 0
 
         i = 0
+
+        sectoring.createSectors(floorManager, g, matrix)
 
         accessPoints?.let { accessPoints ->
             while (i < accessPoints.size) {
@@ -247,8 +271,6 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
             i++
         }
         DrawingContext.drawWayPointLine(wayPointPositions2, g, matrix)
-
-        sectoring.createSectors(floorManager, g, matrix)
 
         var pos = floorManager.calculatePixelPositionFromMeter(person.x, person.y)
         person.x = pos.x
@@ -282,6 +304,16 @@ class SimulationModel(var config: ConfigurationModel) : BaseModel(), PlaybackCal
      */
     override fun wayPointCount(wayPointCount: IntArray) {
         this.wayPointCount = wayPointCount
+    }
+
+    /**
+     * Prints out the evaluation of the simulation
+     */
+    override fun finishedRoute() {
+        evaluator.printSummary()
+        evaluator.saveDistancesToFile()
+
+        println("Simulation finished.")
     }
 
     /**

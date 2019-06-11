@@ -2,6 +2,10 @@ package at.fhooe.mc.wifipositioning.model.slidingwindow
 
 import at.fhooe.mc.wifipositioning.model.building.InstalledAccessPoint
 import at.fhooe.mc.wifipositioning.model.filtering.Filtering
+import at.fhooe.mc.wifipositioning.model.metrics.ArithmeticMeanMetric
+import at.fhooe.mc.wifipositioning.model.metrics.MedianMetric
+import at.fhooe.mc.wifipositioning.model.metrics.Metric
+import at.fhooe.mc.wifipositioning.model.metrics.MetricType
 import at.fhooe.mc.wifipositioning.model.positioning.AccessPointIdentificationMode
 import at.fhooe.mc.wifipositioning.model.recording.ScannedAccessPoint
 import java.util.HashMap

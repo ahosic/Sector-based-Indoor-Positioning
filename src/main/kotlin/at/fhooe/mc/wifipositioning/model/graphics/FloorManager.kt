@@ -2,6 +2,7 @@ package at.fhooe.mc.wifipositioning.model.graphics
 
 import at.fhooe.mc.wifipositioning.model.building.Floor
 import at.fhooe.mc.wifipositioning.model.building.Position
+import kotlin.math.roundToInt
 
 /**
  * Manages a floor with its bounds and provides means for calculating pixel positions on the building plan.
@@ -53,6 +54,27 @@ class FloorManager(var floor: Floor) {
         val yPos = (y * heightMultiplier + floor.bounds.top * heightMultiplier).toInt()
 
         return Position(xPos, yPos)
+    }
+
+    /**
+     * Calculates a meter position from pixels.
+     *
+     * @return a meter-based position of a pixel-based position
+     */
+    fun calculateMeterPositionFromPixels(x: Int, y: Int): Position {
+        val xPos = ((x / widthMultiplier) - floor.bounds.left).roundToInt()
+        val yPos = ((y / heightMultiplier) - floor.bounds.top).roundToInt()
+
+        return Position(xPos, yPos)
+    }
+
+    /**
+     * Calculates a meter position from pixels.
+     *
+     * @return a meter-based position of a pixel-based position as a Position object.
+     */
+    fun calculateMeterPositionFromPixels(pos: Position): Position {
+        return calculateMeterPositionFromPixels(pos.x, pos.y)
     }
 
     /**
